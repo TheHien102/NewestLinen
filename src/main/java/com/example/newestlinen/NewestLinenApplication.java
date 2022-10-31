@@ -26,7 +26,7 @@ import java.util.TimeZone;
 @EnableScheduling
 @EnableAspectJAutoProxy
 @Slf4j
-@ComponentScan(value = {"com.example.newestlinen"})
+//@ComponentScan(value = {"com.example.newestlinen"})
 public class NewestLinenApplication {
 
     @Autowired
