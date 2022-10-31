@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>NewestLinen</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>NewestLinen</name>
     <description>NewestLinen</description>
     <packaging>jar</packaging>
