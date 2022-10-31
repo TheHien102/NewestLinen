@@ -23,10 +23,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 @SpringBootApplication
-@EnableScheduling
-@EnableAspectJAutoProxy
+@EnableJpaAuditing
 @Slf4j
-//@ComponentScan(value = {"com.example.newestlinen"})
 public class NewestLinenApplication {
 
     @Autowired
