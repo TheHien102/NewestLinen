@@ -1,4 +1,4 @@
-package com.example.newestlinen.storage.model;
+package com.example.newestlinen.storage.model.ProductModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,26 +9,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.newestlinen.storage.model.Auditable;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Varriant")
+@Table(name = "Review")
 @Getter
 @Setter
-public class Varriant extends Auditable<String> {
+public class Review extends Auditable<String> {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Varriant_ID")
+    @Column(name = "Review_ID")
     private Long id;
 
-    private String name;
+    private int rate;
 
-    private String property;
-
-    private int addPrice;
+    private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "Item_ID", referencedColumnName = "Item_ID")
-    private Item varriantItem;
+    @JoinColumn(name = "Product_ID", referencedColumnName = "Product_ID")
+    private Product reviewProduct;
 }

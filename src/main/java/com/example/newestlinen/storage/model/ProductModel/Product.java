@@ -1,5 +1,8 @@
-package com.example.newestlinen.storage.model;
+package com.example.newestlinen.storage.model.ProductModel;
 
+import com.example.newestlinen.storage.model.Asset;
+import com.example.newestlinen.storage.model.Auditable;
+import com.example.newestlinen.storage.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 

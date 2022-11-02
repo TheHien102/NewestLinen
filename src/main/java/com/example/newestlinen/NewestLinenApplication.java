@@ -1,5 +1,6 @@
 package com.example.newestlinen;
 
+import com.cloudinary.Cloudinary;
 import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.Group;
 import com.example.newestlinen.storage.model.Permission;
@@ -10,10 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -42,9 +41,9 @@ public class NewestLinenApplication {
 
     PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    private void createAdminUserIfNotExist(){
+    private void createAdminUserIfNotExist() {
         Account account = qrCodeStorageService.findAccountByUsername("admin");
-        if(account == null){
+        if (account == null) {
             List<Permission> defaultPermission = addPermission();
             Group group = initGroupDefault(defaultPermission);
 
@@ -61,7 +60,7 @@ public class NewestLinenApplication {
 
     }
 
-    private List<Permission> addPermission(){
+    private List<Permission> addPermission() {
         List<Permission> results = new ArrayList<>();
         Permission permissionCreateGroup = new Permission();
         permissionCreateGroup.setAction("/v1/group/create");
@@ -99,7 +98,7 @@ public class NewestLinenApplication {
         return results;
     }
 
-    private Group initGroupDefault(List<Permission> defaultPermission){
+    private Group initGroupDefault(List<Permission> defaultPermission) {
         Group superAdminGroup = new Group();
         superAdminGroup.setKind(1);
         superAdminGroup.setName("ROLE SUPPER ADMIN");

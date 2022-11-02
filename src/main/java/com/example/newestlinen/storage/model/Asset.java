@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.newestlinen.storage.model.ProductModel.Product;
 import lombok.Getter;
 import lombok.Setter;
 
