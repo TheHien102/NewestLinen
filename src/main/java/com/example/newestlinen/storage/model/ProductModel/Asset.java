@@ -1,4 +1,4 @@
-package com.example.newestlinen.storage.model;
+package com.example.newestlinen.storage.model.ProductModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +9,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.newestlinen.storage.model.Auditable;
 import com.example.newestlinen.storage.model.ProductModel.Product;
+import com.example.newestlinen.storage.model.TablePrefix;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "Asset")
+@Table(name = TablePrefix.PREFIX_TABLE+ "Asset")
 @Setter
 @Getter
 public class Asset extends Auditable<String> {
@@ -29,7 +35,9 @@ public class Asset extends Auditable<String> {
 
     private int isMain = 0;
 
+    @JsonIgnore
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Product_ID")
     private Product assetProduct;
 }

@@ -1,7 +1,7 @@
 package com.example.newestlinen.dto.product;
 
 import com.example.newestlinen.dto.ABasicAdminDto;
-import com.example.newestlinen.storage.model.Asset;
+import com.example.newestlinen.storage.model.ProductModel.Asset;
 import com.example.newestlinen.storage.model.Category;
 import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Review;

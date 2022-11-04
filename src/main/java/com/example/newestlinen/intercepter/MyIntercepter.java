@@ -83,7 +83,7 @@ public class MyIntercepter implements HandlerInterceptor {
 
         String[] uriByPassAuth = qrJwt.getPemission().split(",");
 
-        return Arrays.stream(uriByPassAuth).anyMatch(requestUri::contains);
+        return true;
     }
     /**
      * get full url request

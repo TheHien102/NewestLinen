@@ -10,11 +10,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.example.newestlinen.storage.model.Auditable;
+import com.example.newestlinen.storage.model.TablePrefix;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "Varriant")
+@Table(name = TablePrefix.PREFIX_TABLE+ "Varriant")
 @Getter
 @Setter
 public class Variant extends Auditable<String> {
@@ -29,7 +33,9 @@ public class Variant extends Auditable<String> {
 
     private int addPrice;
 
+    @JsonIgnore
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Item_ID", referencedColumnName = "Item_ID")
     private Item varriantItem;
 }

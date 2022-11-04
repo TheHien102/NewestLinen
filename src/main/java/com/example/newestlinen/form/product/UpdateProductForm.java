@@ -7,7 +7,10 @@ import java.util.List;
 
 @Data
 @Schema
-public class UploadProductForm {
+public class UpdateProductForm {
+
+    @Schema(name = "productId")
+    private Long productId;
 
     @Schema(name = "name")
     private String name;
