@@ -28,8 +28,8 @@ public class UpdateProductForm {
     private Long productCategoryID;
 
     @Schema(name = "variants")
-    private List<UploadVariantForm> variants;
+    private List<UpdateVariantForm> variants;
 
     @Schema(name = "Assets")
-    private List<UploadAssetForm> Assets;
+    private List<UpdateAssetForm> Assets;
 }

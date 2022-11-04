@@ -1,6 +1,8 @@
 package com.example.newestlinen.mapper;
 
 import com.example.newestlinen.dto.product.ProductDTO;
+import com.example.newestlinen.form.product.UpdateAssetForm;
+import com.example.newestlinen.form.product.UpdateVariantForm;
 import com.example.newestlinen.form.product.UploadAssetForm;
 import com.example.newestlinen.form.product.UploadVariantForm;
 import com.example.newestlinen.storage.model.ProductModel.Asset;
@@ -15,6 +17,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductMapper {
+    List<Variant> fromUpdateVariantListFormToData(List<UpdateVariantForm> updateVariantForm);
+
+    List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateVariantForm);
+
     ProductDTO fromProductDataToObject(Product p);
 
     @IterableMapping(elementTargetType = Variant.class)
@@ -24,5 +30,5 @@ public interface ProductMapper {
     List<Asset> fromAssetFormListtoDataList(List<UploadAssetForm> uploadAssetForms);
 
     @IterableMapping(elementTargetType = ProductDTO.class)
-    List<ProductDTO>fromProductDataListToDtoList(List<Product> content);
+    List<ProductDTO> fromProductDataListToDtoList(List<Product> content);
 }

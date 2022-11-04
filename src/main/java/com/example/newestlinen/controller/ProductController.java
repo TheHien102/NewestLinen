@@ -60,6 +60,16 @@ public class ProductController extends ABasicController {
         return apiMessageDto;
     }
 
+    @GetMapping("/get/Id={Id}")
+    public ApiMessageDto<ProductDTO> getProductById(@PathVariable String Id) {
+        Product p = productRepository.getById(Long.parseLong(Id));
+        ApiMessageDto<ProductDTO> apiMessageDto = new ApiMessageDto<>();
+
+        apiMessageDto.setData(productMapper.fromProductDataToObject(p));
+        apiMessageDto.setMessage("List product success");
+        return apiMessageDto;
+    }
+
     @PostMapping("/upload")
     public ApiMessageDto<String> uploadProduct(@RequestBody UploadProductForm uploadProductForm) {
         if (!isAdmin()) {
@@ -116,10 +126,21 @@ public class ProductController extends ABasicController {
 
     @PostMapping("/update")
     public ApiMessageDto<Product> updateProduct(@RequestBody UpdateProductForm updateProductForm) {
-        Product p = productRepository.getById(updateProductForm.getProductId());
-        Item i = p.getProductItem().get(0);
-        List<Variant> vList = i.getVarriants();
-        List<Asset> aList = p.getAssets(); 
+        System.out.println(updateProductForm);
+        Product p = productRepository.getProductById(updateProductForm.getProductId());
+
+        p.setName(updateProductForm.getName());
+        p.setDiscount(updateProductForm.getDiscount());
+        p.setDescription(updateProductForm.getDescription());
+        p.setPrice(updateProductForm.getPrice());
+        p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
+
+        // Map together
+        p.setAssets(productMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets()));
+
+        p.getProductItem().get(0).setVarriants(productMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
+
+        productRepository.save(p);
 
         ApiMessageDto<Product> apiMessageDto = new ApiMessageDto<>();
 
