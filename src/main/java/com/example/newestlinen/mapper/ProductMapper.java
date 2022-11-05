@@ -8,17 +8,17 @@ import com.example.newestlinen.form.product.UploadVariantForm;
 import com.example.newestlinen.storage.model.ProductModel.Asset;
 import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductMapper {
+
+    @IterableMapping(elementTargetType = Variant.class)
     List<Variant> fromUpdateVariantListFormToData(List<UpdateVariantForm> updateVariantForm);
 
+    @IterableMapping(elementTargetType = Asset.class)
     List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateVariantForm);
 
     ProductDTO fromProductDataToObject(Product p);

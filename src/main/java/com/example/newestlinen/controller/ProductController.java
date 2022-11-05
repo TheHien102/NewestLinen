@@ -3,6 +3,7 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ProductDTO;
+import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.ProductMapper;
@@ -62,7 +63,7 @@ public class ProductController extends ABasicController {
 
     @GetMapping("/get/Id={Id}")
     public ApiMessageDto<ProductDTO> getProductById(@PathVariable String Id) {
-        Product p = productRepository.getById(Long.parseLong(Id));
+        Product p = productRepository.findProductById(Long.parseLong(Id));
         ApiMessageDto<ProductDTO> apiMessageDto = new ApiMessageDto<>();
 
         apiMessageDto.setData(productMapper.fromProductDataToObject(p));
@@ -126,8 +127,9 @@ public class ProductController extends ABasicController {
 
     @PostMapping("/update")
     public ApiMessageDto<Product> updateProduct(@RequestBody UpdateProductForm updateProductForm) {
-        System.out.println(updateProductForm);
-        Product p = productRepository.getProductById(updateProductForm.getProductId());
+        Product p = productRepository.findProductById(updateProductForm.getProductId());
+
+        Asset a = p.getAssets().get(0);
 
         p.setName(updateProductForm.getName());
         p.setDiscount(updateProductForm.getDiscount());
@@ -135,10 +137,36 @@ public class ProductController extends ABasicController {
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
-        // Map together
-        p.setAssets(productMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets()));
+        // remove asset and variant marked to be delete
+        p.getAssets().removeAll(productMapper.fromUpdateAssetListFormToData(
+                updateProductForm.getAssets().stream().filter(i -> i.getAction().equalsIgnoreCase("Delete")).
+                        collect(Collectors.toList())));
 
-        p.getProductItem().get(0).setVarriants(productMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
+        p.getProductItem().get(0).getVarriants().removeAll(productMapper.fromUpdateVariantListFormToData(
+                updateProductForm.getVariants().stream().filter(i -> i.getAction().equalsIgnoreCase("Delete"))
+                        .collect(Collectors.toList())));
+
+        // declare new asset and variant
+        List<Asset> newAssets = productMapper.fromUpdateAssetListFormToData(
+                updateProductForm.getAssets().stream().filter(i -> i.getAction().equalsIgnoreCase("Add")).
+                        collect(Collectors.toList()));
+
+        newAssets.addAll(productMapper.fromUpdateAssetListFormToData(
+                updateProductForm.getAssets().stream().filter(i -> i.getAction().equalsIgnoreCase("Modify")).
+                        collect(Collectors.toList())));
+
+        List<Variant> newVariants = productMapper.fromUpdateVariantListFormToData(
+                updateProductForm.getVariants().stream().filter(i -> i.getAction().equalsIgnoreCase("Add")).
+                        collect(Collectors.toList()));
+
+        // Map together
+        newAssets.forEach(i -> i.setAssetProduct(p));
+
+        p.setAssets(newAssets);
+
+        newVariants.forEach(i -> i.setVarriantItem(p.getProductItem().get(0)));
+
+        p.getProductItem().get(0).setVarriants(newVariants);
 
         productRepository.save(p);
 
