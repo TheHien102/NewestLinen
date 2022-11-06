@@ -1,8 +1,10 @@
 package com.example.newestlinen.controller;
 
 import com.example.newestlinen.dto.ApiMessageDto;
+import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ProductDTO;
+import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
@@ -43,6 +45,9 @@ public class ProductController extends ABasicController {
 
     @GetMapping("/get/page={page}")
     public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(@PathVariable String page) {
+        if(!isAdmin()){
+            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow get list");
+        }
         Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, 12);
 
         Page<Product> productPage = productRepository.getAllByOrderById(pageable);
@@ -74,7 +79,7 @@ public class ProductController extends ABasicController {
     @PostMapping("/upload")
     public ApiMessageDto<String> uploadProduct(@RequestBody UploadProductForm uploadProductForm) {
         if (!isAdmin()) {
-            System.out.println("not admin");
+            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to upload");
         }
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
@@ -127,6 +132,9 @@ public class ProductController extends ABasicController {
 
     @PostMapping("/update")
     public ApiMessageDto<Product> updateProduct(@RequestBody UpdateProductForm updateProductForm) {
+        if(!isAdmin()){
+            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
+        }
         Product p = productRepository.findProductById(updateProductForm.getProductId());
 
         Asset a = p.getAssets().get(0);
