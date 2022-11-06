@@ -32,7 +32,7 @@ public class MyIntercepter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        if ( !httpServletRequest.getDispatcherType().name().equals("REQUEST") ) {
+        if (!httpServletRequest.getDispatcherType().name().equals("REQUEST")) {
             return true;
         }
         long startTime = System.currentTimeMillis();
@@ -41,7 +41,7 @@ public class MyIntercepter implements HandlerInterceptor {
         String requestUri = httpServletRequest.getRequestURI();
         String[] uriByPassAuth = ConfigurationService.getInstance().getStringArray("uri.bypassAuths");
         boolean contains = Arrays.stream(uriByPassAuth).anyMatch(requestUri::contains);
-        if(contains){
+        if (contains) {
             return true;
         }
         boolean validSign = checkHeader(httpServletRequest);
@@ -55,7 +55,7 @@ public class MyIntercepter implements HandlerInterceptor {
         return validSign;
     }
 
-    private Boolean checkHeader(HttpServletRequest request){
+    private Boolean checkHeader(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             return false;
@@ -63,7 +63,7 @@ public class MyIntercepter implements HandlerInterceptor {
 
         String authToken = header.substring(7);
         DecodedJWT decodedJWT = JWTUtils.verifierJWT(JWTUtils.ALGORITHMS_HMAC, authToken);
-        if(decodedJWT == null){
+        if (decodedJWT == null) {
             return false;
         }
 
@@ -77,14 +77,19 @@ public class MyIntercepter implements HandlerInterceptor {
         //check permission here
         String requestUri = request.getRequestURI();
 
-        if(requestUri.contains("list")){
+        if (requestUri.contains("list")) {
             return Objects.equals(qrJwt.getKind(), String.valueOf(LandingISConstant.USER_KIND_ADMIN));
+        }
+
+        if (Objects.equals(qrJwt.getKind(), String.valueOf(LandingISConstant.USER_KIND_ADMIN))) {
+            return true;
         }
 
         String[] uriByPassAuth = qrJwt.getPemission().split(",");
 
         return Arrays.stream(uriByPassAuth).anyMatch(requestUri::contains);
     }
+
     /**
      * get full url request
      *
