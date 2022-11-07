@@ -29,7 +29,6 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class CategoryController extends ABasicController{
-
     @Autowired
     CategoryRepository categoryRepository;
 
