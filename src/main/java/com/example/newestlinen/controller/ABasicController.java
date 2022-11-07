@@ -14,7 +14,7 @@ public class ABasicController {
     public long getCurrentUserId(){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
-        return authentication.getJwtUser().getAccountId().longValue();
+        return authentication.getJwtUser().getAccountId();
     }
 
     public Account getCurrentAdmin() {

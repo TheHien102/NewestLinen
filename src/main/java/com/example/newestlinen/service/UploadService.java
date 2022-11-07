@@ -16,8 +16,7 @@ public class UploadService {
         return (String) cloudinary.uploader().upload(img, ObjectUtils.asMap(
                 "use_filename", true,
                 "unique_filename", false,
-                "overwrite", true,
-                "public_id", "Asset"
+                "overwrite", true
         )).get("secure_url");
     }
 
@@ -26,8 +25,7 @@ public class UploadService {
                 "use_filename", true,
                 "resource_type", "video",
                 "unique_filename", false,
-                "overwrite", true,
-                "public_id", "Asset"
+                "overwrite", true
         )).get("secure_url");
     }
 }
