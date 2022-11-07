@@ -16,6 +16,7 @@ import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.CategoryRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,8 +29,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/v1/product")
+@Slf4j
 public class ProductController extends ABasicController {
 
     @Autowired
