@@ -48,6 +48,9 @@ public class ProductController extends ABasicController {
 
     @GetMapping("/get/page={page}")
     public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(@PathVariable String page) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to get");
+        }
         Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, 12);
 
         Page<Product> productPage = productRepository.getAllByOrderById(pageable);
