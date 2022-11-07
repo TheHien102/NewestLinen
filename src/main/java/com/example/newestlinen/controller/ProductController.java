@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/v1/product")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class ProductController extends ABasicController {
 
