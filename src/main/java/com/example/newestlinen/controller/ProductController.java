@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -137,7 +138,7 @@ public class ProductController extends ABasicController {
     }
 
     @PostMapping("/update")
-    public ApiMessageDto<Product> updateProduct(@RequestBody UpdateProductForm updateProductForm) {
+    public ApiMessageDto<Product> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
         }
@@ -154,7 +155,7 @@ public class ProductController extends ABasicController {
 
         List<Asset> updateAssets = productMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
-        updateAssets.forEach(a -> a.setAssetProduct(p));
+//        updateAssets.forEach(a -> a.setAssetProduct(p));
 
         p.setAssets(updateAssets);
 

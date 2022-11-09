@@ -21,6 +21,8 @@ public interface ProductMapper {
     @IterableMapping(elementTargetType = Asset.class)
     List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateVariantForm);
 
+    @Mapping(source = "id",target = "id")
+
     ProductDTO fromProductDataToObject(Product p);
 
     @IterableMapping(elementTargetType = Variant.class)

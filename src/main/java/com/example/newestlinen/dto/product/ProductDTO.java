@@ -27,7 +27,4 @@ public class ProductDTO extends ABasicAdminDto {
 
     private List<Asset> Assets;
 
-    private List<Review> Reviews;
-
-    private List<Item> productItem;
 }

@@ -1,5 +1,6 @@
 package com.example.newestlinen.storage.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -24,10 +25,12 @@ public abstract class Auditable<T> {
     private T createdBy;
 
     @CreatedDate
+    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_date" ,nullable = false, updatable = false)
     private Date createdDate;
 
     @LastModifiedBy
+    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_by",nullable = false)
     private T modifiedBy;
 

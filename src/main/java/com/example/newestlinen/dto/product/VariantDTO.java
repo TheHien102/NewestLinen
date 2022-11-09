@@ -12,5 +12,4 @@ public class VariantDTO extends ABasicAdminDto {
     private String name;
     private String property;
     private int addPrice;
-    private Item varriantItem;
 }
