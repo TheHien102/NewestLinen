@@ -15,5 +15,5 @@ public class UpdateVariantForm {
     @Schema(name = "addPrice")
     private int addPrice;
     @Schema(name="action")
-    private String action;
+    private String status;
 }

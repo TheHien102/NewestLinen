@@ -16,6 +16,7 @@ import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.CategoryRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
+import com.example.newestlinen.utils.projection.repository.Product.VariantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,13 +48,14 @@ public class ProductController extends ABasicController {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @GetMapping("/get/page={page}")
-    public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(@PathVariable String page) {
+    @Autowired
+    VariantRepository variantRepository;
+
+    @GetMapping("/list")
+    public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(Pageable pageable) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to get");
         }
-        Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, 12);
-
         Page<Product> productPage = productRepository.getAllByOrderById(pageable);
 
         ApiMessageDto<ResponseListObj<ProductDTO>> apiMessageDto = new ApiMessageDto<>();
@@ -69,7 +72,7 @@ public class ProductController extends ABasicController {
         return apiMessageDto;
     }
 
-    @GetMapping("/get/Id={Id}")
+    @GetMapping("/get/{Id}")
     public ApiMessageDto<ProductDTO> getProductById(@PathVariable String Id) {
         Product p = productRepository.findProductById(Long.parseLong(Id));
         ApiMessageDto<ProductDTO> apiMessageDto = new ApiMessageDto<>();
@@ -79,7 +82,7 @@ public class ProductController extends ABasicController {
         return apiMessageDto;
     }
 
-    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> uploadProduct(@RequestBody UploadProductForm uploadProductForm) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to upload");
@@ -121,9 +124,9 @@ public class ProductController extends ABasicController {
         assetList.forEach(a -> a.setAssetProduct(p));
 
         p.setAssets(assetList);
-        variantList.forEach(v -> v.setVarriantItem(i));
+        variantList.forEach(v -> v.setVariantItem(List.of(i)));
 
-        i.setVarriants(variantList);
+        i.setVariants(variantList);
         i.setItemProduct(p);
 
         productRepository.save(p);
@@ -135,56 +138,30 @@ public class ProductController extends ABasicController {
 
     @PostMapping("/update")
     public ApiMessageDto<Product> updateProduct(@RequestBody UpdateProductForm updateProductForm) {
-        if(!isAdmin()){
+        if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
         }
+        ApiMessageDto<Product> apiMessageDto = new ApiMessageDto<>();
+
         Product p = productRepository.findProductById(updateProductForm.getProductId());
-
-        Asset a = p.getAssets().get(0);
-
         p.setName(updateProductForm.getName());
         p.setDiscount(updateProductForm.getDiscount());
         p.setDescription(updateProductForm.getDescription());
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
-        // remove asset and variant marked to be delete
-        p.getAssets().removeAll(productMapper.fromUpdateAssetListFormToData(
-                updateProductForm.getAssets().stream().filter(i -> i.getAction().equalsIgnoreCase("Delete")).
-                        collect(Collectors.toList())));
+        variantRepository.saveAll(productMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
 
-        p.getProductItem().get(0).getVarriants().removeAll(productMapper.fromUpdateVariantListFormToData(
-                updateProductForm.getVariants().stream().filter(i -> i.getAction().equalsIgnoreCase("Delete"))
-                        .collect(Collectors.toList())));
+        List<Asset> updateAssets = productMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
-        // declare new asset and variant
-        List<Asset> newAssets = productMapper.fromUpdateAssetListFormToData(
-                updateProductForm.getAssets().stream().filter(i -> i.getAction().equalsIgnoreCase("Add")).
-                        collect(Collectors.toList()));
+        updateAssets.forEach(a -> a.setAssetProduct(p));
 
-        newAssets.addAll(productMapper.fromUpdateAssetListFormToData(
-                updateProductForm.getAssets().stream().filter(i -> i.getAction().equalsIgnoreCase("Modify")).
-                        collect(Collectors.toList())));
-
-        List<Variant> newVariants = productMapper.fromUpdateVariantListFormToData(
-                updateProductForm.getVariants().stream().filter(i -> i.getAction().equalsIgnoreCase("Add")).
-                        collect(Collectors.toList()));
-
-        // Map together
-        newAssets.forEach(i -> i.setAssetProduct(p));
-
-        p.setAssets(newAssets);
-
-        newVariants.forEach(i -> i.setVarriantItem(p.getProductItem().get(0)));
-
-        p.getProductItem().get(0).setVarriants(newVariants);
+        p.setAssets(updateAssets);
 
         productRepository.save(p);
 
-        ApiMessageDto<Product> apiMessageDto = new ApiMessageDto<>();
-
-        apiMessageDto.setData(p);
-        apiMessageDto.setMessage("upload success");
+        apiMessageDto.setData(null);
+        apiMessageDto.setMessage("update success");
         return apiMessageDto;
     }
 }

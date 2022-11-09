@@ -11,9 +11,9 @@ public class UpdateAssetForm {
     @Schema(name = "type")
     private String type;
     @Schema(name = "data")
-    private String data;
+    private String link;
     @Schema(name = "isMain")
     private int isMain;
     @Schema(name="action")
-    private String action;
+    private String status;
 }

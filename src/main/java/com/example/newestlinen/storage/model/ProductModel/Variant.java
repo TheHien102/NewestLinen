@@ -1,13 +1,6 @@
 package com.example.newestlinen.storage.model.ProductModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.example.newestlinen.storage.model.Auditable;
 import com.example.newestlinen.storage.model.TablePrefix;
@@ -17,8 +10,10 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Entity
-@Table(name = TablePrefix.PREFIX_TABLE+ "Varriant")
+@Table(name = TablePrefix.PREFIX_TABLE + "Varriant")
 @Getter
 @Setter
 public class Variant extends Auditable<String> {
@@ -34,8 +29,9 @@ public class Variant extends Auditable<String> {
     private int addPrice;
 
     @JsonIgnore
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "Item_ID", referencedColumnName = "Item_ID")
-    private Item varriantItem;
+    @ManyToMany
+    @JoinTable(name = "Item_Variant",
+            joinColumns = @JoinColumn(name = "Variant_ID"),
+            inverseJoinColumns = @JoinColumn(name = "Item_ID"))
+    private List<Item> variantItem;
 }

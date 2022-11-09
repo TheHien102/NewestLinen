@@ -27,7 +27,7 @@ public interface ProductMapper {
     List<Variant> fromVariantFormListToDataList(List<UploadVariantForm> uploadVariantForms);
 
     @IterableMapping(elementTargetType = Asset.class)
-    List<Asset> fromAssetFormListtoDataList(List<UploadAssetForm> uploadAssetForms);
+    List<Asset> fromAssetFormListToDataList(List<UploadAssetForm> uploadAssetForms);
 
     @IterableMapping(elementTargetType = ProductDTO.class)
     List<ProductDTO> fromProductDataListToDtoList(List<Product> content);

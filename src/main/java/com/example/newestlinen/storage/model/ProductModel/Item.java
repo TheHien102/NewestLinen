@@ -14,7 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.List;
 
 @Entity
-@Table(name = TablePrefix.PREFIX_TABLE+ "Item")
+@Table(name = TablePrefix.PREFIX_TABLE + "Item")
 @Getter
 @Setter
 public class Item extends Auditable<String> {
@@ -31,6 +31,6 @@ public class Item extends Auditable<String> {
     @JoinColumn(name = "Product_ID", referencedColumnName = "Product_ID")
     private Product itemProduct;
 
-    @OneToMany(mappedBy = "varriantItem", cascade = CascadeType.ALL)
-    private List<Variant> Varriants;
+    @ManyToMany(mappedBy = "variantItem",cascade = CascadeType.ALL)
+    private List<Variant> Variants;
 }
