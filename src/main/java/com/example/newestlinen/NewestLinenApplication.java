@@ -112,7 +112,6 @@ public class NewestLinenApplication {
     @PostConstruct
     public void initialize() {
         createAdminUserIfNotExist();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 }
