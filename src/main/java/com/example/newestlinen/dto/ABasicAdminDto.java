@@ -1,5 +1,6 @@
 package com.example.newestlinen.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,9 +15,11 @@ public class ABasicAdminDto {
     private Integer status;
 
     @Schema(name = "modifiedDate")
+    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifiedDate;
 
     @Schema(name = "createdDate")
+    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
     @Schema(name = "modifiedBy")
