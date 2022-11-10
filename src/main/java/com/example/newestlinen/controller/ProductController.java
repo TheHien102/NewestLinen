@@ -5,7 +5,6 @@ import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ProductDTO;
 import com.example.newestlinen.exception.RequestException;
-import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.ProductMapper;
@@ -17,17 +16,15 @@ import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.CategoryRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import com.example.newestlinen.utils.projection.repository.Product.VariantRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,22 +32,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1/product")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
+@RequiredArgsConstructor
 public class ProductController extends ABasicController {
 
-    @Autowired
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
-    @Autowired
-    UploadService uploadService;
+    private final UploadService uploadService;
 
-    @Autowired
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    VariantRepository variantRepository;
+    private final VariantRepository variantRepository;
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(Pageable pageable) {
