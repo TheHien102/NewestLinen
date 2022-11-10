@@ -136,7 +136,7 @@ public class AccountController extends ABasicController {
     }
 
     @PostMapping(value = "/create_admin", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> createAdmin(@Valid @RequestBody CreateAccountAdminForm createAccountAdminForm, BindingResult bindingResult) {
+    public ApiMessageDto<String> createAdmin(@Valid @RequestBody CreateAccountAdminForm createAccountAdminForm, BindingResult bindingResult) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow create.");
         }
@@ -161,6 +161,7 @@ public class AccountController extends ABasicController {
         account.setGroup(group);
         account.setPassword(passwordEncoder.encode(createAccountAdminForm.getPassword()));
         account.setKind(createAccountAdminForm.getKind());
+        account.setAvatarPath(uploadService.uploadImg(createAccountAdminForm.getAvatarPath()));
 
         accountRepository.save(account);
         apiMessageDto.setMessage("Create account admin success");
