@@ -6,6 +6,7 @@ import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductDTO;
 import com.example.newestlinen.exception.RequestException;
+import com.example.newestlinen.form.UpdateByIdForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.ProductMapper;
@@ -71,6 +72,9 @@ public class ProductController extends ABasicController {
     @GetMapping("/get/{Id}")
     public ApiMessageDto<ItemDTO> getProductById(@PathVariable("Id") Long Id) {
         Item i = itemRepository.findByItemProductId(Id);
+        if (i == null) {
+            return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
+        }
         ApiMessageDto<ItemDTO> apiMessageDto = new ApiMessageDto<>();
 
         ItemDTO data = productMapper.fromItemDataToObject(i);
@@ -81,7 +85,7 @@ public class ProductController extends ABasicController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> uploadProduct(@RequestBody UploadProductForm uploadProductForm) throws IOException {
+    public ApiMessageDto<String> uploadProduct(@Valid @RequestBody UploadProductForm uploadProductForm) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to upload");
         }
@@ -130,10 +134,24 @@ public class ProductController extends ABasicController {
         return new ApiMessageDto<>("Upload Successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/disable")
-    public ApiMessageDto<String> disableProduct(@RequestBody Long productId) {
-        Product p = productRepository.findProductById(productId);
+    @PostMapping("/disable")
+    public ApiMessageDto<String> disableProduct(@RequestBody UpdateByIdForm updateByIdForm) {
+        Product p = productRepository.findProductById(updateByIdForm.getId());
+        if (p == null) {
+            return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
+        }
         p.setStatus(0);
+        productRepository.save(p);
+        return new ApiMessageDto<>("disable Product successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/enable")
+    public ApiMessageDto<String> enableProduct(@RequestBody UpdateByIdForm updateByIdForm) {
+        Product p = productRepository.findProductById(updateByIdForm.getId());
+        if (p == null) {
+            return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
+        }
+        p.setStatus(1);
         productRepository.save(p);
         return new ApiMessageDto<>("disable Product successfully", HttpStatus.OK);
     }
@@ -145,6 +163,9 @@ public class ProductController extends ABasicController {
         }
 
         Product p = productRepository.findProductById(updateProductForm.getProductId());
+        if (p == null) {
+            return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
+        }
         p.setName(updateProductForm.getName());
         p.setDiscount(updateProductForm.getDiscount());
         p.setDescription(updateProductForm.getDescription());
