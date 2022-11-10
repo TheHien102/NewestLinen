@@ -15,6 +15,7 @@ import com.example.newestlinen.jwt.JWTUtils;
 import com.example.newestlinen.jwt.UserJwt;
 import com.example.newestlinen.mapper.AccountMapper;
 import com.example.newestlinen.service.LandingIsApiService;
+import com.example.newestlinen.service.UploadService;
 import com.example.newestlinen.storage.criteria.AccountCriteria;
 import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.Group;
@@ -38,6 +39,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -59,6 +61,9 @@ public class AccountController extends ABasicController {
 
     @Autowired
     AccountMapper accountMapper;
+
+    @Autowired
+    UploadService uploadService;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListObj<AccountAdminDto>> getList(AccountCriteria accountCriteria, Pageable pageable) {
@@ -164,7 +169,7 @@ public class AccountController extends ABasicController {
     }
 
     @PutMapping(value = "/update_admin", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> updateAdmin(@Valid @RequestBody UpdateAccountAdminForm updateAccountAdminForm, BindingResult bindingResult) {
+    public ApiMessageDto<String> updateAdmin(@Valid @RequestBody UpdateAccountAdminForm updateAccountAdminForm, BindingResult bindingResult) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allowed to update");
         }
@@ -181,11 +186,7 @@ public class AccountController extends ABasicController {
         }
         account.setFullName(updateAccountAdminForm.getFullName());
         if (StringUtils.isNoneBlank(updateAccountAdminForm.getAvatarPath())) {
-            if (!updateAccountAdminForm.getAvatarPath().equals(account.getAvatarPath())) {
-                //delete old image
-                landingIsApiService.deleteFile(account.getAvatarPath());
-            }
-            account.setAvatarPath(updateAccountAdminForm.getAvatarPath());
+            account.setAvatarPath(uploadService.uploadImg(updateAccountAdminForm.getAvatarPath()));
         }
 
         accountRepository.save(account);
@@ -210,7 +211,7 @@ public class AccountController extends ABasicController {
     }
 
     @PutMapping(value = "/update_profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> updateProfileAdmin(@Valid @RequestBody UpdateProfileAdminForm updateProfileAdminForm, BindingResult bindingResult) {
+    public ApiMessageDto<String> updateProfileAdmin(@Valid @RequestBody UpdateProfileAdminForm updateProfileAdminForm, BindingResult bindingResult) throws IOException {
 
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         long id = getCurrentUserId();
@@ -226,11 +227,7 @@ public class AccountController extends ABasicController {
             account.setPassword(passwordEncoder.encode(updateProfileAdminForm.getPassword()));
         }
         if (StringUtils.isNoneBlank(updateProfileAdminForm.getAvatar())) {
-            if (!updateProfileAdminForm.getAvatar().equals(account.getAvatarPath())) {
-                //delete old image
-                landingIsApiService.deleteFile(account.getAvatarPath());
-            }
-            account.setAvatarPath(updateProfileAdminForm.getAvatar());
+            account.setAvatarPath(uploadService.uploadImg(updateProfileAdminForm.getAvatar()));
         }
         accountMapper.mappingFormUpdateProfileToEntity(updateProfileAdminForm, account);
         accountRepository.save(account);
