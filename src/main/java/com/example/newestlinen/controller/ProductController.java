@@ -142,6 +142,7 @@ public class ProductController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
         }
+
         ApiMessageDto<Product> apiMessageDto = new ApiMessageDto<>();
 
         Product p = productRepository.findProductById(updateProductForm.getProductId());
@@ -155,13 +156,13 @@ public class ProductController extends ABasicController {
 
         List<Asset> updateAssets = productMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
-//        updateAssets.forEach(a -> a.setAssetProduct(p));
+        updateAssets.forEach(a -> a.setAssetProduct(p));
 
         p.setAssets(updateAssets);
 
         productRepository.save(p);
 
-        apiMessageDto.setData(null);
+        apiMessageDto.setData(p);
         apiMessageDto.setMessage("update success");
         return apiMessageDto;
     }

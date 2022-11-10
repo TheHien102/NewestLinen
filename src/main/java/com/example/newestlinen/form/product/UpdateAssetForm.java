@@ -6,14 +6,14 @@ import lombok.Data;
 @Data
 @Schema
 public class UpdateAssetForm {
-    @Schema(name = "id")
-    private Long id;
+    @Schema(name = "assetId")
+    private Long assetId;
     @Schema(name = "type")
     private String type;
     @Schema(name = "data")
     private String link;
     @Schema(name = "isMain")
     private int isMain;
-    @Schema(name="action")
+    @Schema(name="status")
     private String status;
 }

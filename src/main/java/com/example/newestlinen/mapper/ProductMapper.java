@@ -15,14 +15,33 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductMapper {
 
+    @Mapping(source = "variantId", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "property", target = "property")
+    @Mapping(source = "addPrice", target = "addPrice")
+    @Mapping(source = "status", target = "status")
+    Variant fromVariantFormToData(UpdateVariantForm updateVariantForm);
+
     @IterableMapping(elementTargetType = Variant.class)
-    List<Variant> fromUpdateVariantListFormToData(List<UpdateVariantForm> updateVariantForm);
+    List<Variant> fromUpdateVariantListFormToData(List<UpdateVariantForm> updateVariantFormList);
+
+    @Mapping(source = "assetId", target = "id")
+    @Mapping(source = "type", target = "type")
+    @Mapping(source = "link", target = "link")
+    @Mapping(source = "isMain", target = "isMain")
+    @Mapping(source = "status", target = "status")
+    Asset fromAssetFormToData(UpdateAssetForm updateAssetForm);
 
     @IterableMapping(elementTargetType = Asset.class)
-    List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateVariantForm);
+    List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateAssetForm);
 
-    @Mapping(source = "id",target = "id")
-
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "discount", target = "discount")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "productCategory", target = "productCategory")
+    @Mapping(source = "assets", target = "assetList")
     ProductDTO fromProductDataToObject(Product p);
 
     @IterableMapping(elementTargetType = Variant.class)

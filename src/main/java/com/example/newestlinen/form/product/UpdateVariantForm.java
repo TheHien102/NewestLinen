@@ -6,14 +6,14 @@ import lombok.Data;
 @Data
 @Schema
 public class UpdateVariantForm {
-    @Schema(name = "id")
-    private Long id;
+    @Schema(name = "variantId")
+    private Long variantId;
     @Schema(name = "name")
     private String name;
     @Schema(name = "property")
     private String property;
     @Schema(name = "addPrice")
     private int addPrice;
-    @Schema(name="action")
+    @Schema(name="status")
     private String status;
 }

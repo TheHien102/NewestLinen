@@ -25,6 +25,5 @@ public class ProductDTO extends ABasicAdminDto {
 
     private Category productCategory;
 
-    private List<Asset> Assets;
-
+    private List<Asset> assetList;
 }
