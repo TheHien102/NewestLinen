@@ -2,6 +2,7 @@ package com.example.newestlinen.dto.account;
 
 import com.example.newestlinen.dto.ABasicAdminDto;
 import com.example.newestlinen.dto.group.GroupDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,8 +20,11 @@ public class AccountAdminDto extends ABasicAdminDto {
     private String fullName;
     @Schema(name = "group")
     private GroupDto group;
+
     @Schema(name = "lastLogin")
+    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastLogin;
+
     @Schema(name = "avatar")
     private String avatar;
     @Schema(name = "phone")
