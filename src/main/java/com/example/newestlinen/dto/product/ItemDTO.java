@@ -11,11 +11,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ItemDTO extends ABasicAdminDto {
-    private Long id;
+    private Long itemId;
 
     private String name;
 
-    private Product itemProduct;
+    private ProductDTO itemProduct;
 
-    private List<Variant> Varriants;
+    private List<VariantDTO> variantList;
 }

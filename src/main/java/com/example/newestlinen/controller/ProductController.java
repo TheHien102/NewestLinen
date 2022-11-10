@@ -3,6 +3,7 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
+import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductDTO;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.product.UpdateProductForm;
@@ -14,6 +15,7 @@ import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.CategoryRepository;
+import com.example.newestlinen.utils.projection.repository.Product.ItemRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import com.example.newestlinen.utils.projection.repository.Product.VariantRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +47,10 @@ public class ProductController extends ABasicController {
 
     private final VariantRepository variantRepository;
 
+    private final ItemRepository itemRepository;
+
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(Pageable pageable) {
-        if (!isAdmin()) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to get");
-        }
         Page<Product> productPage = productRepository.getAllByOrderById(pageable);
 
         ApiMessageDto<ResponseListObj<ProductDTO>> apiMessageDto = new ApiMessageDto<>();
@@ -67,12 +68,14 @@ public class ProductController extends ABasicController {
     }
 
     @GetMapping("/get/{Id}")
-    public ApiMessageDto<ProductDTO> getProductById(@PathVariable String Id) {
-        Product p = productRepository.findProductById(Long.parseLong(Id));
-        ApiMessageDto<ProductDTO> apiMessageDto = new ApiMessageDto<>();
+    public ApiMessageDto<ItemDTO> getProductById(@PathVariable("Id") Long Id) {
+        Item i = itemRepository.findByItemProductId(Id);
+        ApiMessageDto<ItemDTO> apiMessageDto = new ApiMessageDto<>();
 
-        apiMessageDto.setData(productMapper.fromProductDataToObject(p));
-        apiMessageDto.setMessage("List product success");
+        ItemDTO data = productMapper.fromItemDataToObject(i);
+
+        apiMessageDto.setData(data);
+        apiMessageDto.setMessage("get product success");
         return apiMessageDto;
     }
 
