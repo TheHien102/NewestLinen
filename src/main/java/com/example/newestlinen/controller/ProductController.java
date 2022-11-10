@@ -6,7 +6,7 @@ import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductDTO;
 import com.example.newestlinen.exception.RequestException;
-import com.example.newestlinen.form.UpdateByIdForm;
+import com.example.newestlinen.form.UpdateStateForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.ProductMapper;
@@ -134,24 +134,13 @@ public class ProductController extends ABasicController {
         return new ApiMessageDto<>("Upload Successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/disable")
-    public ApiMessageDto<String> disableProduct(@RequestBody UpdateByIdForm updateByIdForm) {
-        Product p = productRepository.findProductById(updateByIdForm.getId());
+    @PostMapping("/changeState")
+    public ApiMessageDto<String> disableProduct(@RequestBody UpdateStateForm updateStateForm) {
+        Product p = productRepository.findProductById(updateStateForm.getId());
         if (p == null) {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
         }
-        p.setStatus(0);
-        productRepository.save(p);
-        return new ApiMessageDto<>("disable Product successfully", HttpStatus.OK);
-    }
-
-    @PostMapping("/enable")
-    public ApiMessageDto<String> enableProduct(@RequestBody UpdateByIdForm updateByIdForm) {
-        Product p = productRepository.findProductById(updateByIdForm.getId());
-        if (p == null) {
-            return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
-        }
-        p.setStatus(1);
+        p.setStatus(updateStateForm.getStatus());
         productRepository.save(p);
         return new ApiMessageDto<>("disable Product successfully", HttpStatus.OK);
     }
