@@ -15,13 +15,9 @@ public class ProductDTO extends ABasicAdminDto {
 
     private String name;
 
+    private String mainImg;
+
     private int discount;
 
-    private String description;
-
     private int price;
-
-    private Category productCategory;
-
-    private List<Asset> assetList;
 }

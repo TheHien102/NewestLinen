@@ -4,7 +4,6 @@ import com.example.newestlinen.storage.model.Auditable;
 import com.example.newestlinen.storage.model.Category;
 import com.example.newestlinen.storage.model.TablePrefix;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +23,8 @@ public class Product extends Auditable<String> {
 
     private String name;
 
+    private String mainImg;
+
     private int discount;
 
     private String description;
@@ -40,6 +41,7 @@ public class Product extends Auditable<String> {
     @OneToMany(mappedBy = "reviewProduct", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "itemProduct", cascade = CascadeType.ALL)
     private List<Item> productItem;
 }

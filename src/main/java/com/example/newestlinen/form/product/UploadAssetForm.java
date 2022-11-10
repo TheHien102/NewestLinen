@@ -10,6 +10,4 @@ public class UploadAssetForm {
     private String type;
     @Schema(name = "data")
     private String data;
-    @Schema(name = "isMain")
-    private int isMain;
 }

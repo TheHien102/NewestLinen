@@ -30,7 +30,6 @@ public interface ProductMapper {
     @Mapping(source = "assetId", target = "id")
     @Mapping(source = "type", target = "type")
     @Mapping(source = "link", target = "link")
-    @Mapping(source = "isMain", target = "isMain")
     @Mapping(source = "status", target = "status")
     Asset fromAssetFormToData(UpdateAssetForm updateAssetForm);
 
@@ -39,11 +38,9 @@ public interface ProductMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "mainImg", target = "mainImg")
     @Mapping(source = "discount", target = "discount")
-    @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
-    @Mapping(source = "productCategory", target = "productCategory")
-    @Mapping(source = "assets", target = "assetList")
     ProductDTO fromProductDataToObject(Product p);
 
     @Mapping(source = "id", target = "itemId")

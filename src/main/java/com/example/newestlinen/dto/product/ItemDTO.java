@@ -15,7 +15,7 @@ public class ItemDTO extends ABasicAdminDto {
 
     private String name;
 
-    private ProductDTO itemProduct;
+    private Product itemProduct;
 
-    private List<VariantDTO> variantList;
+    private List<Variant> variantList;
 }

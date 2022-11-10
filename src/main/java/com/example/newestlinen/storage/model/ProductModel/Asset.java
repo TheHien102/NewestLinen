@@ -35,8 +35,6 @@ public class Asset extends Auditable<String> {
 
     private String link;
 
-    private int isMain = 0;
-
     @JsonIgnore
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

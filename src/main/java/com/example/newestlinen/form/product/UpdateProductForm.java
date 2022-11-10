@@ -15,6 +15,9 @@ public class UpdateProductForm {
     @Schema(name = "name")
     private String name;
 
+    @Schema(name = "mainImg")
+    private String mainImg;
+
     @Schema(name = "discount")
     private int discount;
 

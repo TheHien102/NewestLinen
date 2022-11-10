@@ -80,7 +80,7 @@ public class ProductController extends ABasicController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> uploadProduct(@RequestBody UploadProductForm uploadProductForm) {
+    public ApiMessageDto<String> uploadProduct(@RequestBody UploadProductForm uploadProductForm) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to upload");
         }
@@ -89,6 +89,7 @@ public class ProductController extends ABasicController {
         // declare new Product
         Product p = new Product();
         p.setName(uploadProductForm.getName());
+        p.setMainImg(uploadService.uploadImg(uploadProductForm.getMainImg()));
         p.setDiscount(uploadProductForm.getDiscount());
         p.setDescription(uploadProductForm.getDescription());
         p.setPrice(uploadProductForm.getPrice());
@@ -108,7 +109,6 @@ public class ProductController extends ABasicController {
                             try {
                                 a.setLink(uploadService.uploadImg(asset.getData()));
                                 a.setType(asset.getType());
-                                a.setIsMain(asset.getIsMain());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
