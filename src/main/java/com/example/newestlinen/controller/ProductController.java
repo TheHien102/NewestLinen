@@ -138,12 +138,12 @@ public class ProductController extends ABasicController {
     }
 
     @PostMapping("/update")
-    public ApiMessageDto<Product> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) {
+    public ApiMessageDto<String> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
         }
 
-        ApiMessageDto<Product> apiMessageDto = new ApiMessageDto<>();
+        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         Product p = productRepository.findProductById(updateProductForm.getProductId());
         p.setName(updateProductForm.getName());
@@ -162,7 +162,6 @@ public class ProductController extends ABasicController {
 
         productRepository.save(p);
 
-        apiMessageDto.setData(p);
         apiMessageDto.setMessage("update success");
         return apiMessageDto;
     }
