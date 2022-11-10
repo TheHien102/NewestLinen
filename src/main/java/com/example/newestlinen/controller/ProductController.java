@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,8 +85,6 @@ public class ProductController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to upload");
         }
-        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
-
         // declare new Product
         Product p = new Product();
         p.setName(uploadProductForm.getName());
@@ -128,9 +127,15 @@ public class ProductController extends ABasicController {
 
         productRepository.save(p);
 
-        apiMessageDto.setData(null);
-        apiMessageDto.setMessage("upload success");
-        return apiMessageDto;
+        return new ApiMessageDto<>("Upload Successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/disable")
+    public ApiMessageDto<String> disableProduct(@RequestBody Long productId) {
+        Product p = productRepository.findProductById(productId);
+        p.setStatus(0);
+        productRepository.save(p);
+        return new ApiMessageDto<>("disable Product successfully", HttpStatus.OK);
     }
 
     @PostMapping("/update")
@@ -138,8 +143,6 @@ public class ProductController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
         }
-
-        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         Product p = productRepository.findProductById(updateProductForm.getProductId());
         p.setName(updateProductForm.getName());
@@ -158,7 +161,6 @@ public class ProductController extends ABasicController {
 
         productRepository.save(p);
 
-        apiMessageDto.setMessage("update success");
-        return apiMessageDto;
+        return new ApiMessageDto<>("update product successfully", HttpStatus.OK);
     }
 }
