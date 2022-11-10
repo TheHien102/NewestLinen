@@ -33,7 +33,7 @@ public interface ProductMapper {
     Asset fromAssetFormToData(UpdateAssetForm updateAssetForm);
 
     @IterableMapping(elementTargetType = Asset.class)
-    List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateAssetForm);
+    List<Asset> fromUpdateAssetListFormToData(List<UpdateAssetForm> updateAssetFormList);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
