@@ -11,6 +11,7 @@ import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.ProductMapper;
 import com.example.newestlinen.service.UploadService;
+import com.example.newestlinen.storage.criteria.ProductCriteria;
 import com.example.newestlinen.storage.model.ProductModel.Asset;
 import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Product;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -52,8 +54,9 @@ public class ProductController extends ABasicController {
     private final ItemRepository itemRepository;
 
     @GetMapping("/list")
-    public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(Pageable pageable) {
-        Page<Product> productPage = productRepository.getAllByOrderById(pageable);
+    public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(ProductCriteria productCriteria, Pageable pageable) {
+
+        Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
 
         ApiMessageDto<ResponseListObj<ProductDTO>> apiMessageDto = new ApiMessageDto<>();
 

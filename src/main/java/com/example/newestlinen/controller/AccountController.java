@@ -70,6 +70,9 @@ public class AccountController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow get list");
         }
+
+        System.out.println(accountCriteria.getSpecification());
+
         ApiMessageDto<ResponseListObj<AccountAdminDto>> apiMessageDto = new ApiMessageDto<>();
         Page<Account> accountPage = accountRepository.findAll(accountCriteria.getSpecification(), pageable);
         ResponseListObj<AccountAdminDto> responseListObj = new ResponseListObj<>();
