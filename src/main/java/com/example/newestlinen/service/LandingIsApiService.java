@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -59,7 +60,7 @@ public class LandingIsApiService {
                 apiMessageDto.setMessage("Type is required in AVATAR or LOGO");
                 return apiMessageDto;
             }
-            String fileName = StringUtils.cleanPath(uploadFileForm.getFile().getOriginalFilename());
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(uploadFileForm.getFile().getOriginalFilename()));
             String ext = FilenameUtils.getExtension(fileName);
             //upload to uploadFolder/TYPE/id
             String finalFile = uploadFileForm.getType() + "_" + RandomStringUtils.randomAlphanumeric(10) + "." + ext;
