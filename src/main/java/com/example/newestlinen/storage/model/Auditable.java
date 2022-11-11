@@ -25,7 +25,6 @@ public abstract class Auditable<T> {
     private T createdBy;
 
     @CreatedDate
-    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_date" ,nullable = false, updatable = false)
     private Date createdDate;
 
@@ -34,7 +33,6 @@ public abstract class Auditable<T> {
     private T modifiedBy;
 
     @LastModifiedDate
-    @JsonFormat(timezone="Asia/Jakarta", pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "modified_date",nullable = false)
     private Date modifiedDate;
 
