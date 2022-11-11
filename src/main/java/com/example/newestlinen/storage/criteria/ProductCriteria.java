@@ -1,8 +1,6 @@
 package com.example.newestlinen.storage.criteria;
 
-import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.Category;
-import com.example.newestlinen.storage.model.Group;
 import com.example.newestlinen.storage.model.ProductModel.Product;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -38,7 +36,7 @@ public class ProductCriteria {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("discount"), getDiscount()));
             }
             if (getPrice() != 0) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), getPrice()));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), getPrice()));
             }
             if (getProductCategoryId() != null) {
                 Join<Product, Category> joinCategory = root.join("productCategory", JoinType.INNER);
