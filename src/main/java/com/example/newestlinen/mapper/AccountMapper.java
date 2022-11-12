@@ -6,10 +6,12 @@ import com.example.newestlinen.dto.account.AccountDto;
 import com.example.newestlinen.form.account.CreateAccountAdminForm;
 import com.example.newestlinen.form.account.UpdateAccountAdminForm;
 import com.example.newestlinen.form.account.UpdateProfileAdminForm;
+import com.example.newestlinen.form.account.UpdateProfileUserForm;
 import com.example.newestlinen.storage.model.Account;
 import org.mapstruct.*;
 
 import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AccountMapper {
 
@@ -69,4 +71,6 @@ public interface AccountMapper {
     @BeanMapping(ignoreByDefault = true)
     @Named("adminAutoCompleteMapping")
     AccountAdminDto fromEntityToAccountAdminDtoAutoComplete(Account account);
+
+    AccountDto fromUpdateProfileFormUserToObject(UpdateProfileUserForm u);
 }

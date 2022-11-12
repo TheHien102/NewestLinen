@@ -20,4 +20,6 @@ public class ProductDTO extends ABasicAdminDto {
     private int discount;
 
     private int price;
+
+    private String categoryName;
 }

@@ -222,11 +222,11 @@ public class AccountController extends ABasicController {
         if (account == null) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Not found");
         }
-        if (!passwordEncoder.matches(updateProfileAdminForm.getOldPassword(), account.getPassword())) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_MATCH, "Old password not match");
-        }
 
         if (StringUtils.isNoneBlank(updateProfileAdminForm.getPassword())) {
+            if (!passwordEncoder.matches(updateProfileAdminForm.getOldPassword(), account.getPassword())) {
+                throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_MATCH, "Old password not match");
+            }
             account.setPassword(passwordEncoder.encode(updateProfileAdminForm.getPassword()));
         }
         if (StringUtils.isNoneBlank(updateProfileAdminForm.getAvatar())) {
@@ -240,11 +240,48 @@ public class AccountController extends ABasicController {
 
     }
 
+    @PostMapping("/update_profile_user")
+    public ApiMessageDto<AccountDto> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
+        ApiMessageDto<AccountDto> apiMessageDto = new ApiMessageDto<>();
+        Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
+        if (account == null) {
+            throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Not found");
+        }
 
+        if (StringUtils.isNoneBlank(updateProfileUserForm.getPassword())) {
+            if (!passwordEncoder.matches(updateProfileUserForm.getOldPassword(), account.getPassword())) {
+                throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_MATCH, "Old password not match");
+            }
+            account.setPassword(passwordEncoder.encode(updateProfileUserForm.getPassword()));
+        }
+        if (StringUtils.isNoneBlank(updateProfileUserForm.getAvatar())) {
+            account.setAvatarPath(updateProfileUserForm.getAvatar());
+        }
+
+        if (StringUtils.isNoneBlank(updateProfileUserForm.getFullName())) {
+            account.setFullName(updateProfileUserForm.getFullName());
+        }
+
+        if (StringUtils.isNoneBlank(updateProfileUserForm.getEmail())) {
+            account.setEmail(updateProfileUserForm.getEmail());
+        }
+
+        if (StringUtils.isNoneBlank(updateProfileUserForm.getPhone())) {
+            account.setPhone(updateProfileUserForm.getPhone());
+        }
+
+        AccountDto a = accountMapper.fromUpdateProfileFormUserToObject(updateProfileUserForm);
+        accountRepository.save(account);
+
+        apiMessageDto.setData(a);
+        apiMessageDto.setMessage("Update admin account success");
+        return apiMessageDto;
+    }
 
     @Transactional
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> logout() {
+        SecurityContextHolder.clearContext();
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         apiMessageDto.setMessage("Logout success");
         return apiMessageDto;
