@@ -216,7 +216,6 @@ public class AccountController extends ABasicController {
 
     @PutMapping(value = "/update_profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> updateProfileAdmin(@Valid @RequestBody UpdateProfileAdminForm updateProfileAdminForm, BindingResult bindingResult) throws IOException {
-
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         long id = getCurrentUserId();
         Account account = accountRepository.findById(id).orElse(null);
@@ -240,6 +239,8 @@ public class AccountController extends ABasicController {
         return apiMessageDto;
 
     }
+
+
 
     @Transactional
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)

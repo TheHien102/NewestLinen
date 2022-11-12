@@ -11,8 +11,6 @@ import java.util.List;
 
 @Data
 public class ProductCriteria {
-    private Long id;
-
     private String name;
 
     private int discount;
@@ -26,9 +24,6 @@ public class ProductCriteria {
     public Specification<Product> getSpecification() {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (getId() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("id"), getId()));
-            }
             if (getName() != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + getName().toLowerCase() + "%"));
             }
