@@ -48,6 +48,9 @@ public class CategoryCriteria {
                 if(getParentId() != null) {
                     predicates.add(cb.equal(root.get("parentCategory"), getParentId()));
                 }
+                else {
+                    predicates.add(cb.isNull(root.get("parentCategory")));
+                }
 
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
