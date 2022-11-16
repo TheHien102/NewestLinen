@@ -41,7 +41,6 @@ public interface CategoryMapper {
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
-    @Mapping(source = "parentCategory.id",target = "parentId")
     @BeanMapping(ignoreByDefault = true)
     @Named("adminGetMapping")
     CategoryDto fromEntityToAdminDto(Category category);
