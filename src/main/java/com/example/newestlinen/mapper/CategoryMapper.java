@@ -49,7 +49,6 @@ public interface CategoryMapper {
     @IterableMapping(elementTargetType = CategoryDto.class, qualifiedByName = "adminGetMapping")
     List<CategoryDto> fromEntityListToCategoryDtoList(List<Category> categories);
 
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "categoryName")
     @Mapping(source = "image", target = "categoryImage")
