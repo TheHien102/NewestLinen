@@ -2,6 +2,7 @@ package com.example.newestlinen.mapper;
 
 import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductDTO;
+import com.example.newestlinen.dto.product.ProductDetailDTO;
 import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateVariantForm;
 import com.example.newestlinen.form.product.UploadAssetForm;
@@ -43,6 +44,9 @@ public interface ProductMapper {
     @Mapping(source = "price", target = "price")
     @Mapping(source = "productCategory.name",target = "categoryName")
     ProductDTO fromProductDataToObject(Product p);
+
+    @Mapping(source = "productCategory.description",target = "categoryDescription")
+    ProductDetailDTO fromProductDetailDataToObject(Product p);
 
     @Mapping(source = "id", target = "itemId")
     @Mapping(source = "name", target = "name")
