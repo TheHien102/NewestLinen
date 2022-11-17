@@ -32,6 +32,7 @@ public class Product extends Auditable<String> {
     private int price;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "Category_ID")
     private Category productCategory;
 
