@@ -13,5 +13,5 @@ public class UpdateAssetForm {
     @Schema(name = "data")
     private String link;
     @Schema(name="status")
-    private String status;
+    private Integer status;
 }
