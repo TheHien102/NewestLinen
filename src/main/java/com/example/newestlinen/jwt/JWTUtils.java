@@ -28,9 +28,13 @@ public class JWTUtils {
 
     public static String getCurrentUserJWT() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
-        if(authentication!=null){
-            return  authentication.getName();
+        try {
+            MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
+            if(authentication!=null){
+                return  authentication.getName();
+            }
+        }catch (Exception e){
+            return  null;
         }
         return null;
     }
