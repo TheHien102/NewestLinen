@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -410,5 +411,30 @@ public class AccountController extends ABasicController {
         apiMessageDto.setMessage("Verify account success.");
 
         return apiMessageDto;
+    }
+
+    @PostMapping("/register")
+    public ApiMessageDto<String> Register(@Valid @RequestBody CreateAccountUserForm createAccountUserForm) throws IOException {
+        Account account=new Account();
+        account.setUsername(createAccountUserForm.getUsername());
+        account.setEmail(createAccountUserForm.getEmail());
+        account.setPassword(passwordEncoder.encode(createAccountUserForm.getPassword()));
+        account.setFullName(createAccountUserForm.getFullName());
+        account.setPassword(createAccountUserForm.getPhone());
+
+        if(createAccountUserForm.getAvatar()!=null){
+            String avatar=uploadService.uploadImg(createAccountUserForm.getAvatar());
+            account.setAvatarPath(avatar);
+        }
+
+        Group group = groupRepository.findFirstByKind(LandingISConstant.GROUP_KIND_CUSTOMER);
+
+        account.setGroup(group);
+
+        account.setKind(LandingISConstant.USER_KIND_CUSTOMER);
+
+        accountRepository.save(account);
+
+        return  new ApiMessageDto<String>("Account Created", HttpStatus.OK);
     }
 }

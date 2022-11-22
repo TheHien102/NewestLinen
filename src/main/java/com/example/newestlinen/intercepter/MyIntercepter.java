@@ -77,10 +77,6 @@ public class MyIntercepter implements HandlerInterceptor {
         //check permission here
         String requestUri = request.getRequestURI();
 
-        if (requestUri.contains("list")) {
-            return Objects.equals(qrJwt.getKind(), String.valueOf(LandingISConstant.USER_KIND_ADMIN));
-        }
-
         if (Objects.equals(qrJwt.getKind(), String.valueOf(LandingISConstant.USER_KIND_ADMIN))) {
             return true;
         }
