@@ -5,9 +5,8 @@ import com.example.newestlinen.storage.model.ProductModel.Item;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class VariantDTO extends ABasicAdminDto {
+public class VariantDTO {
     private Long id;
     private String name;
     private String property;
