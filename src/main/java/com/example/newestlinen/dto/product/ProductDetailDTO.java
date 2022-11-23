@@ -22,7 +22,7 @@ public class ProductDetailDTO {
 
     private String categoryDescription;
 
-    private List<Asset> assets;
+    private List<AssetDTO> assets;
 
     private List<Review> reviews;
 }

@@ -4,12 +4,15 @@ import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ItemDTO;
-import com.example.newestlinen.dto.product.ProductDTO;
+import com.example.newestlinen.dto.product.ProductAdminDTO;
+import com.example.newestlinen.dto.product.ProductUserDTO;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.UpdateStateForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
 import com.example.newestlinen.form.product.UploadProductForm;
-import com.example.newestlinen.mapper.ProductMapper;
+import com.example.newestlinen.mapper.product.AssetMapper;
+import com.example.newestlinen.mapper.product.ProductMapper;
+import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.service.UploadService;
 import com.example.newestlinen.storage.criteria.ProductCriteria;
 import com.example.newestlinen.storage.model.ProductModel.Asset;
@@ -24,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,10 @@ public class ProductController extends ABasicController {
 
     private final ProductMapper productMapper;
 
+    private final AssetMapper assetMapper;
+
+    private final VariantMapper variantMapper;
+
     private final UploadService uploadService;
 
     private final CategoryRepository categoryRepository;
@@ -53,16 +59,19 @@ public class ProductController extends ABasicController {
 
     private final ItemRepository itemRepository;
 
-    @GetMapping("/list")
-    public ApiMessageDto<ResponseListObj<ProductDTO>> getProductByPage(ProductCriteria productCriteria, Pageable pageable) {
+    @GetMapping("/list_product_for_admin")
+    public ApiMessageDto<ResponseListObj<ProductAdminDTO>> getProductByPageAdmin(ProductCriteria productCriteria, Pageable pageable) {
+        if(!isAdmin()){
+            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to list");
+        }
 
         Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
 
-        ApiMessageDto<ResponseListObj<ProductDTO>> apiMessageDto = new ApiMessageDto<>();
+        ApiMessageDto<ResponseListObj<ProductAdminDTO>> apiMessageDto = new ApiMessageDto<>();
 
-        ResponseListObj<ProductDTO> responseListObj = new ResponseListObj<>();
+        ResponseListObj<ProductAdminDTO> responseListObj = new ResponseListObj<>();
 
-        responseListObj.setData(productMapper.fromProductDataListToDtoList(productPage.getContent()));
+        responseListObj.setData(productMapper.fromProductAdminDataListToDtoList(productPage.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
         responseListObj.setTotalPage(productPage.getTotalPages());
         responseListObj.setTotalElements(productPage.getTotalElements());
@@ -71,6 +80,26 @@ public class ProductController extends ABasicController {
         apiMessageDto.setMessage("List product success");
         return apiMessageDto;
     }
+
+    @GetMapping("/list_product_for_user")
+    public ApiMessageDto<ResponseListObj<ProductUserDTO>> getProductByPageUser(ProductCriteria productCriteria, Pageable pageable) {
+
+        Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
+
+        ApiMessageDto<ResponseListObj<ProductUserDTO>> apiMessageDto = new ApiMessageDto<>();
+
+        ResponseListObj<ProductUserDTO> responseListObj = new ResponseListObj<>();
+
+        responseListObj.setData(productMapper.fromProductUserDataListToDtoList(productPage.getContent()));
+        responseListObj.setPage(pageable.getPageNumber());
+        responseListObj.setTotalPage(productPage.getTotalPages());
+        responseListObj.setTotalElements(productPage.getTotalElements());
+
+        apiMessageDto.setData(responseListObj);
+        apiMessageDto.setMessage("List product success");
+        return apiMessageDto;
+    }
+
 
     @GetMapping("/get/{Id}")
     public ApiMessageDto<ItemDTO> getProductById(@PathVariable("Id") Long Id) {
@@ -106,7 +135,7 @@ public class ProductController extends ABasicController {
         i.setName("defaultProduct");
 
         // declare variants
-        List<Variant> variantList = productMapper.fromVariantFormListToDataList(uploadProductForm.getVariants());
+        List<Variant> variantList = variantMapper.fromVariantFormListToDataList(uploadProductForm.getVariants());
 
         // upload and declare asset
         List<Asset> assetList =
@@ -139,6 +168,9 @@ public class ProductController extends ABasicController {
 
     @PostMapping("/changeState")
     public ApiMessageDto<String> disableProduct(@RequestBody UpdateStateForm updateStateForm) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to change state");
+        }
         Product p = productRepository.findProductById(updateStateForm.getId());
         if (p == null) {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
@@ -164,9 +196,9 @@ public class ProductController extends ABasicController {
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
-        variantRepository.saveAll(productMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
+        variantRepository.saveAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
 
-        List<Asset> updateAssets = productMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
+        List<Asset> updateAssets = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
         updateAssets.forEach(a -> a.setAssetProduct(p));
 
