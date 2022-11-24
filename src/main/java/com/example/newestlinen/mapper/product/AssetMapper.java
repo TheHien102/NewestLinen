@@ -14,7 +14,6 @@ public interface AssetMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "type", target = "type")
     @Mapping(source = "link", target = "link")
-    @Mapping(source = "status", target = "status")
     Asset fromAssetFormToData(UpdateAssetForm updateAssetForm);
 
     @IterableMapping(elementTargetType = Asset.class)

@@ -131,13 +131,13 @@ public class AccountController extends ABasicController {
     }
 
     private String getAppendStringRole(Account account) {
-        String appendStringRole = "";
-        if (Objects.equals(account.getKind(), LandingISConstant.USER_KIND_ADMIN)) {
-            appendStringRole = "/account/profile,/account/update_profile,/account/logout";
-        } else {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED);
-        }
-        return appendStringRole;
+//        String appendStringRole = "";
+////        if (Objects.equals(account.getKind(), LandingISConstant.USER_KIND_ADMIN)) {
+//            appendStringRole =;
+//        } else {
+//            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED);
+//        }
+        return  "/account/profile,/account/update_profile,/account/logout";
     }
 
     @PostMapping(value = "/create_admin", produces = MediaType.APPLICATION_JSON_VALUE)
