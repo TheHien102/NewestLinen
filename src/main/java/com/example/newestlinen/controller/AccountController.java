@@ -420,7 +420,7 @@ public class AccountController extends ABasicController {
         account.setEmail(createAccountUserForm.getEmail());
         account.setPassword(passwordEncoder.encode(createAccountUserForm.getPassword()));
         account.setFullName(createAccountUserForm.getFullName());
-        account.setPassword(createAccountUserForm.getPhone());
+        account.setPhone(createAccountUserForm.getPhone());
 
         if(createAccountUserForm.getAvatar()!=null){
             String avatar=uploadService.uploadImg(createAccountUserForm.getAvatar());
