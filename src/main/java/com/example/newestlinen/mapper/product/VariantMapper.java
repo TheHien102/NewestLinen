@@ -14,7 +14,6 @@ public interface VariantMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "property", target = "property")
     @Mapping(source = "addPrice", target = "addPrice")
-    @Mapping(source = "status", target = "status")
     Variant fromVariantFormToData(UpdateVariantForm updateVariantForm);
 
     @IterableMapping(elementTargetType = Variant.class)

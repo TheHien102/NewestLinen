@@ -10,13 +10,13 @@ import java.util.List;
 public class UpdateProductForm {
 
     @Schema(name = "productId")
-    private Long productId;
+    private Long id;
 
     @Schema(name = "name")
     private String name;
 
     @Schema(name = "mainImg")
-    private String mainImg;
+    private String mainImgNew;
 
     @Schema(name = "discount")
     private int discount;
@@ -33,6 +33,15 @@ public class UpdateProductForm {
     @Schema(name = "variants")
     private List<UpdateVariantForm> variants;
 
-    @Schema(name = "Assets")
-    private List<UpdateAssetForm> Assets;
+    @Schema(name = "variantsDelete")
+    private List<UpdateVariantForm> variantsDelete;
+
+    @Schema(name = "assets")
+    private List<UpdateAssetForm> assets;
+
+    @Schema(name = "assetsDelete")
+    private List<UpdateAssetForm> assetsDelete;
+
+    @Schema(name = "assetsNew")
+    private List<UploadAssetForm> assetsNew;
 }

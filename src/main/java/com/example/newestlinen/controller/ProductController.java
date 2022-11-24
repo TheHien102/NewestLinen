@@ -20,6 +20,7 @@ import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.CategoryRepository;
+import com.example.newestlinen.utils.projection.repository.Product.AssetRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ItemRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import com.example.newestlinen.utils.projection.repository.Product.VariantRepository;
@@ -57,11 +58,13 @@ public class ProductController extends ABasicController {
 
     private final VariantRepository variantRepository;
 
+    private final AssetRepository assetRepository;
+
     private final ItemRepository itemRepository;
 
     @GetMapping("/list_product_for_admin")
     public ApiMessageDto<ResponseListObj<ProductAdminDTO>> getProductByPageAdmin(ProductCriteria productCriteria, Pageable pageable) {
-        if(!isAdmin()){
+        if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to list");
         }
 
@@ -181,24 +184,43 @@ public class ProductController extends ABasicController {
     }
 
     @PostMapping("/update")
-    public ApiMessageDto<String> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) {
+    public ApiMessageDto<String> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
         }
 
-        Product p = productRepository.findProductById(updateProductForm.getProductId());
+        Product p = productRepository.findProductById(updateProductForm.getId());
         if (p == null) {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
         }
         p.setName(updateProductForm.getName());
+        if(updateProductForm.getMainImgNew()!=null){
+            p.setMainImg(uploadService.uploadImg(updateProductForm.getMainImgNew()));
+        }
         p.setDiscount(updateProductForm.getDiscount());
         p.setDescription(updateProductForm.getDescription());
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
+        variantRepository.deleteAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariantsDelete()));
+
         variantRepository.saveAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
 
+        assetRepository.deleteAll(assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssetsDelete()));
+
         List<Asset> updateAssets = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
+
+        // in case upload new Img
+        updateProductForm.getAssetsNew().forEach(newAsset -> {
+            Asset a = new Asset();
+            try {
+                a.setLink(uploadService.uploadImg(newAsset.getData()));
+                a.setType(newAsset.getType());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            updateAssets.add(a);
+        });
 
         updateAssets.forEach(a -> a.setAssetProduct(p));
 
