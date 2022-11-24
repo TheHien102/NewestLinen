@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -415,15 +416,21 @@ public class AccountController extends ABasicController {
 
     @PostMapping("/register")
     public ApiMessageDto<String> Register(@Valid @RequestBody CreateAccountUserForm createAccountUserForm) throws IOException {
-        Account account=new Account();
+        Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(createAccountUserForm.getUsername(), createAccountUserForm.getEmail(), createAccountUserForm.getPhone());
+
+        if (account != null) {
+            throw new RemoteException("Username or Email or PhoneNumber taken");
+        }
+
+        account = new Account();
         account.setUsername(createAccountUserForm.getUsername());
         account.setEmail(createAccountUserForm.getEmail());
         account.setPassword(passwordEncoder.encode(createAccountUserForm.getPassword()));
         account.setFullName(createAccountUserForm.getFullName());
         account.setPhone(createAccountUserForm.getPhone());
 
-        if(createAccountUserForm.getAvatar()!=null){
-            String avatar=uploadService.uploadImg(createAccountUserForm.getAvatar());
+        if (createAccountUserForm.getAvatar() != null) {
+            String avatar = uploadService.uploadImg(createAccountUserForm.getAvatar());
             account.setAvatarPath(avatar);
         }
 
@@ -435,6 +442,6 @@ public class AccountController extends ABasicController {
 
         accountRepository.save(account);
 
-        return  new ApiMessageDto<String>("Account Created", HttpStatus.OK);
+        return new ApiMessageDto<String>("Account Created", HttpStatus.OK);
     }
 }
