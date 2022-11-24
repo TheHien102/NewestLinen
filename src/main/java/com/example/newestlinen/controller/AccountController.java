@@ -119,6 +119,7 @@ public class AccountController extends ABasicController {
         loginDto.setFullName(account.getFullName());
         loginDto.setId(account.getId());
         loginDto.setToken(token);
+        loginDto.setAvatarPath(account.getAvatarPath());
         loginDto.setUsername(account.getUsername());
         loginDto.setKind(account.getKind());
 

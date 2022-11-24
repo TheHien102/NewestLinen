@@ -9,6 +9,7 @@ public class LoginDto {
     private String username;
     private String token;
     private String fullName;
+    private String avatarPath;
     private long id;
     private Date expired;
     private Integer kind;
