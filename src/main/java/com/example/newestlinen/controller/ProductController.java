@@ -204,7 +204,11 @@ public class ProductController extends ABasicController {
 
         variantRepository.deleteAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariantsDelete()));
 
-        variantRepository.saveAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
+        List<Variant> variants=variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants());
+
+        variants.addAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
+
+        variantRepository.saveAll(variants);
 
         assetRepository.deleteAll(assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssetsDelete()));
 
