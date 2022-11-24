@@ -26,6 +26,8 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
     public Long countAccountByPhoneOrEmail(String phone, String email);
     public Long countAccountByEmail(String email);
 
+    public Account findByUsernameOrEmailOrPhoneLike(String username, String email, String phone);
+
     void deleteByUsername(String username);
 
     @Query(value = "SELECT *" +
