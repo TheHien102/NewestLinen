@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -18,15 +20,34 @@ public class Account extends  Auditable<String>{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Integer kind;
+
+    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 6, max=12)
     private String username;
+
+    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 1, max=200)
     private String email;
+
+    @Column(nullable = false)
     @JsonIgnore
     private String password;
-    @Column(name = "full_name")
+
+    @Column(name = "full_name",nullable = false)
+    @NotEmpty
+    @Size(min = 1, max=100)
     private String fullName;
+
+    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 1, max=11)
     private String phone;
+
     @Column(name = "avatar_path")
     private String avatarPath;
+
     @Column(name = "is_super_admin")
     private Boolean isSuperAdmin = false;
 
