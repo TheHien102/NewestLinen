@@ -7,7 +7,7 @@ import com.example.newestlinen.storage.model.News;
 import org.mapstruct.*;
 
 import java.util.List;
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NewsMapper {
 
 

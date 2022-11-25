@@ -37,6 +37,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -420,7 +421,11 @@ public class AccountController extends ABasicController {
         Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(createAccountUserForm.getUsername(), createAccountUserForm.getEmail(), createAccountUserForm.getPhone());
 
         if (account != null) {
-            throw new RemoteException("Username or Email or PhoneNumber taken");
+            throw new RequestException("Username or Email or PhoneNumber taken");
+        }
+
+        if(createAccountUserForm.getPassword().length()<8){
+            throw new RequestException("Password must at least 8 character");
         }
 
         account = new Account();
@@ -441,7 +446,11 @@ public class AccountController extends ABasicController {
 
         account.setKind(LandingISConstant.USER_KIND_CUSTOMER);
 
-        accountRepository.save(account);
+        try{
+            accountRepository.save(account);
+        }catch (Exception e){
+            throw new RequestException("invalid form");
+        }
 
         return new ApiMessageDto<String>("Account Created", HttpStatus.OK);
     }
