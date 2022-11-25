@@ -5,6 +5,7 @@ import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductAdminDTO;
+import com.example.newestlinen.dto.product.ProductDetailDTO;
 import com.example.newestlinen.dto.product.ProductUserDTO;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.UpdateStateForm;
@@ -91,6 +92,10 @@ public class ProductController extends ABasicController {
 
         ApiMessageDto<ResponseListObj<ProductUserDTO>> apiMessageDto = new ApiMessageDto<>();
 
+        productPage.getContent().forEach(product -> {
+            product.setVariants(product.getVariants().stream().filter(variant -> variant.getName().equalsIgnoreCase("color")).collect(Collectors.toList()));
+        });
+
         ResponseListObj<ProductUserDTO> responseListObj = new ResponseListObj<>();
 
         responseListObj.setData(productMapper.fromProductUserDataListToDtoList(productPage.getContent()));
@@ -100,19 +105,19 @@ public class ProductController extends ABasicController {
 
         apiMessageDto.setData(responseListObj);
         apiMessageDto.setMessage("List product success");
+
         return apiMessageDto;
     }
 
-
     @GetMapping("/get/{Id}")
-    public ApiMessageDto<ItemDTO> getProductById(@PathVariable("Id") Long Id) {
-        Item i = itemRepository.findByItemProductId(Id);
-        if (i == null) {
+    public ApiMessageDto<ProductDetailDTO> getProductById(@PathVariable("Id") Long Id) {
+        Product p = productRepository.findProductById(Id);
+        if (p == null) {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
         }
-        ApiMessageDto<ItemDTO> apiMessageDto = new ApiMessageDto<>();
+        ApiMessageDto<ProductDetailDTO> apiMessageDto = new ApiMessageDto<>();
 
-        ItemDTO data = productMapper.fromItemDataToObject(i);
+        ProductDetailDTO data = productMapper.fromProductDetailDataToObject(p);
 
         apiMessageDto.setData(data);
         apiMessageDto.setMessage("get product success");
@@ -133,10 +138,6 @@ public class ProductController extends ABasicController {
         p.setPrice(uploadProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(uploadProductForm.getProductCategoryID()));
 
-        // declare new Item
-        Item i = new Item();
-        i.setName("defaultProduct");
-
         // declare variants
         List<Variant> variantList = variantMapper.fromVariantFormListToDataList(uploadProductForm.getVariants());
 
@@ -155,14 +156,12 @@ public class ProductController extends ABasicController {
                 ).collect(Collectors.toList());
 
         // Map together
-        p.setProductItem(List.of(i));
         assetList.forEach(a -> a.setAssetProduct(p));
 
         p.setAssets(assetList);
-        variantList.forEach(v -> v.setVariantItem(List.of(i)));
+        variantList.forEach(v -> v.setVariantProduct(p));
 
-        i.setVariants(variantList);
-        i.setItemProduct(p);
+        p.setVariants(variantList);
 
         productRepository.save(p);
 
@@ -194,7 +193,7 @@ public class ProductController extends ABasicController {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
         }
         p.setName(updateProductForm.getName());
-        if(updateProductForm.getMainImgNew()!=null){
+        if (updateProductForm.getMainImgNew() != null) {
             p.setMainImg(uploadService.uploadImg(updateProductForm.getMainImgNew()));
         }
         p.setDiscount(updateProductForm.getDiscount());
@@ -204,7 +203,7 @@ public class ProductController extends ABasicController {
 
         variantRepository.deleteAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariantsDelete()));
 
-        List<Variant> variants=variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants());
+        List<Variant> variants = variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants());
 
         variants.addAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
 
