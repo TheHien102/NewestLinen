@@ -2,6 +2,8 @@ package com.example.newestlinen.dto.product;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProductUserDTO {
     private Long id;
@@ -15,4 +17,6 @@ public class ProductUserDTO {
     private int price;
 
     private String categoryName;
+    
+    private List<VariantDTO> variants;
 }

@@ -21,7 +21,10 @@ public interface ProductMapper {
     @Mapping(source = "discount", target = "discount")
     @Mapping(source = "price", target = "price")
     @Mapping(source = "productCategory.name",target = "categoryName")
-    ProductAdminDTO fromProductDataToObject(Product p);
+    ProductAdminDTO fromProductAdminDataToObject(Product p);
+
+    @IterableMapping(elementTargetType = ProductAdminDTO.class)
+    List<ProductAdminDTO> fromProductAdminDataListToDtoList(List<Product> content);
 
     @Mapping(source = "productCategory.description",target = "categoryDescription")
     ProductDetailDTO fromProductDetailDataToObject(Product p);
@@ -32,8 +35,13 @@ public interface ProductMapper {
     @Mapping(source = "variants", target = "variants")
     ItemDTO fromItemDataToObject(Item i);
 
-    @IterableMapping(elementTargetType = ProductAdminDTO.class)
-    List<ProductAdminDTO> fromProductAdminDataListToDtoList(List<Product> content);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "mainImg", target = "mainImg")
+    @Mapping(source = "discount", target = "discount")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "productCategory.name",target = "categoryName")
+    ProductUserDTO fromProductUserDataToObject(Product p);
 
     @IterableMapping(elementTargetType = ProductAdminDTO.class)
     List<ProductUserDTO> fromProductUserDataListToDtoList(List<Product> content);
