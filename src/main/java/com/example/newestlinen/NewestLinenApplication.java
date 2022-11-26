@@ -44,7 +44,7 @@ public class NewestLinenApplication {
     PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     private void createAdminUserIfNotExist() {
-        Account account = qrCodeStorageService.findAccountByUsername("admin");
+        Account account = qrCodeStorageService.findAccountByUsername("admin1");
         if (account == null) {
             List<Permission> defaultPermission = addPermission();
             Group group = initGroupDefault(defaultPermission);

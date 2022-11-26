@@ -31,8 +31,9 @@ public class Variant extends Auditable<String> {
 
     private int addPrice;
 
-    @ManyToOne
     @JsonIgnore
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Product_ID")
     private Product variantProduct;
 
