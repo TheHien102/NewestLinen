@@ -10,12 +10,11 @@ public class UpdateProfileUserForm {
     @Schema(name = "password")
     private String password;
 
-    @NotEmpty(message = "oldPassword is required")
-    @Schema(name = "oldPassword", required = true)
+    @Schema(name = "oldPassword")
     private String oldPassword;
 
     @NotEmpty(message = "fullName is required")
-    @Schema(name = "fullName", required = true)
+    @Schema(name = "fullName")
     private String fullName;
 
     @Schema(name = "avatar")
