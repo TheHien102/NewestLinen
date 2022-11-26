@@ -23,6 +23,7 @@ public class Category extends Auditable<String> {
 
     private Integer kind;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
