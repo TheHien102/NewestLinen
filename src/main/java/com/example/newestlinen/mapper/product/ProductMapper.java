@@ -27,6 +27,7 @@ public interface ProductMapper {
     List<ProductAdminDTO> fromProductAdminDataListToDtoList(List<Product> content);
 
     @Mapping(source = "productCategory.description",target = "categoryDescription")
+    @Mapping(source = "productCategory.id",target = "productCategoryId")
     ProductDetailDTO fromProductDetailDataToObject(Product p);
 
     @Mapping(source = "id", target = "id")

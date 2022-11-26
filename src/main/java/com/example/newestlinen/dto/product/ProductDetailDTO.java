@@ -20,6 +20,8 @@ public class ProductDetailDTO {
 
     private int price;
 
+    private int productCategoryId;
+
     private String categoryDescription;
 
     private List<AssetDTO> assets;
