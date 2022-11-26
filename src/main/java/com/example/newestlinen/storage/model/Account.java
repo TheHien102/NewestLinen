@@ -11,11 +11,11 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-@Table(name = TablePrefix.PREFIX_TABLE+"account")
+@Table(name = TablePrefix.PREFIX_TABLE + "account")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public class Account extends  Auditable<String>{
+public class Account extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,26 +23,26 @@ public class Account extends  Auditable<String>{
 
     @Column(nullable = false)
     @NotEmpty
-    @Size(min = 6, max=12)
+    @Size(min = 6, max = 18)
     private String username;
 
     @Column(nullable = false)
     @NotEmpty
-    @Size(min = 1, max=200)
+    @Size(min = 8, max = 50)
     private String email;
 
     @Column(nullable = false)
     @JsonIgnore
     private String password;
 
-    @Column(name = "full_name",nullable = false)
+    @Column(name = "full_name", nullable = false)
     @NotEmpty
-    @Size(min = 1, max=100)
+    @Size(min = 1, max = 50)
     private String fullName;
 
     @Column(nullable = false)
     @NotEmpty
-    @Size(min = 1, max=11)
+    @Size(min = 10, max = 11)
     private String phone;
 
     @Column(name = "avatar_path")
@@ -58,7 +58,7 @@ public class Account extends  Auditable<String>{
     @Column(name = "last_login")
     private Date lastLogin;
 
-    @Column(name="reset_pwd_code")
+    @Column(name = "reset_pwd_code")
     private String resetPwdCode;
     @Column(name = "reset_pwd_time")
     private Date resetPwdTime;
@@ -66,7 +66,7 @@ public class Account extends  Auditable<String>{
     private Integer attemptCode;
     @Column(name = "attempt_login")
     private Integer attemptLogin;
-    @Column(name="verify_code")
+    @Column(name = "verify_code")
     private String verifyCode;
     @Column(name = "verify_time")
     private Date verifyTime;

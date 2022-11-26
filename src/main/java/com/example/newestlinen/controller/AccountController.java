@@ -259,7 +259,7 @@ public class AccountController extends ABasicController {
             account.setPassword(passwordEncoder.encode(updateProfileUserForm.getPassword()));
         }
         if (StringUtils.isNoneBlank(updateProfileUserForm.getAvatar())) {
-            account.setAvatarPath(updateProfileUserForm.getAvatar());
+            account.setAvatarPath(uploadService.uploadImg(updateProfileUserForm.getAvatar()));
         }
 
         if (StringUtils.isNoneBlank(updateProfileUserForm.getFullName())) {
@@ -417,7 +417,7 @@ public class AccountController extends ABasicController {
     }
 
     @PostMapping("/register")
-    public ApiMessageDto<String> Register(@Valid @RequestBody CreateAccountUserForm createAccountUserForm) throws IOException {
+    public ApiMessageDto<String> Register(@RequestBody @Valid CreateAccountUserForm createAccountUserForm) throws IOException {
         Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(createAccountUserForm.getUsername(), createAccountUserForm.getEmail(), createAccountUserForm.getPhone());
 
         if (account != null) {

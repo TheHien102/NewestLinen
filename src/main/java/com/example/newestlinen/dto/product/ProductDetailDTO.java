@@ -24,5 +24,7 @@ public class ProductDetailDTO {
 
     private List<AssetDTO> assets;
 
+    private List<VariantDTO> variants;
+
     private List<Review> reviews;
 }
