@@ -1,6 +1,7 @@
 package com.example.newestlinen.mapper;
 
 import com.example.newestlinen.dto.category.CategoryDto;
+import com.example.newestlinen.dto.product.CategorySelectDTO;
 import com.example.newestlinen.form.category.CreateCategoryForm;
 import com.example.newestlinen.form.category.UpdateCategoryForm;
 import com.example.newestlinen.storage.model.Category;
@@ -57,4 +58,7 @@ public interface CategoryMapper {
 
     @IterableMapping(elementTargetType = CategoryDto.class, qualifiedByName = "adminAutoCompleteMapping")
     List<CategoryDto> fromEntityListToCategoryDtoAutoComplete(List<Category> categories);
+
+    @IterableMapping(elementTargetType = CategoryDto.class)
+    List<CategorySelectDTO> fromCategoryListDataToSelectObject(List<Category> source);
 }
