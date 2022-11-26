@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 public class CreateAccountUserForm {
     @Schema(name = "username")
     @NotEmpty
-    @Size(min = 6, max = 18)
+    @Size(min = 6, max = 18,message = "username should between {min} and {max} character")
     private String username;
 
     @Email(message = "invalid email address")
