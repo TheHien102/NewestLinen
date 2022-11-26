@@ -9,6 +9,5 @@ import java.util.List;
 public class CategorySelectDTO {
     private Long id;
     private String name;
-    private String description;
     private List<CategorySelectDTO> categoryList;
 }
