@@ -64,7 +64,7 @@ public class CategoryController extends ABasicController {
     public ApiMessageDto<ResponseListObj<CategorySelectDTO>> getAllSorted() {
         ApiMessageDto<ResponseListObj<CategorySelectDTO>> apiMessageDto = new ApiMessageDto<>();
 
-        List<Category> categoryList = categoryRepository.findAll();
+        List<Category> categoryList = categoryRepository.findAllByParentCategoryIdIsNull();
 
         ResponseListObj<CategorySelectDTO> responseListObj = new ResponseListObj<>();
         responseListObj.setData(categoryMapper.fromCategoryListDataToSelectObject(categoryList));
