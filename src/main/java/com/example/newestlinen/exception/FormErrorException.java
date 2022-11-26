@@ -1,5 +1,6 @@
 package com.example.newestlinen.exception;
 
+import com.cloudinary.Api;
 import com.example.newestlinen.dto.ApiMessageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,11 +14,11 @@ import java.util.Objects;
 public class FormErrorException {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiMessageDto<String> handleValidForm(MethodArgumentNotValidException methodArgumentNotValidException){
-        ApiMessageDto<String> apiMessageDto =new ApiMessageDto<>();
+    public ApiMessageDto<String> handleValidForm(MethodArgumentNotValidException methodArgumentNotValidException) {
+        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         apiMessageDto.setResult(false);
-        apiMessageDto.setMessage(Objects.requireNonNull(methodArgumentNotValidException.getBindingResult().getFieldError()).getDefaultMessage());
+        apiMessageDto.setMessage(methodArgumentNotValidException.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
         apiMessageDto.setStatus(HttpStatus.BAD_REQUEST);
         return apiMessageDto;
     }
