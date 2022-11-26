@@ -59,6 +59,9 @@ public interface CategoryMapper {
     @IterableMapping(elementTargetType = CategoryDto.class, qualifiedByName = "adminAutoCompleteMapping")
     List<CategoryDto> fromEntityListToCategoryDtoAutoComplete(List<Category> categories);
 
-    @IterableMapping(elementTargetType = CategoryDto.class)
-    List<CategorySelectDTO> fromCategoryListDataToSelectObject(List<Category> source);
+    @Mapping(source = "parentCategory.id",target = "parentId")
+    CategorySelectDTO fromCategoryDataToSelectObject(Category category);
+
+    @IterableMapping(elementTargetType = CategorySelectDTO.class)
+    List<CategorySelectDTO> fromCategoryListDataToSelectObject(List<Category> categories);
 }
