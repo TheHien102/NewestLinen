@@ -203,6 +203,16 @@ public class ProductController extends ABasicController {
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
+        updateProductForm.getAssets().forEach(updateAssetForm -> {
+            if(updateAssetForm.getId()==null){
+                try {
+                    updateAssetForm.setLink(uploadService.uploadImg(updateAssetForm.getLink()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         List<Variant> updateVariant = variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants());
 
         List<Asset> updateAsset = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
