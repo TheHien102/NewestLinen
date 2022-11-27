@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UploadService {
@@ -18,6 +20,13 @@ public class UploadService {
                 "unique_filename", false,
                 "overwrite", true
         )).get("secure_url");
+    }
+
+    public void deleteImg(String url) throws IOException {
+        List<String> words = List.of(url.split("/"));
+        String publicId = words.get(words.size() - 1).split("\\.")[0];
+
+        cloudinary.uploader().destroy(publicId,ObjectUtils.asMap("invalidate",true));
     }
 
     public String uploadVid(String img) throws IOException {

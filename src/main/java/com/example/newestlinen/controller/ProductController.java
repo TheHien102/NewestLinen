@@ -203,6 +203,7 @@ public class ProductController extends ABasicController {
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
+        // upload new IMG
         updateProductForm.getAssets().forEach(updateAssetForm -> {
             if (updateAssetForm.getId() == null) {
                 try {
@@ -217,13 +218,25 @@ public class ProductController extends ABasicController {
 
         List<Asset> updateAsset = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
-        List<Long> deleteVariantList = updateProductForm.getVariants().stream().map(UpdateVariantForm::getId).collect(Collectors.toList());
+        // get id in upload form list
+        List<Long> updateVariantIdList = updateProductForm.getVariants().stream().map(UpdateVariantForm::getId).collect(Collectors.toList());
 
-        List<Long> deleteAssetList = updateProductForm.getAssets().stream().map(UpdateAssetForm::getId).collect(Collectors.toList());
+        List<Long> updateAssetIdList = updateProductForm.getAssets().stream().map(UpdateAssetForm::getId).collect(Collectors.toList());
 
-        variantRepository.deleteAllByIdNotIn(deleteVariantList);
+        // delete IMG not contain in upload form
+        p.getAssets().forEach(asset -> {
+            if(!updateAssetIdList.contains(asset.getId())){
+                try {
+                    uploadService.deleteImg(asset.getLink());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        assetRepository.deleteAllByIdNotIn(deleteAssetList);
+        variantRepository.deleteAllByIdNotIn(updateVariantIdList);
+
+        assetRepository.deleteAllByIdNotIn(updateAssetIdList);
 
         updateVariant.forEach(variant -> variant.setVariantProduct(p));
 
