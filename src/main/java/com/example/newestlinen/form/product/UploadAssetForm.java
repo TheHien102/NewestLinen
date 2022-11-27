@@ -8,6 +8,6 @@ import lombok.Data;
 public class UploadAssetForm {
     @Schema(name = "type")
     private String type;
-    @Schema(name = "data")
-    private String data;
+    @Schema(name = "link")
+    private String link;
 }
