@@ -9,7 +9,9 @@ import com.example.newestlinen.dto.product.ProductDetailDTO;
 import com.example.newestlinen.dto.product.ProductUserDTO;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.UpdateStateForm;
+import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
+import com.example.newestlinen.form.product.UpdateVariantForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.product.AssetMapper;
 import com.example.newestlinen.mapper.product.ProductMapper;
@@ -201,33 +203,25 @@ public class ProductController extends ABasicController {
         p.setPrice(updateProductForm.getPrice());
         p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
 
-        variantRepository.deleteAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariantsDelete()));
+        List<Variant> updateVariant = variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants());
 
-        List<Variant> variants = variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants());
+        List<Asset> updateAsset = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
-        variants.addAll(variantMapper.fromUpdateVariantListFormToData(updateProductForm.getVariants()));
+        List<Long> deleteVariantList = updateProductForm.getVariants().stream().map(UpdateVariantForm::getId).collect(Collectors.toList());
 
-        variantRepository.saveAll(variants);
+        List<Long> deleteAssetList = updateProductForm.getAssets().stream().map(UpdateAssetForm::getId).collect(Collectors.toList());
 
-        assetRepository.deleteAll(assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssetsDelete()));
+        variantRepository.deleteAllByIdNotIn(deleteVariantList);
 
-        List<Asset> updateAssets = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
+        assetRepository.deleteAllByIdNotIn(deleteAssetList);
 
-        // in case upload new Img
-        updateProductForm.getAssetsNew().forEach(newAsset -> {
-            Asset a = new Asset();
-            try {
-                a.setLink(uploadService.uploadImg(newAsset.getData()));
-                a.setType(newAsset.getType());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            updateAssets.add(a);
-        });
+        updateVariant.forEach(variant -> variant.setVariantProduct(p));
 
-        updateAssets.forEach(a -> a.setAssetProduct(p));
+        p.setVariants(updateVariant);
 
-        p.setAssets(updateAssets);
+        updateAsset.forEach(asset -> asset.setAssetProduct(p));
+
+        p.setAssets(updateAsset);
 
         productRepository.save(p);
 

@@ -33,18 +33,6 @@ public class UpdateProductForm {
     @Schema(name = "variants")
     private List<UpdateVariantForm> variants;
 
-    @Schema(name = "variantsDelete")
-    private List<UpdateVariantForm> variantsDelete;
-
-    @Schema(name = "variantsNew")
-    private List<UpdateVariantForm> variantsNew;
-
     @Schema(name = "assets")
     private List<UpdateAssetForm> assets;
-
-    @Schema(name = "assetsDelete")
-    private List<UpdateAssetForm> assetsDelete;
-
-    @Schema(name = "assetsNew")
-    private List<UploadAssetForm> assetsNew;
 }
