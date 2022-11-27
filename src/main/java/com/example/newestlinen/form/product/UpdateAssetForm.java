@@ -10,6 +10,6 @@ public class UpdateAssetForm {
     private Long id;
     @Schema(name = "type")
     private String type;
-    @Schema(name = "data")
+    @Schema(name = "link")
     private String link;
 }
