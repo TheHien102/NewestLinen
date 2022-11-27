@@ -259,6 +259,7 @@ public class AccountController extends ABasicController {
             account.setPassword(passwordEncoder.encode(updateProfileUserForm.getPassword()));
         }
         if (StringUtils.isNoneBlank(updateProfileUserForm.getAvatar())) {
+            uploadService.deleteImg(account.getAvatarPath());
             account.setAvatarPath(uploadService.uploadImg(updateProfileUserForm.getAvatar()));
         }
 
@@ -278,7 +279,7 @@ public class AccountController extends ABasicController {
         accountRepository.save(account);
 
         apiMessageDto.setData(a);
-        apiMessageDto.setMessage("Update admin account success");
+        apiMessageDto.setMessage("Update user account success");
         return apiMessageDto;
     }
 

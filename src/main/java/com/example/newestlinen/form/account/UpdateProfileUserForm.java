@@ -13,7 +13,6 @@ public class UpdateProfileUserForm {
     @Schema(name = "oldPassword")
     private String oldPassword;
 
-    @NotEmpty(message = "fullName is required")
     @Schema(name = "fullName")
     private String fullName;
 
