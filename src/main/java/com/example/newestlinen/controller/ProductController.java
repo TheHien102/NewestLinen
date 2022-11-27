@@ -148,7 +148,7 @@ public class ProductController extends ABasicController {
                 uploadProductForm.getAssets().stream().map(asset -> {
                             Asset a = new Asset();
                             try {
-                                a.setLink(uploadService.uploadImg(asset.getData()));
+                                a.setLink(uploadService.uploadImg(asset.getLink()));
                                 a.setType(asset.getType());
                             } catch (IOException e) {
                                 e.printStackTrace();
