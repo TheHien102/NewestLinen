@@ -419,7 +419,8 @@ public class AccountController extends ABasicController {
 
     @PostMapping("/register")
     public ApiMessageDto<String> Register(@RequestBody @Valid CreateAccountUserForm createAccountUserForm) throws IOException {
-        Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(createAccountUserForm.getUsername(), createAccountUserForm.getEmail(), createAccountUserForm.getPhone());
+        Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(createAccountUserForm.getUsername(),
+                createAccountUserForm.getEmail(), createAccountUserForm.getPhone());
 
         if (account != null) {
             throw new RequestException("Username or Email or PhoneNumber taken");

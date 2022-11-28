@@ -21,28 +21,16 @@ public class Account extends Auditable<String> {
     private Long id;
     private Integer kind;
 
-    @Column(nullable = false)
-    @NotEmpty
-    @Size(min = 6, max = 18)
     private String username;
 
-    @Column(nullable = false)
-    @NotEmpty
-    @Size(min = 8, max = 50)
     private String email;
 
-    @Column(nullable = false)
     @JsonIgnore
     private String password;
 
-    @Column(name = "full_name", nullable = false)
-    @NotEmpty
-    @Size(min = 1, max = 50)
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(nullable = false)
-    @NotEmpty
-    @Size(min = 10, max = 11)
     private String phone;
 
     @Column(name = "avatar_path")
