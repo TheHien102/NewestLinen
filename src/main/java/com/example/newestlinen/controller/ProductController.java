@@ -195,7 +195,8 @@ public class ProductController extends ABasicController {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
         }
         p.setName(updateProductForm.getName());
-        if (updateProductForm.getMainImg().equalsIgnoreCase(p.getMainImg())) {
+        if (!updateProductForm.getMainImg().equalsIgnoreCase(p.getMainImg())) {
+            uploadService.deleteImg(p.getMainImg());
             p.setMainImg(uploadService.uploadImg(updateProductForm.getMainImg()));
         }
         p.setDiscount(updateProductForm.getDiscount());
