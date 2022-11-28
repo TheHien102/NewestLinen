@@ -33,6 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -185,6 +186,7 @@ public class ProductController extends ABasicController {
     }
 
     @PostMapping("/update")
+    @Transactional
     public ApiMessageDto<String> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
