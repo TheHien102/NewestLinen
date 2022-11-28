@@ -432,10 +432,6 @@ public class AccountController extends ABasicController {
             throw new RequestException("Username or Email or PhoneNumber taken");
         }
 
-        if (createAccountUserForm.getPassword().length() < 8) {
-            throw new RequestException("Password must at least 8 character");
-        }
-
         account = new Account();
         account.setUsername(createAccountUserForm.getUsername());
         account.setEmail(createAccountUserForm.getEmail());
