@@ -245,21 +245,21 @@ public class AccountController extends ABasicController {
     }
 
     @PostMapping("/update_profile_user")
-    public ApiMessageDto<AccountDto> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
+    public ApiMessageDto<String> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
         Account account1 = accountRepository.findByUsernameOrEmailOrPhoneLike(updateProfileUserForm.getUsername(),
                 updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());
 
         if (account1 != null && account1.getId() != getCurrentUserId()) {
-            throw new RequestException("Username or Email or PhoneNumber taken");
+            return new ApiMessageDto<>("email or username or phone taken",HttpStatus.BAD_REQUEST,false);
         }
 
         Account account = accountRepository.findById(getCurrentUserId()).get();
 
         if (account == null) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Not found");
+            return new ApiMessageDto<>("account Not Found",HttpStatus.NOT_FOUND,false);
         }
 
-        ApiMessageDto<AccountDto> apiMessageDto = new ApiMessageDto<>();
+        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         if (StringUtils.isNoneBlank(updateProfileUserForm.getPassword())) {
             if (!passwordEncoder.matches(updateProfileUserForm.getOldPassword(), account.getPassword())) {
@@ -284,10 +284,9 @@ public class AccountController extends ABasicController {
             account.setPhone(updateProfileUserForm.getPhone());
         }
 
-        AccountDto a = accountMapper.fromUpdateProfileFormUserToObject(updateProfileUserForm);
         accountRepository.save(account);
-
-        apiMessageDto.setData(a);
+        apiMessageDto.setResult(true);
+        apiMessageDto.setStatus(HttpStatus.OK);
         apiMessageDto.setMessage("Update user account success");
         return apiMessageDto;
     }

@@ -17,4 +17,10 @@ public class ApiMessageDto<T> {
         this.message = message;
         this.status = status;
     }
+
+    public ApiMessageDto(String message,HttpStatus status,Boolean result){
+        this.message = message;
+        this.status = status;
+        this.result=result;
+    }
 }
