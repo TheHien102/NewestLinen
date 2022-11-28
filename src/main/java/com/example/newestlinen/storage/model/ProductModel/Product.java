@@ -20,7 +20,6 @@ public class Product extends Auditable<String> {
     @Column(name = "Product_ID")
     @JsonIgnore
     private Long id;
-
     private String name;
 
     private String mainImg;
