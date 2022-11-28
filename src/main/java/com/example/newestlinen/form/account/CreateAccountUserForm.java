@@ -36,6 +36,7 @@ public class CreateAccountUserForm {
     @Schema(name = "phone")
     @NotBlank(message = "phone should not be empty")
     @NotEmpty(message = "phone should not be empty")
+    @Pattern(regexp = "^07|9|8")
     @Size(min = 10, max = 11, message = "phone should between {min} and {max} character")
     private String phone;
 
