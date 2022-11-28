@@ -246,16 +246,19 @@ public class AccountController extends ABasicController {
 
     @PostMapping("/update_profile_user")
     public ApiMessageDto<AccountDto> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
-        Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(updateProfileUserForm.getUsername(),
+        Account account1 = accountRepository.findByUsernameOrEmailOrPhoneLike(updateProfileUserForm.getUsername(),
                 updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());
+
+        if (account1 != null && account1.getId() != getCurrentUserId()) {
+            throw new RequestException("Username or Email or PhoneNumber taken");
+        }
+
+        Account account = accountRepository.findById(getCurrentUserId()).get();
 
         if (account == null) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Not found");
         }
 
-        if (account.getId() != getCurrentUserId()) {
-            throw new RequestException("Username or Email or PhoneNumber taken");
-        }
         ApiMessageDto<AccountDto> apiMessageDto = new ApiMessageDto<>();
 
         if (StringUtils.isNoneBlank(updateProfileUserForm.getPassword())) {
