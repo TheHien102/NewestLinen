@@ -139,7 +139,7 @@ public class AccountController extends ABasicController {
 //        } else {
 //            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED);
 //        }
-        return  "/account/profile,/account/update_profile,/account/logout";
+        return "/account/profile,/account/update_profile,/account/logout";
     }
 
     @PostMapping(value = "/create_admin", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -246,11 +246,17 @@ public class AccountController extends ABasicController {
 
     @PostMapping("/update_profile_user")
     public ApiMessageDto<AccountDto> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
-        ApiMessageDto<AccountDto> apiMessageDto = new ApiMessageDto<>();
-        Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
+        Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(updateProfileUserForm.getUsername(),
+                updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());
+
         if (account == null) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Not found");
         }
+
+        if (account.getId() != getCurrentUserId()) {
+            throw new RequestException("Username or Email or PhoneNumber taken");
+        }
+        ApiMessageDto<AccountDto> apiMessageDto = new ApiMessageDto<>();
 
         if (StringUtils.isNoneBlank(updateProfileUserForm.getPassword())) {
             if (!passwordEncoder.matches(updateProfileUserForm.getOldPassword(), account.getPassword())) {
@@ -426,7 +432,7 @@ public class AccountController extends ABasicController {
             throw new RequestException("Username or Email or PhoneNumber taken");
         }
 
-        if(createAccountUserForm.getPassword().length()<8){
+        if (createAccountUserForm.getPassword().length() < 8) {
             throw new RequestException("Password must at least 8 character");
         }
 
@@ -448,9 +454,9 @@ public class AccountController extends ABasicController {
 
         account.setKind(LandingISConstant.USER_KIND_CUSTOMER);
 
-        try{
+        try {
             accountRepository.save(account);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RequestException("invalid form");
         }
 
