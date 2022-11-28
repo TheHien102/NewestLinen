@@ -9,7 +9,7 @@ import java.util.List;
 @Schema
 public class UpdateProductForm {
 
-    @Schema(name = "productId")
+    @Schema(name = "id")
     private Long id;
 
     @Schema(name = "name")
@@ -27,8 +27,8 @@ public class UpdateProductForm {
     @Schema(name = "price")
     private int price;
 
-    @Schema(name = "productCategoryID")
-    private Long productCategoryID;
+    @Schema(name = "productCategoryId")
+    private Long productCategoryId;
 
     @Schema(name = "variants")
     private List<UpdateVariantForm> variants;
