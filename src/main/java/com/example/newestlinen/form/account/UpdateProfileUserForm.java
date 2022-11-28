@@ -31,7 +31,7 @@ public class UpdateProfileUserForm {
     private String email;
 
     @Schema(name = "phone")
-    @Pattern(regexp = "^07|9|8")
+    @Pattern(regexp = "^0.*[7-9].*")
     @Size(min = 10, max = 11, message = "phone should between {min} and {max} character")
     private String phone;
 }
