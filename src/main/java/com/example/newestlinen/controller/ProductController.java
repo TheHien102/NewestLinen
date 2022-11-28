@@ -201,7 +201,7 @@ public class ProductController extends ABasicController {
         p.setDiscount(updateProductForm.getDiscount());
         p.setDescription(updateProductForm.getDescription());
         p.setPrice(updateProductForm.getPrice());
-        p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryID()));
+        p.setProductCategory(categoryRepository.getById(updateProductForm.getProductCategoryId()));
 
         // upload new IMG
         updateProductForm.getAssets().forEach(updateAssetForm -> {
