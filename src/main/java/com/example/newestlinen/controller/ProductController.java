@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -228,7 +229,7 @@ public class ProductController extends ABasicController {
 
         // delete IMG not contain in upload form
         p.getAssets().forEach(asset -> {
-            if(!updateAssetIdList.contains(asset.getId())){
+            if (!updateAssetIdList.contains(asset.getId())) {
                 try {
                     uploadService.deleteImg(asset.getLink());
                 } catch (IOException e) {
@@ -256,7 +257,8 @@ public class ProductController extends ABasicController {
 
     @PostMapping("/delete")
     @Transactional
-    public ApiMessageDto<String> deleteProduct(){
-        return new ApiMessageDto<>("deleted product id: ",HttpStatus.OK);
+    public ApiMessageDto<String> deleteProduct(@RequestBody Map<String, String> req) {
+        productRepository.deleteById(Long.parseLong(req.get("id")));
+        return new ApiMessageDto<>("deleted product id: " + req.get("id"), HttpStatus.OK);
     }
 }
