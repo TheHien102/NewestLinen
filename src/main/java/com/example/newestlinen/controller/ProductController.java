@@ -139,7 +139,7 @@ public class ProductController extends ABasicController {
         p.setDiscount(uploadProductForm.getDiscount());
         p.setDescription(uploadProductForm.getDescription());
         p.setPrice(uploadProductForm.getPrice());
-        p.setProductCategory(categoryRepository.getById(uploadProductForm.getProductCategoryID()));
+        p.setProductCategory(categoryRepository.getById(uploadProductForm.getProductCategoryId()));
 
         // declare variants
         List<Variant> variantList = variantMapper.fromVariantFormListToDataList(uploadProductForm.getVariants());
@@ -252,5 +252,11 @@ public class ProductController extends ABasicController {
         productRepository.save(p);
 
         return new ApiMessageDto<>("update product successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/delete")
+    @Transactional
+    public ApiMessageDto<String> deleteProduct(){
+        return new ApiMessageDto<>("deleted product id: ",HttpStatus.OK);
     }
 }
