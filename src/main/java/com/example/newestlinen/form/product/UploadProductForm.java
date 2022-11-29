@@ -24,8 +24,8 @@ public class UploadProductForm {
     @Schema(name = "price")
     private int price;
 
-    @Schema(name = "productCategoryID")
-    private Long productCategoryID;
+    @Schema(name = "productCategoryId")
+    private Long productCategoryId;
 
     @Schema(name = "variants")
     private List<UploadVariantForm> variants;
