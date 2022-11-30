@@ -1,5 +1,6 @@
 package com.example.newestlinen.storage.model;
 
+import com.example.newestlinen.storage.model.CartModel.Cart;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,4 +59,11 @@ public class Account extends Auditable<String> {
     private String verifyCode;
     @Column(name = "verify_time")
     private Date verifyTime;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "Cart_ID")
+    private Cart cart;
+
+
 }
