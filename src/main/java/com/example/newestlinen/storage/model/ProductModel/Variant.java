@@ -22,7 +22,7 @@ import java.util.List;
 public class Variant extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Varriant_ID")
+    @Column(name = "Variant_ID")
     private Long id;
 
     private String name;
@@ -42,5 +42,6 @@ public class Variant extends Auditable<String> {
     @JoinTable(name = "Item_Variant",
             joinColumns = @JoinColumn(name = "Variant_ID"),
             inverseJoinColumns = @JoinColumn(name = "Item_ID"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Item> variantItem;
 }
