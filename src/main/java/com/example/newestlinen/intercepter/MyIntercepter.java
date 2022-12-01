@@ -70,16 +70,8 @@ public class MyIntercepter implements HandlerInterceptor {
         //lay ra quyen
         UserJwt qrJwt = JWTUtils.getSessionFromToken(decodedJWT);
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        Long id;
 
-        try {
-            MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-            id = authentication.getJwtUser().getAccountId();
-        } catch (Exception e) {
-            return false;
-        }
-
-        if (id == null) {
+        if (securityContext.getAuthentication() == null) {
             return false;
         }
 
