@@ -8,7 +8,9 @@ import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.permission.CreatePermissionForm;
 import com.example.newestlinen.mapper.PermissionMapper;
 import com.example.newestlinen.storage.criteria.PermissionCriteria;
+import com.example.newestlinen.storage.model.Group;
 import com.example.newestlinen.storage.model.Permission;
+import com.example.newestlinen.utils.projection.repository.GroupRepository;
 import com.example.newestlinen.utils.projection.repository.PermissionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +21,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/permission")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
-public class PermissionController extends ABasicController{
+public class PermissionController extends ABasicController {
     @Autowired
     PermissionRepository permissionRepository;
 
     @Autowired
     PermissionMapper permissionMapper;
 
+    @Autowired
+    GroupRepository groupRepository;
+
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<ResponseListObj<PermissionAdminDto>> getList(PermissionCriteria permissionCriteria, Pageable pageable){
-        if(!isSuperAdmin()){
+    public ApiMessageDto<ResponseListObj<PermissionAdminDto>> getList(PermissionCriteria permissionCriteria, Pageable pageable) {
+        if (!isSuperAdmin()) {
             throw new RequestException(ErrorCode.PERMISSION_ERROR_UNAUTHORIZED);
         }
         ApiMessageDto<ResponseListObj<PermissionAdminDto>> apiMessageDto = new ApiMessageDto<>();
-        Page<Permission> permissionPage = permissionRepository.findAll(permissionCriteria.getSpecification(),pageable);
+        Page<Permission> permissionPage = permissionRepository.findAll(permissionCriteria.getSpecification(), pageable);
 
         ResponseListObj<PermissionAdminDto> responseListObj = new ResponseListObj<>();
         responseListObj.setData(permissionMapper.fromEntityListToAdminDtoList(permissionPage.getContent()));
@@ -50,24 +56,35 @@ public class PermissionController extends ABasicController{
         return apiMessageDto;
     }
 
-    @PostMapping(value = "/create", produces= MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> create(@Valid @RequestBody CreatePermissionForm createPermissionForm, BindingResult bindingResult) {
-        if(!isSuperAdmin()){
+        if (!isSuperAdmin()) {
             throw new RequestException(ErrorCode.PERMISSION_ERROR_UNAUTHORIZED);
         }
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         Permission permission = permissionRepository.findFirstByName(createPermissionForm.getName());
-        if(permission != null){
+        if (permission != null) {
             throw new RequestException(ErrorCode.PERMISSION_ERROR_NOT_FOUND);
         }
         permission = new Permission();
+        Group group = groupRepository.findFirstByKind(5);
         permission.setName(createPermissionForm.getName());
         permission.setAction(createPermissionForm.getAction());
         permission.setDescription(createPermissionForm.getDescription());
         permission.setShowMenu(createPermissionForm.getShowMenu());
         permission.setNameGroup(createPermissionForm.getNameGroup());
+
+        List<Permission> permissionCurrent = group.getPermissions();
+
+        permissionCurrent.add(permission);
+
+        group.setPermissions(permissionCurrent);
+
         permissionRepository.save(permission);
+
+        groupRepository.save(group);
+
         apiMessageDto.setMessage("Create permission success");
         return apiMessageDto;
     }
