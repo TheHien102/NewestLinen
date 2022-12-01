@@ -1,5 +1,6 @@
 package com.example.newestlinen.cfg;
 
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,5 +38,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         config.setExposedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Content-Disposition"));
         source.registerCorsConfiguration("/**", config);
         return source;
+    }
+
+    @Bean
+    public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
+        return CookieSameSiteSupplier.ofNone();
     }
 }
