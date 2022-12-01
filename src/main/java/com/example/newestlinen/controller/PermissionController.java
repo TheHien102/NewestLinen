@@ -68,7 +68,7 @@ public class PermissionController extends ABasicController {
             throw new RequestException(ErrorCode.PERMISSION_ERROR_NOT_FOUND);
         }
         permission = new Permission();
-        Group group = groupRepository.findFirstByKind(5);
+        Group group = groupRepository.findFirstByKind(1);
         permission.setName(createPermissionForm.getName());
         permission.setAction(createPermissionForm.getAction());
         permission.setDescription(createPermissionForm.getDescription());
