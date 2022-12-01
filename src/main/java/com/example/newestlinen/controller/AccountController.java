@@ -294,7 +294,10 @@ public class AccountController extends ABasicController {
     @Transactional
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> logout() {
-        SecurityContextHolder.clearContext();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+
+        securityContext.setAuthentication(new MyAuthentication(null));
+
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         apiMessageDto.setMessage("Logout success");
         return apiMessageDto;
