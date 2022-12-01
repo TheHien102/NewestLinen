@@ -34,6 +34,7 @@ public class JWTUtils {
                 return  authentication.getName();
             }
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return  null;
         }
         return null;
