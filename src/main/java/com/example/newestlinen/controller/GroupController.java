@@ -157,6 +157,7 @@ public class GroupController extends ABasicController {
         if (group.getKind() == 1) {
             throw new RequestException(ErrorCode.GROUP_ERROR_CAN_NOT_DELETED);
         }
+
         List<Permission> permissions = new ArrayList<>();
         group.setPermissions(permissions);
         groupRepository.save(group);
