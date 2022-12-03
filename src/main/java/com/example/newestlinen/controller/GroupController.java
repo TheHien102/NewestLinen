@@ -113,7 +113,7 @@ public class GroupController extends ABasicController {
             throw new RequestException(ErrorCode.GROUP_ERROR_UNAUTHORIZED);
         }
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
-        Group group = groupRepository.findById(updateGroupForm.getId()).orElse(null);
+        Group group = groupRepository.findFirstByKind(updateGroupForm.getId());
         if (group == null) {
             throw new RequestException(ErrorCode.GROUP_ERROR_NOT_FOUND);
         }
@@ -137,7 +137,7 @@ public class GroupController extends ABasicController {
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<GroupAdminDto> get(@PathVariable("id") int id) {
+    public ApiMessageDto<GroupAdminDto> get(@PathVariable("id") Long id) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GROUP_ERROR_UNAUTHORIZED);
         }
