@@ -3,7 +3,6 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
-import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductAdminDTO;
 import com.example.newestlinen.dto.product.ProductDetailDTO;
 import com.example.newestlinen.dto.product.ProductUserDTO;
@@ -11,7 +10,6 @@ import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.UpdateStateForm;
 import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
-import com.example.newestlinen.form.product.UpdateVariantForm;
 import com.example.newestlinen.form.product.UploadProductForm;
 import com.example.newestlinen.mapper.product.AssetMapper;
 import com.example.newestlinen.mapper.product.ProductMapper;
@@ -19,14 +17,10 @@ import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.service.UploadService;
 import com.example.newestlinen.storage.criteria.ProductCriteria;
 import com.example.newestlinen.storage.model.ProductModel.Asset;
-import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.CategoryRepository;
-import com.example.newestlinen.utils.projection.repository.Product.AssetRepository;
-import com.example.newestlinen.utils.projection.repository.Product.ItemRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
-import com.example.newestlinen.utils.projection.repository.Product.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -61,11 +55,11 @@ public class ProductController extends ABasicController {
 
     private final CategoryRepository categoryRepository;
 
-    private final VariantRepository variantRepository;
-
-    private final AssetRepository assetRepository;
-
-    private final ItemRepository itemRepository;
+//    private final VariantRepository variantRepository;
+//
+//    private final AssetRepository assetRepository;
+//
+//    private final ItemRepository itemRepository;
 
     @GetMapping("/list_product_for_admin")
     public ApiMessageDto<ResponseListObj<ProductAdminDTO>> getProductByPageAdmin(ProductCriteria productCriteria, Pageable pageable) {
@@ -96,9 +90,7 @@ public class ProductController extends ABasicController {
 
         ApiMessageDto<ResponseListObj<ProductUserDTO>> apiMessageDto = new ApiMessageDto<>();
 
-        productPage.getContent().forEach(product -> {
-            product.setVariants(product.getVariants().stream().filter(variant -> variant.getName().equalsIgnoreCase("color")).collect(Collectors.toList()));
-        });
+        productPage.getContent().forEach(product -> product.setVariants(product.getVariants().stream().filter(variant -> variant.getName().equalsIgnoreCase("color")).collect(Collectors.toList())));
 
         ResponseListObj<ProductUserDTO> responseListObj = new ResponseListObj<>();
 
@@ -223,7 +215,7 @@ public class ProductController extends ABasicController {
         List<Asset> updateAsset = assetMapper.fromUpdateAssetListFormToData(updateProductForm.getAssets());
 
         // get id in upload form list
-        List<Long> updateVariantIdList = updateProductForm.getVariants().stream().map(UpdateVariantForm::getId).collect(Collectors.toList());
+//        List<Long> updateVariantIdList = updateProductForm.getVariants().stream().map(UpdateVariantForm::getId).collect(Collectors.toList());
 
         List<Long> updateAssetIdList = updateProductForm.getAssets().stream().map(UpdateAssetForm::getId).collect(Collectors.toList());
 
@@ -238,9 +230,9 @@ public class ProductController extends ABasicController {
             }
         });
 
-        variantRepository.deleteAllByIdNotIn(updateVariantIdList);
-
-        assetRepository.deleteAllByIdNotIn(updateAssetIdList);
+//        variantRepository.deleteAllByIdNotIn(updateVariantIdList);
+//
+//        assetRepository.deleteAllByIdNotIn(updateAssetIdList);
 
         updateVariant.forEach(variant -> variant.setVariantProduct(p));
 

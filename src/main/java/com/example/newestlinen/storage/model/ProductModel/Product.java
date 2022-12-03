@@ -35,16 +35,16 @@ public class Product extends Auditable<String> {
     @JoinColumn(name = "Category_ID")
     private Category productCategory;
 
-    @OneToMany(mappedBy = "variantProduct", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "variantProduct", cascade = CascadeType.REMOVE)
     private List<Variant> variants;
 
-    @OneToMany(mappedBy = "assetProduct", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "assetProduct", cascade = CascadeType.REMOVE)
     private List<Asset> assets;
 
-    @OneToMany(mappedBy = "reviewProduct", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reviewProduct", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "itemProduct", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "itemProduct", cascade = CascadeType.REMOVE)
     private List<Item> productItem;
 }
