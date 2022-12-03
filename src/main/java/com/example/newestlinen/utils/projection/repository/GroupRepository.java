@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface GroupRepository extends JpaRepository<Group, Long>, JpaSpecificationExecutor<Group> {
    public Group findFirstByName(String name);
-   public Group findFirstByKind(Long kind);
+   public Group findFirstByKind(int kind);
 }

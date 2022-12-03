@@ -142,7 +142,7 @@ public class GroupController extends ABasicController {
             throw new RequestException(ErrorCode.GROUP_ERROR_UNAUTHORIZED);
         }
         ApiMessageDto<GroupAdminDto> apiMessageDto = new ApiMessageDto<>();
-        Group group = groupRepository.findFirstByKind(id);
+        Group group = groupRepository.findById(id).orElse(null);
         apiMessageDto.setData(groupMapper.fromEntityToGroupAdminDto(group));
         apiMessageDto.setMessage("Get group success");
         return apiMessageDto;
