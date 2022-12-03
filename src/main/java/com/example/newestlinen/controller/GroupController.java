@@ -128,8 +128,6 @@ public class GroupController extends ABasicController {
 
         Collection<Long> ids = updateGroupForm.getPermissions().stream().map(PermissionDto::getId).collect(Collectors.toList());
 
-        permissionRepository.deleteAllByIdNotIn(ids);
-
         group.setPermissions(permissionMapper.fromUpdateFormListToEntityList(updateGroupForm.getPermissions()));
         groupRepository.save(group);
         apiMessageDto.setMessage("Update group success");
