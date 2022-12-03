@@ -93,15 +93,9 @@ public class GroupController extends ABasicController {
         group.setName(createGroupForm.getName());
         group.setDescription(createGroupForm.getDescription());
         group.setKind(createGroupForm.getKind());
-        List<Permission> permissions = new ArrayList<>();
-        for (int i = 0; i < createGroupForm.getPermissions().length; i++) {
-            Permission permission = permissionRepository.findById(createGroupForm.getPermissions()[i]).orElse(null);
-            if (permission != null) {
-                permissions.add(permission);
-            }
-        }
+
         group.setStatus(1);
-        group.setPermissions(permissions);
+        group.setPermissions(permissionMapper.fromUpdateFormListToEntityList(createGroupForm.getPermissions()));
         groupRepository.save(group);
         apiMessageDto.setMessage("Create group success");
         return apiMessageDto;
@@ -125,8 +119,6 @@ public class GroupController extends ABasicController {
         }
         group.setName(updateGroupForm.getName());
         group.setDescription(updateGroupForm.getDescription());
-
-        Collection<Long> ids = updateGroupForm.getPermissions().stream().map(PermissionDto::getId).collect(Collectors.toList());
 
         group.setPermissions(permissionMapper.fromUpdateFormListToEntityList(updateGroupForm.getPermissions()));
         groupRepository.save(group);
