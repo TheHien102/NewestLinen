@@ -107,6 +107,7 @@ public class GroupController extends ABasicController {
         return apiMessageDto;
     }
 
+    @Transactional
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> update(@Valid @RequestBody UpdateGroupForm updateGroupForm, BindingResult bindingResult) {
         if (!isSuperAdmin()) {
