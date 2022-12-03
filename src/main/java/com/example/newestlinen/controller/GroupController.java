@@ -113,7 +113,7 @@ public class GroupController extends ABasicController {
             throw new RequestException(ErrorCode.GROUP_ERROR_UNAUTHORIZED);
         }
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
-        Group group = groupRepository.findFirstByKind(updateGroupForm.getId());
+        Group group = groupRepository.findById(updateGroupForm.getId()).orElse(null);
         if (group == null) {
             throw new RequestException(ErrorCode.GROUP_ERROR_NOT_FOUND);
         }
