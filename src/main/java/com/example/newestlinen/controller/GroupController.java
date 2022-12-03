@@ -4,6 +4,7 @@ import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.group.GroupAdminDto;
+import com.example.newestlinen.dto.permission.PermissionDto;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.news.group.CreateGroupForm;
 import com.example.newestlinen.form.news.group.UpdateGroupForm;
@@ -25,8 +26,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/group")
@@ -121,6 +124,10 @@ public class GroupController extends ABasicController {
         }
         group.setName(updateGroupForm.getName());
         group.setDescription(updateGroupForm.getDescription());
+
+        Collection<Long> ids = updateGroupForm.getPermissions().stream().map(PermissionDto::getId).collect(Collectors.toList());
+
+        permissionRepository.deleteAllByIdNotIn(ids);
 
         group.setPermissions(permissionMapper.fromUpdateFormListToEntityList(updateGroupForm.getPermissions()));
         groupRepository.save(group);
