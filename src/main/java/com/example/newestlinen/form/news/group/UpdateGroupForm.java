@@ -1,9 +1,11 @@
 package com.example.newestlinen.form.news.group;
 
+import com.example.newestlinen.dto.permission.PermissionDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Schema
@@ -18,5 +20,5 @@ public class UpdateGroupForm {
     private String description;
     @NotNull(message = "permissions cant not be null")
     @Schema(name = "permissions", required = true)
-    private Long[] permissions;
+    private List<PermissionDto> permissions;
 }

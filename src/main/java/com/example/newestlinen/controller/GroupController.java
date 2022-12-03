@@ -8,6 +8,7 @@ import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.news.group.CreateGroupForm;
 import com.example.newestlinen.form.news.group.UpdateGroupForm;
 import com.example.newestlinen.mapper.GroupMapper;
+import com.example.newestlinen.mapper.PermissionMapper;
 import com.example.newestlinen.storage.criteria.GroupCriteria;
 import com.example.newestlinen.storage.model.Group;
 import com.example.newestlinen.storage.model.Permission;
@@ -40,6 +41,9 @@ public class GroupController extends ABasicController {
 
     @Autowired
     GroupMapper groupMapper;
+
+    @Autowired
+    PermissionMapper permissionMapper;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListObj<GroupAdminDto>> getList(GroupCriteria groupCriteria) {
@@ -117,14 +121,8 @@ public class GroupController extends ABasicController {
         }
         group.setName(updateGroupForm.getName());
         group.setDescription(updateGroupForm.getDescription());
-        List<Permission> permissions = new ArrayList<>();
-        for (int i = 0; i < updateGroupForm.getPermissions().length; i++) {
-            Permission permission = permissionRepository.findById(updateGroupForm.getPermissions()[i]).orElse(null);
-            if (permission != null) {
-                permissions.add(permission);
-            }
-        }
-        group.setPermissions(permissions);
+
+        group.setPermissions(permissionMapper.fromUpdateFormListToEntityList(updateGroupForm.getPermissions()));
         groupRepository.save(group);
         apiMessageDto.setMessage("Update group success");
 

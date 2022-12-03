@@ -33,4 +33,7 @@ public interface PermissionMapper {
 
     @IterableMapping(elementTargetType = PermissionDto.class)
     List<PermissionDto> fromEntityListToDtoList(List<Permission> content);
+
+    @IterableMapping(elementTargetType = Permission.class)
+    List<Permission> fromUpdateFormListToEntityList(List<PermissionDto> content);
 }
