@@ -37,7 +37,6 @@ public interface ProductMapper {
     @Mapping(source = "price", target = "price")
     @Mapping(source = "productCategory.name",target = "categoryName")
     @Mapping(source = "variants",target = "variants")
-    @Mapping(source = "reviews",target = "reviews")
     ProductUserDTO fromProductUserDataToObject(Product p);
 
     @IterableMapping(elementTargetType = ProductUserDTO.class)
