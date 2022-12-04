@@ -83,7 +83,7 @@ public class MyIntercepter implements HandlerInterceptor {
             return false;
         }
 
-        log.info("jwt user verify ne: {}", qrJwt);
+//        log.info("jwt user verify ne: {}", qrJwt);
 
         //check permission here
         String requestUri = request.getRequestURI();

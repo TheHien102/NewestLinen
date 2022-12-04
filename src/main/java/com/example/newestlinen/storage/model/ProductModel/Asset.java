@@ -20,8 +20,10 @@ import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 @Entity
-@Table(name = TablePrefix.PREFIX_TABLE+ "Asset")
+@Table(name = TablePrefix.PREFIX_TABLE + "Asset")
 @Setter
 @Getter
 @ToString
@@ -40,4 +42,13 @@ public class Asset extends Auditable<String> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Product_ID")
     private Product assetProduct;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Asset) {
+            Asset a = (Asset) obj;
+            return Objects.equals(a.getId(), this.id);
+        }
+        return false;
+    }
 }
