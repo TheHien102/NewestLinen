@@ -32,18 +32,14 @@ public interface ProductMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "itemProduct", target = "itemProduct")
-    @Mapping(source = "variants", target = "variants")
-    ItemDTO fromItemDataToObject(Item i);
-
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
     @Mapping(source = "mainImg", target = "mainImg")
     @Mapping(source = "discount", target = "discount")
     @Mapping(source = "price", target = "price")
-    @Mapping(source = "productCategory.name",target = "categoryName")
+    @Mapping(source = "productCategory.description",target = "categoryDescription")
+    @Mapping(source = "variants",target = "variants")
+    @Mapping(source = "reviews",target = "reviews")
     ProductUserDTO fromProductUserDataToObject(Product p);
 
-    @IterableMapping(elementTargetType = ProductAdminDTO.class)
+    @IterableMapping(elementTargetType = ProductUserDTO.class)
     List<ProductUserDTO> fromProductUserDataListToDtoList(List<Product> content);
 }
