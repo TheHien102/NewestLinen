@@ -35,7 +35,7 @@ public interface ProductMapper {
     @Mapping(source = "mainImg", target = "mainImg")
     @Mapping(source = "discount", target = "discount")
     @Mapping(source = "price", target = "price")
-    @Mapping(source = "productCategory.description",target = "categoryDescription")
+    @Mapping(source = "productCategory.name",target = "categoryName")
     @Mapping(source = "variants",target = "variants")
     @Mapping(source = "reviews",target = "reviews")
     ProductUserDTO fromProductUserDataToObject(Product p);

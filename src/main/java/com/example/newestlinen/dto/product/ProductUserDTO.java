@@ -1,6 +1,5 @@
 package com.example.newestlinen.dto.product;
 
-import com.example.newestlinen.storage.model.ProductModel.Review;
 import lombok.Data;
 
 import java.util.List;
@@ -17,9 +16,7 @@ public class ProductUserDTO {
 
     private int price;
 
-    private String categoryDescription;
+    private String categoryName;
     
     private List<VariantDTO> variants;
-
-    private List<Review> reviews;
 }
