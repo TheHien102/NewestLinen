@@ -201,7 +201,7 @@ public class ProductController extends ABasicController {
 
         // upload new IMG
         updateProductForm.getAssets().forEach(updateAssetForm -> {
-            if (updateAssetForm.getId() == 0) {
+            if (updateAssetForm.getId() <= 0) {
                 try {
                     updateAssetForm.setLink(uploadService.uploadImg(updateAssetForm.getLink()));
                 } catch (IOException e) {

@@ -3,6 +3,7 @@ package com.example.newestlinen.form.product;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -34,5 +35,6 @@ public class UpdateProductForm {
     private List<UpdateVariantForm> variants;
 
     @Schema(name = "assets")
+    @NotNull(message = "assets should not null")
     private List<UpdateAssetForm> assets;
 }
