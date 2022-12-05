@@ -55,12 +55,6 @@ public class ProductController extends ABasicController {
 
     private final CategoryRepository categoryRepository;
 
-//    private final VariantRepository variantRepository;
-//
-//    private final AssetRepository assetRepository;
-//
-//    private final ItemRepository itemRepository;
-
     @GetMapping("/list_product_for_admin")
     public ApiMessageDto<ResponseListObj<ProductAdminDTO>> getProductByPageAdmin(ProductCriteria productCriteria, Pageable pageable) {
         if (!isAdmin()) {
@@ -135,7 +129,7 @@ public class ProductController extends ABasicController {
         p.setProductCategory(categoryRepository.getById(uploadProductForm.getProductCategoryId()));
 
         // declare variants
-        List<Variant> variantList = variantMapper.fromVariantFormListToDataList(uploadProductForm.getVariants());
+        List<Variant> variantList = variantMapper.fromVariantUploadFormListToDataList(uploadProductForm.getVariants());
 
         // upload and declare asset
         List<Asset> assetList =

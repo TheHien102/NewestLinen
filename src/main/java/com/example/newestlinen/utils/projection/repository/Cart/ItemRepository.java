@@ -1,6 +1,6 @@
-package com.example.newestlinen.utils.projection.repository.Product;
+package com.example.newestlinen.utils.projection.repository.Cart;
 
-import com.example.newestlinen.storage.model.ProductModel.Item;
+import com.example.newestlinen.storage.model.CartModel.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

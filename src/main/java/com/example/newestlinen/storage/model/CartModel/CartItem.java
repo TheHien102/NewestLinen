@@ -3,7 +3,6 @@ package com.example.newestlinen.storage.model.CartModel;
 import javax.persistence.*;
 
 import com.example.newestlinen.storage.model.Auditable;
-import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.TablePrefix;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -25,6 +24,8 @@ public class CartItem extends Auditable<String> {
     private Item item;
 
     private int quantity;
+
+    private int totalPrice;
 
     @JsonIgnore
     @ManyToOne

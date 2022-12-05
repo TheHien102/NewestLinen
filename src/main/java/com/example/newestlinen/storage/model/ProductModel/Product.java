@@ -1,6 +1,7 @@
 package com.example.newestlinen.storage.model.ProductModel;
 
 import com.example.newestlinen.storage.model.Auditable;
+import com.example.newestlinen.storage.model.CartModel.Item;
 import com.example.newestlinen.storage.model.Category;
 import com.example.newestlinen.storage.model.TablePrefix;
 import com.fasterxml.jackson.annotation.JsonIgnore;

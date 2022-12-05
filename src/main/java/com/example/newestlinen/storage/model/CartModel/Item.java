@@ -1,8 +1,10 @@
-package com.example.newestlinen.storage.model.ProductModel;
+package com.example.newestlinen.storage.model.CartModel;
 
 import javax.persistence.*;
 
 import com.example.newestlinen.storage.model.Auditable;
+import com.example.newestlinen.storage.model.ProductModel.Product;
+import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.storage.model.TablePrefix;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

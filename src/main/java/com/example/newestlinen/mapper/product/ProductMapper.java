@@ -1,14 +1,9 @@
 package com.example.newestlinen.mapper.product;
 
-import com.example.newestlinen.dto.product.ItemDTO;
 import com.example.newestlinen.dto.product.ProductAdminDTO;
 import com.example.newestlinen.dto.product.ProductDetailDTO;
 import com.example.newestlinen.dto.product.ProductUserDTO;
-import com.example.newestlinen.form.product.UpdateVariantForm;
-import com.example.newestlinen.form.product.UploadVariantForm;
-import com.example.newestlinen.storage.model.ProductModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Product;
-import com.example.newestlinen.storage.model.ProductModel.Variant;
 import org.mapstruct.*;
 
 import java.util.List;
