@@ -1,13 +1,16 @@
-package com.example.newestlinen.storage.model;
+package com.example.newestlinen.storage.model.Address;
 
+import com.example.newestlinen.storage.model.Auditable;
+import com.example.newestlinen.storage.model.TablePrefix;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,7 +24,8 @@ public class AddressManagement extends Auditable<String> {
     private Long id;
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Nullable
     @JoinColumn(name = "Parent_ID", referencedColumnName = "AddressManagement_ID")
     @JsonBackReference
