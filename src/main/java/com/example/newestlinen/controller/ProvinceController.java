@@ -89,7 +89,7 @@ public class ProvinceController extends ABasicController {
         }
         ResponseListObj<ProvinceManagementDTO> responseListObj = new ResponseListObj<>();
 
-        Page<ProvinceManagement> addressManagements = provinceRepository.findAllById(id, pageable);
+        Page<ProvinceManagement> addressManagements = provinceRepository.findAllByParentId(id, pageable);
 
         responseListObj.setData(provinceMapper.fromProvinceManagementDataListToDtoList(addressManagements.getContent()));
         responseListObj.setPage(pageable.getPageNumber());

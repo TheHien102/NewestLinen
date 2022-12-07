@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProvinceRepository extends JpaRepository<ProvinceManagement, Long> {
     ProvinceManagement findByParentId(Long parent_id);
 
-    Page<ProvinceManagement> findAllById(Long id, Pageable pageable);
+    Page<ProvinceManagement> findAllByParentId(Long id, Pageable pageable);
 
     ProvinceManagement findByNameLike(String name);
 }
