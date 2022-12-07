@@ -15,8 +15,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = TablePrefix.PREFIX_TABLE+"AddressManagement")
-public class ProvinceManagement extends Auditable<String> {
+@Table(name = TablePrefix.PREFIX_TABLE+"Province")
+public class Province extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,5 +30,5 @@ public class ProvinceManagement extends Auditable<String> {
     @JoinColumn(name = "Parent_ID", referencedColumnName = "AddressManagement_ID")
     @JsonBackReference
     @JsonIgnore
-    private ProvinceManagement parent;
+    private Province parent;
 }

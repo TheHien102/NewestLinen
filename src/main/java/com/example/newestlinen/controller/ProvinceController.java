@@ -8,7 +8,7 @@ import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.cart.AddProvinceForm;
 import com.example.newestlinen.form.cart.UpdateProvinceForm;
 import com.example.newestlinen.mapper.cart.ProvinceMapper;
-import com.example.newestlinen.storage.model.Address.ProvinceManagement;
+import com.example.newestlinen.storage.model.Address.Province;
 import com.example.newestlinen.utils.projection.repository.Cart.ProvinceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,14 +32,14 @@ public class ProvinceController extends ABasicController {
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> listProvince(Pageable pageable) {
-        Page<ProvinceManagement> addressManagements = provinceRepository.findAll(pageable);
+        Page<Province> provinces = provinceRepository.findAll(pageable);
 
         ResponseListObj<ProvinceManagementDTO> responseListObj = new ResponseListObj<>();
 
-        responseListObj.setData(provinceMapper.fromProvinceManagementDataListToDtoList(addressManagements.getContent()));
+        responseListObj.setData(provinceMapper.fromProvinceManagementDataListToDtoList(provinces.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
-        responseListObj.setTotalPage(addressManagements.getTotalPages());
-        responseListObj.setTotalElements(addressManagements.getTotalElements());
+        responseListObj.setTotalPage(provinces.getTotalPages());
+        responseListObj.setTotalElements(provinces.getTotalElements());
 
         ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> apiMessageDto = new ApiMessageDto<>();
 
@@ -56,7 +56,7 @@ public class ProvinceController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException("not allow to add");
         }
-        ProvinceManagement province = new ProvinceManagement();
+        Province province = new Province();
         province.setName(addProvinceForm.getName());
         province.setParent(provinceRepository.findById(addProvinceForm.getParentId()).orElse(null));
         provinceRepository.save(province);
@@ -69,7 +69,7 @@ public class ProvinceController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException("not allow to add");
         }
-        ProvinceManagement province = provinceRepository.findById(updateProvinceForm.getId()).orElse(null);
+        Province province = provinceRepository.findById(updateProvinceForm.getId()).orElse(null);
 
         if (province == null) {
             throw new NotFoundException("not found");
@@ -89,7 +89,7 @@ public class ProvinceController extends ABasicController {
         }
         ResponseListObj<ProvinceManagementDTO> responseListObj = new ResponseListObj<>();
 
-        Page<ProvinceManagement> addressManagements = provinceRepository.findAllByParentId(id, pageable);
+        Page<Province> addressManagements = provinceRepository.findAllByParentId(id, pageable);
 
         responseListObj.setData(provinceMapper.fromProvinceManagementDataListToDtoList(addressManagements.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
