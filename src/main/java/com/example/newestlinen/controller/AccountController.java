@@ -217,7 +217,7 @@ public class AccountController extends ABasicController {
 
     }
 
-    @PutMapping(value = "/update_profile", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update_profile_admin", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> updateProfileAdmin(@Valid @RequestBody UpdateProfileAdminForm updateProfileAdminForm, BindingResult bindingResult) throws IOException {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         long id = getCurrentUserId();
