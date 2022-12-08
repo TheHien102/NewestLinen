@@ -13,7 +13,7 @@ import java.util.List;
 public class ProvinceCriteria {
     private String name;
 
-    private int type = -1;
+    private int level = -1;
 
     public Specification<Province> getSpecification() {
         return (root, query, criteriaBuilder) -> {
@@ -21,8 +21,8 @@ public class ProvinceCriteria {
             if (getName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("name"), "%" + getName().toLowerCase() + "%"));
             }
-            if (getType() != -1) {
-                predicates.add(criteriaBuilder.equal(root.get("type"),getType()));
+            if (getLevel() != -1) {
+                predicates.add(criteriaBuilder.equal(root.get("level"),getLevel()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
