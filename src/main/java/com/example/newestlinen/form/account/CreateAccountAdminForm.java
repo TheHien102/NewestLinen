@@ -34,4 +34,8 @@ public class CreateAccountAdminForm {
     @NotNull(message = "kind cannot be null")
     @Schema(name = "kind", required = true)
     private Integer kind;
+
+    @NotNull(message = "groupId cannot be null")
+    @Schema(name = "groupId", required = true)
+    private Long groupId;
 }

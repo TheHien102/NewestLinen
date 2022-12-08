@@ -153,12 +153,7 @@ public class AccountController extends ABasicController {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Username is existed");
         }
 
-//        Integer groupKind = LandingISConstant.GROUP_KIND_EMPLOYEE;
-//        if (createAccountAdminForm.getKind().equals(LandingISConstant.USER_KIND_ADMIN)) {
-//            groupKind = LandingISConstant.GROUP_KIND_SUPER_ADMIN;
-//        }
-
-        Group group = groupRepository.findFirstByKind(createAccountAdminForm.getKind());
+        Group group = groupRepository.findById(createAccountAdminForm.getGroupId()).orElse(null);
         if (group == null) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Group does not exist!");
         }

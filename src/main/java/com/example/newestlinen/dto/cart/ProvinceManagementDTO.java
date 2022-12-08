@@ -6,5 +6,6 @@ import lombok.Data;
 public class ProvinceManagementDTO {
     private Long id;
     private String name;
+    private int level;
     private Long parentId;
 }

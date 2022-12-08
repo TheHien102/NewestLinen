@@ -24,6 +24,8 @@ public class Province extends Auditable<String> {
     private Long id;
     private String name;
 
+    private int level;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Nullable

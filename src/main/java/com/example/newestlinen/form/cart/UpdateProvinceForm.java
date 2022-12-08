@@ -18,6 +18,12 @@ public class UpdateProvinceForm {
     @NotNull
     private String name;
 
+    @Schema(name = "name")
+    @NotBlank
+    @NotNull
+    @Min(value = 1)
+    private int level;
+
     @Schema(name = "parentId")
     private Long parentId;
 }
