@@ -20,14 +20,14 @@ public class Province extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "AddressManagement_ID")
+    @Column(name = "Province_ID")
     private Long id;
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Nullable
-    @JoinColumn(name = "Parent_ID", referencedColumnName = "AddressManagement_ID")
+    @JoinColumn(name = "Parent_ID", referencedColumnName = "Province_ID")
     @JsonBackReference
     @JsonIgnore
     private Province parent;
