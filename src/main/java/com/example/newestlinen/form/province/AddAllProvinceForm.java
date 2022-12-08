@@ -19,8 +19,6 @@ public class AddAllProvinceForm {
     private List<String> names;
 
     @Schema(name = "level")
-    @NotBlank
-    @NotNull
     @Min(value = 1)
     private int level;
 
