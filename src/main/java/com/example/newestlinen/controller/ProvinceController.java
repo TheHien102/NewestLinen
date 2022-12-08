@@ -5,9 +5,11 @@ import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.cart.ProvinceManagementDTO;
 import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.RequestException;
-import com.example.newestlinen.form.cart.AddProvinceForm;
-import com.example.newestlinen.form.cart.UpdateProvinceForm;
+import com.example.newestlinen.form.province.AddAllProvinceForm;
+import com.example.newestlinen.form.province.AddProvinceForm;
+import com.example.newestlinen.form.province.UpdateProvinceForm;
 import com.example.newestlinen.mapper.cart.ProvinceMapper;
+import com.example.newestlinen.storage.criteria.ProvinceCriteria;
 import com.example.newestlinen.storage.model.Address.Province;
 import com.example.newestlinen.utils.projection.repository.Cart.ProvinceRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/province")
@@ -31,8 +35,8 @@ public class ProvinceController extends ABasicController {
     private final ProvinceMapper provinceMapper;
 
     @GetMapping("/list")
-    public ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> listProvince(Pageable pageable) {
-        Page<Province> provinces = provinceRepository.findAll(pageable);
+    public ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> listProvince(ProvinceCriteria provinceCriteria, Pageable pageable) {
+        Page<Province> provinces = provinceRepository.findAll(provinceCriteria.getSpecification(), pageable);
 
         ResponseListObj<ProvinceManagementDTO> responseListObj = new ResponseListObj<>();
 
@@ -62,6 +66,27 @@ public class ProvinceController extends ABasicController {
         provinceRepository.save(province);
 
         return new ApiMessageDto<>("Add Province Success", HttpStatus.OK);
+    }
+
+    @PostMapping("/addAll")
+    public ApiMessageDto<String> addAllProvince(@Valid @RequestBody AddAllProvinceForm addAllProvinceForm) {
+        if (!isAdmin()) {
+            throw new RequestException("not allow to add");
+        }
+
+        Province parent = provinceRepository.findById(addAllProvinceForm.getParentId()).orElse(null);
+
+        List<Province> provinceList = addAllProvinceForm.getNames().stream().map(name -> {
+            Province p = new Province();
+            p.setName(name);
+            p.setLevel(addAllProvinceForm.getLevel());
+            p.setParent(parent);
+            return p;
+        }).collect(Collectors.toList());
+
+        provinceRepository.saveAll(provinceList);
+
+        return new ApiMessageDto<>("Add All Provinces Success", HttpStatus.OK);
     }
 
     @PutMapping("/update")

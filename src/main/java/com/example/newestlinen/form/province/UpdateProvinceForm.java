@@ -1,4 +1,4 @@
-package com.example.newestlinen.form.cart;
+package com.example.newestlinen.form.province;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

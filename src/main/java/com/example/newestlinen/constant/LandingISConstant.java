@@ -28,6 +28,9 @@ public class LandingISConstant {
 
     public static final Integer CATEGORY_KIND = 1;
 
+    public static final Integer CITY = 1;
+    public static final Integer DISTRICT = 2;
+    public static final Integer WARD = 3;
 
     public static final Integer GENDER_MALE = 1;
     public static final Integer GENDER_FEMALE = 2;

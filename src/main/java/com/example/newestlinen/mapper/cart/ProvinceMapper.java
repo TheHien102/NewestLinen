@@ -1,7 +1,7 @@
 package com.example.newestlinen.mapper.cart;
 
 import com.example.newestlinen.dto.cart.ProvinceManagementDTO;
-import com.example.newestlinen.form.cart.AddProvinceForm;
+import com.example.newestlinen.form.province.AddProvinceForm;
 import com.example.newestlinen.storage.model.Address.Province;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
