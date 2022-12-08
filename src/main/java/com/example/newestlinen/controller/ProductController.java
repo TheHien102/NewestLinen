@@ -159,7 +159,7 @@ public class ProductController extends ABasicController {
         return new ApiMessageDto<>("Upload Successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/changeState")
+    @PutMapping("/changeState")
     public ApiMessageDto<String> disableProduct(@RequestBody UpdateStateForm updateStateForm) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to change state");
@@ -173,8 +173,7 @@ public class ProductController extends ABasicController {
         return new ApiMessageDto<>("disable Product successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/update")
-    @Transactional
+    @PutMapping("/update")
     public ApiMessageDto<String> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
@@ -232,7 +231,7 @@ public class ProductController extends ABasicController {
         return new ApiMessageDto<>("update product successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     @Transactional
     public ApiMessageDto<String> deleteProduct(@RequestBody Map<String, String> req) {
         productRepository.deleteById(Long.parseLong(req.get("id")));

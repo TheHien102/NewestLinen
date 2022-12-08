@@ -243,7 +243,7 @@ public class AccountController extends ABasicController {
 
     }
 
-    @PostMapping("/update_profile_user")
+    @PutMapping("/update_profile_user")
     public ApiMessageDto<String> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
         Account account1 = accountRepository.findByUsernameOrEmailOrPhoneLike(updateProfileUserForm.getUsername(),
                 updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());

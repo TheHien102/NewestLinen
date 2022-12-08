@@ -64,7 +64,7 @@ public class ProvinceController extends ABasicController {
         return new ApiMessageDto<>("Add Province Success", HttpStatus.OK);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ApiMessageDto<String> updateProvince(@Valid @RequestBody UpdateProvinceForm updateProvinceForm) {
         if (!isAdmin()) {
             throw new RequestException("not allow to add");
