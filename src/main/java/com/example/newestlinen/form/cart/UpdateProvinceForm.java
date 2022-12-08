@@ -18,7 +18,7 @@ public class UpdateProvinceForm {
     @NotNull
     private String name;
 
-    @Schema(name = "name")
+    @Schema(name = "level")
     @NotBlank
     @NotNull
     @Min(value = 1)
