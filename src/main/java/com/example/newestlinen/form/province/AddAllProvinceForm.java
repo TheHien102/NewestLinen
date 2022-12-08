@@ -12,7 +12,7 @@ import java.util.List;
 @Schema
 @Data
 public class AddAllProvinceForm {
-    @Schema(name = "name")
+    @Schema(name = "names")
     @NotBlank
     @NotNull
     @Size(min = 1)
