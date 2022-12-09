@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,7 @@ public class CartController extends ABasicController {
         Cart cart = cartRepository.findByAccountId(getCurrentUserId());
         if (cart == null) {
             cart = new Cart();
+            cart.setCartItems(new ArrayList<>());
         }
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());
