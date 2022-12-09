@@ -72,7 +72,7 @@ public class CartController extends ABasicController {
         return apiMessageDto;
     }
 
-    @PostMapping("/add_to_cart")
+    @PostMapping("/create")
     public ApiMessageDto<String> addToCart(@Valid @RequestBody AddToCartForm addToCartForm) {
         if (getCurrentUserId() == -1L) {
             throw new UnauthorizationException("not a user");
@@ -100,6 +100,11 @@ public class CartController extends ABasicController {
         i.setName(itemName);
         i.setItemProduct(p);
         i.setVariants(variants);
+
+        variants.forEach(v -> {
+            v.setVariantItem(List.of(i));
+            v.setVariantProduct(p);
+        });
 
         // set properties for cart item
         cartItem.setItem(i);
