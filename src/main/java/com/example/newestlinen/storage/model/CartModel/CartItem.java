@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = TablePrefix.PREFIX_TABLE + "CartItem")
@@ -20,7 +22,7 @@ public class CartItem extends Auditable<String> {
     @Column(name = "CartItem_ID")
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Item item;
 
     private int quantity;
@@ -31,6 +33,7 @@ public class CartItem extends Auditable<String> {
 
     @JsonIgnore
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Cart_ID")
     private Cart cart;
 }

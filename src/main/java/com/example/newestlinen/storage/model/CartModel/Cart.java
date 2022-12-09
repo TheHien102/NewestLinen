@@ -23,7 +23,7 @@ public class Cart extends Auditable<String> {
     @Column(name = "Cart_ID")
     private Long id;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
     @JsonIgnore
