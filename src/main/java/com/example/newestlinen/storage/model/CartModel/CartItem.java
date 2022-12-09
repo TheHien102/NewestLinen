@@ -25,7 +25,9 @@ public class CartItem extends Auditable<String> {
 
     private int quantity;
 
-    private int totalPrice;
+    private int discount;
+
+    private int price;
 
     @JsonIgnore
     @ManyToOne

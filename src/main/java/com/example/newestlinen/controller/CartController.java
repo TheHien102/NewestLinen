@@ -1,6 +1,7 @@
 package com.example.newestlinen.controller;
 
 import com.example.newestlinen.dto.ApiMessageDto;
+import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.cart.AddToCartForm;
 import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.storage.model.CartModel.Cart;
@@ -34,6 +35,9 @@ public class CartController extends ABasicController {
 
     @PostMapping("/add_to_cart")
     public ApiMessageDto<String> addToCart(@Valid @RequestBody AddToCartForm addToCartForm) {
+        if(getCurrentUserId()==-1L){
+            throw new UnauthorizationException("not a user");
+        }
 
         Cart cart = cartRepository.findByAccountId(getCurrentUserId());
         if (cart == null) {
@@ -56,7 +60,7 @@ public class CartController extends ABasicController {
         // set properties for cart item
         cartItem.setItem(i);
         cartItem.setQuantity(addToCartForm.getQuantity());
-        cartItem.setTotalPrice(addToCartForm.getTotalPrice());
+        cartItem.setPrice(addToCartForm.getPrice());
 
         // set properties for cart and map with cartItems
         cart.getCartItems().add(cartItem);
@@ -66,4 +70,6 @@ public class CartController extends ABasicController {
 
         return new ApiMessageDto<>("Add to cart success", HttpStatus.OK);
     }
+
+
 }

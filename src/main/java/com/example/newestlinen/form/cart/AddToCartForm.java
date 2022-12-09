@@ -23,7 +23,11 @@ public class AddToCartForm {
     @Min(value = 1,message = "quantity shout not be null")
     private int quantity;
 
-    @Schema(name = "totalPrice")
-    @Min(value = 1,message = "totalPrice shout not be null")
-    private int totalPrice;
+    @Schema(name = "discount")
+    @Min(value = 0,message = "discount shout not be null")
+    private int discount;
+
+    @Schema(name = "price")
+    @Min(value = 1,message = "price shout not be null")
+    private int price;
 }
