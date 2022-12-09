@@ -15,6 +15,8 @@ public class ProvinceCriteria {
 
     private int level = -1;
 
+    private int parentId = -1;
+
     public Specification<Province> getSpecification() {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -22,7 +24,10 @@ public class ProvinceCriteria {
                 predicates.add(criteriaBuilder.like(root.get("name"), "%" + getName().toLowerCase() + "%"));
             }
             if (getLevel() != -1) {
-                predicates.add(criteriaBuilder.equal(root.get("level"),getLevel()));
+                predicates.add(criteriaBuilder.equal(root.get("level"), getLevel()));
+            }
+            if (getLevel() != -1) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), getParentId()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

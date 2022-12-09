@@ -55,28 +55,6 @@ public class ProvinceController extends ABasicController {
         return apiMessageDto;
     }
 
-
-    @GetMapping("/getChild")
-    public ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> listProvince(Long id, Pageable pageable) {
-        ResponseListObj<ProvinceManagementDTO> responseListObj = new ResponseListObj<>();
-
-        Page<Province> addressManagements = provinceRepository.findAllByParentId(id, pageable);
-
-        responseListObj.setData(provinceMapper.fromProvinceManagementDataListToDtoList(addressManagements.getContent()));
-        responseListObj.setPage(pageable.getPageNumber());
-        responseListObj.setTotalPage(addressManagements.getTotalPages());
-        responseListObj.setTotalElements(addressManagements.getTotalElements());
-
-        ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> apiMessageDto = new ApiMessageDto<>();
-
-        apiMessageDto.setMessage("get list Province success");
-        apiMessageDto.setStatus(HttpStatus.OK);
-        apiMessageDto.setResult(true);
-        apiMessageDto.setData(responseListObj);
-
-        return apiMessageDto;
-    }
-
     @PostMapping("/add")
     public ApiMessageDto<String> addProvince(@Valid @RequestBody AddProvinceForm addProvinceForm) {
         if (!isAdmin()) {
