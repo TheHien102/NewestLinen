@@ -27,6 +27,7 @@ public class Product extends Auditable<String> {
 
     private int discount;
 
+    @Column(length = 2000)
     private String description;
 
     private int price;
