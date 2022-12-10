@@ -29,4 +29,5 @@ public class AccountDto {
     @Schema(name = "lang")
     private String lang;
     private Boolean isSuperAdmin;
+    private Date createdDate;
 }
