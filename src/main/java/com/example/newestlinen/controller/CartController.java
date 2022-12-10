@@ -89,6 +89,8 @@ public class CartController extends ABasicController {
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());
 
+        int price = p.getPrice() * (100 - p.getDiscount()) / 100;
+
         List<Variant> variants = variantMapper.fromVariantDTOListToDataList(addToCartForm.getVariants());
 
         Item i = new Item();
@@ -111,7 +113,7 @@ public class CartController extends ABasicController {
         // set properties for cart item
         cartItem.setItem(i);
         cartItem.setQuantity(addToCartForm.getQuantity());
-        cartItem.setPrice(addToCartForm.getPrice());
+        cartItem.setPrice(price);
 
         // set properties for cart and map with cartItems
         cartItem.setCart(cart);

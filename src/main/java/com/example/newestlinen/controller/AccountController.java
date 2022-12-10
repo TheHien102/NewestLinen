@@ -145,6 +145,9 @@ public class AccountController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow create.");
         }
+
+        System.out.println(createAccountAdminForm);
+
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         Long accountCheck = accountRepository
@@ -161,8 +164,9 @@ public class AccountController extends ABasicController {
         Account account = accountMapper.fromCreateAccountAdminFormToAdmin(createAccountAdminForm);
         account.setGroup(group);
         account.setPassword(passwordEncoder.encode(createAccountAdminForm.getPassword()));
-        account.setKind(createAccountAdminForm.getKind());
-        account.setAvatarPath(uploadService.uploadImg(createAccountAdminForm.getAvatarPath()));
+        account.setKind(group.getKind());
+        if (createAccountAdminForm.getAvatarPath() != null)
+            account.setAvatarPath(uploadService.uploadImg(createAccountAdminForm.getAvatarPath()));
 
         accountRepository.save(account);
         apiMessageDto.setMessage("Create account admin success");
@@ -244,13 +248,13 @@ public class AccountController extends ABasicController {
                 updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());
 
         if (account1 != null && account1.getId() != getCurrentUserId()) {
-            return new ApiMessageDto<>("email or username or phone taken",HttpStatus.BAD_REQUEST,false);
+            return new ApiMessageDto<>("email or username or phone taken", HttpStatus.BAD_REQUEST, false);
         }
 
         Account account = accountRepository.findById(getCurrentUserId()).get();
 
         if (account == null) {
-            return new ApiMessageDto<>("account Not Found",HttpStatus.NOT_FOUND,false);
+            return new ApiMessageDto<>("account Not Found", HttpStatus.NOT_FOUND, false);
         }
 
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();

@@ -19,7 +19,7 @@ public class UploadService {
                 "use_filename", true,
                 "unique_filename", false,
                 "overwrite", true
-        )).get("secure_url");
+        )).get("url");
     }
 
     public void deleteImg(String url) throws IOException {
@@ -35,6 +35,6 @@ public class UploadService {
                 "resource_type", "video",
                 "unique_filename", false,
                 "overwrite", true
-        )).get("secure_url");
+        )).get("url");
     }
 }

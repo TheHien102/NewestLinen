@@ -4,9 +4,8 @@ import com.example.newestlinen.validation.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 @Data
 @Schema
@@ -21,20 +20,19 @@ public class CreateAccountAdminForm {
     @Schema(name = "password", required = true)
     private String password;
     @NotEmpty(message = "fullName cant not be null")
-    @Schema(name = "fullName",required = true)
+    @Schema(name = "fullName", required = true)
     private String fullName;
     private String avatarPath;
 
     @Status
-    private Integer status = 1;
+    @NotNull(message = "status should not be null")
+    private Integer status;
+
     @NotEmpty(message = "phone can not be empty")
     @Schema(name = "phone")
     private String phone;
 
-    @NotNull(message = "kind cannot be null")
-    @Schema(name = "kind", required = true)
-    private Integer kind;
-
+    @Valid
     @NotNull(message = "groupId cannot be null")
     @Schema(name = "groupId", required = true)
     private Long groupId;
