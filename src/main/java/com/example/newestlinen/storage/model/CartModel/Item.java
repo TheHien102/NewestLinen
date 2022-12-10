@@ -34,5 +34,6 @@ public class Item extends Auditable<String> {
     private Product itemProduct;
 
     @ManyToMany(mappedBy = "variantItem",cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Variant> Variants;
 }

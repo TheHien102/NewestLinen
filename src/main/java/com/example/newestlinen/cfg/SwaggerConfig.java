@@ -14,9 +14,9 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Landingis API")
+                        .title("Linen A 2022 v1 API")
                         .version("1.0")
-                        .description("Landingis API")
+                        .description("Linen A 2022 v1 API")
                         .termsOfService("http://swagger.io/terms/")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }

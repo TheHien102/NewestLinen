@@ -10,7 +10,7 @@ public class ItemDTO {
 
     private String name;
 
-    private ProductDetailDTO itemProduct;
+    private String proImg;
 
     private List<VariantDTO> variants;
 }

@@ -19,6 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Embeddable
 public class Variant extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +39,7 @@ public class Variant extends Auditable<String> {
     private Product variantProduct;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Item_Variant",
             joinColumns = @JoinColumn(name = "Variant_ID"),
             inverseJoinColumns = @JoinColumn(name = "Item_ID"))

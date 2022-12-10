@@ -78,12 +78,13 @@ public class CartController extends ABasicController {
             throw new UnauthorizationException("not a user");
         }
 
-        Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
-
         Cart cart = cartRepository.findByAccountId(getCurrentUserId());
+
         if (cart == null) {
+            Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
             cart = new Cart();
             cart.setCartItems(new ArrayList<>());
+            cart.setAccount(account);
         }
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());
@@ -94,12 +95,13 @@ public class CartController extends ABasicController {
 
         CartItem cartItem = new CartItem();
 
-        String itemName = p.getName() + addToCartForm.getVariants().stream().map(v -> " " + v.getName() + " " + v.getProperty()).toString();
+        String itemName = p.getName() + addToCartForm.getVariants().stream().map(v -> " " + v.getName() + " " + v.getProperty()).collect(Collectors.joining());
 
         // set properties for item
         i.setName(itemName);
         i.setItemProduct(p);
-        i.setVariants(variants);
+        i.setVariants(new ArrayList<>());
+        i.getVariants().addAll(variants);
 
         variants.forEach(v -> {
             v.setVariantItem(List.of(i));
@@ -112,10 +114,8 @@ public class CartController extends ABasicController {
         cartItem.setPrice(addToCartForm.getPrice());
 
         // set properties for cart and map with cartItems
-        cart.getCartItems().add(cartItem);
         cartItem.setCart(cart);
-
-        cart.setAccount(account);
+        cart.getCartItems().add(cartItem);
 
         cartRepository.save(cart);
 

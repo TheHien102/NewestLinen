@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = TablePrefix.PREFIX_TABLE + "Cart")
 @Getter
 @Setter
-@ToString
 public class Cart extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

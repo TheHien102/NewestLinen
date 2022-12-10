@@ -15,7 +15,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = TablePrefix.PREFIX_TABLE + "CartItem")
 @Getter
 @Setter
-@ToString
 public class CartItem extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

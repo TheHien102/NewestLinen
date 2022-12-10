@@ -218,6 +218,7 @@ public class ProductController extends ABasicController {
                 }
             }
         });
+
         updateAssets.forEach(a -> a.setAssetProduct(p));
         p.getAssets().clear();
         p.getAssets().addAll(updateAssets);

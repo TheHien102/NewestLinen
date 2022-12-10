@@ -14,18 +14,18 @@ import java.util.List;
 @Data
 public class CartItemCriteria {
 
-    private Long cartId;
+    private Long cartId = null;
 
-    private int status;
+    private int status = -999;
 
     public Specification<CartItem> getSpecification() {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (getCartId() != null) {
                 Join<Province, Province> joinCategory = root.join("cart", JoinType.INNER);
-                predicates.add(criteriaBuilder.equal(joinCategory.get("id"),getCartId()));
+                predicates.add(criteriaBuilder.equal(joinCategory.get("id"), getCartId()));
             }
-            if (getStatus() != -1) {
+            if (getStatus() != -999) {
                 predicates.add(criteriaBuilder.equal(root.get("status"), getStatus()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
