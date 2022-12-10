@@ -210,7 +210,7 @@ public class ProductController extends ABasicController {
 
         // delete IMG not contain in upload form
         p.getAssets().forEach(asset -> {
-            if (updateAssets.contains(asset)) {
+            if (!updateAssets.contains(asset)) {
                 try {
                     uploadService.deleteImg(asset.getLink());
                 } catch (IOException e) {
