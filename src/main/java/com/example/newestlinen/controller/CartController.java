@@ -46,8 +46,6 @@ public class CartController extends ABasicController {
 
     private final CartItemMapper cartItemMapper;
 
-    private final VariantMapper variantMapper;
-
     private final AccountRepository accountRepository;
 
     @GetMapping("/list")
@@ -57,10 +55,13 @@ public class CartController extends ABasicController {
         }
         ApiMessageDto<ResponseListObj<CartItemDTO>> apiMessageDto = new ApiMessageDto<>();
         ResponseListObj<CartItemDTO> responseListObj = new ResponseListObj<>();
+        Page<CartItem> cartItemPage;
+
         if (isCustomer()) {
-            cartItemCriteria.setAccountId(getCurrentUserId());
+            cartItemPage = cartItemRepository.findAll(cartItemCriteria.getSpecification(getCurrentUserId()), pageable);
+        } else {
+            cartItemPage = cartItemRepository.findAll(cartItemCriteria.getSpecification(), pageable);
         }
-        Page<CartItem> cartItemPage = cartItemRepository.findAll(cartItemCriteria.getSpecification(), pageable);
 
         responseListObj.setData(cartItemMapper.fromCartItemDataListToDtoList(cartItemPage.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
