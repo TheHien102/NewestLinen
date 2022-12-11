@@ -8,6 +8,8 @@ import java.util.List;
 
 @Data
 public class OrderDetailDTO {
+    private Long id;
+
     private Long productId;
 
     private List<VariantDTO> variants;

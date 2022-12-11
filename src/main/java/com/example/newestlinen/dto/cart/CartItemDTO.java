@@ -10,6 +10,8 @@ import java.util.List;
 
 @Data
 public class CartItemDTO {
+    private Long id;
+
     private Long productId;
 
     private List<VariantDTO> variants;
