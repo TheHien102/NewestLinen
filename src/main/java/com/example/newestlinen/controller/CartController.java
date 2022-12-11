@@ -74,7 +74,7 @@ public class CartController extends ABasicController {
 
     @PostMapping("/create")
     public ApiMessageDto<String> addToCart(@Valid @RequestBody AddToCartForm addToCartForm) {
-        if (getCurrentUserId() == -1L) {
+        if (!isCustomer()) {
             throw new UnauthorizationException("not a user");
         }
 

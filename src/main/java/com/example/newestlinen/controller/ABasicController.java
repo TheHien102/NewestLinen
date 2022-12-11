@@ -11,9 +11,9 @@ import java.util.Objects;
 
 public class ABasicController {
 
-    public long getCurrentUserId(){
+    public long getCurrentUserId() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
+        MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
         return authentication.getJwtUser().getAccountId();
     }
 
@@ -23,39 +23,47 @@ public class ABasicController {
         return account;
     }
 
-    public UserJwt getSessionFromToken(){
+    public UserJwt getSessionFromToken() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
+        MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
         return authentication.getJwtUser();
     }
 
-    public boolean isAdmin(){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
-        return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_ADMIN);
+    public boolean isAdmin() {
+        try {
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
+            return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_ADMIN);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    public boolean isEmployee(){
+    public boolean isEmployee() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
+        MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
         return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_EMPLOYEE);
     }
 
-    public boolean isCollaborator(){
+    public boolean isCollaborator() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
+        MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
         return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_COLLABORATOR);
     }
 
-    public boolean isCustomer(){
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
-        return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_CUSTOMER);
+    public boolean isCustomer() {
+        try {
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
+            return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_CUSTOMER);
+        }catch (Exception e){
+            return false;
+        }
     }
 
-    public boolean isSuperAdmin(){
+    public boolean isSuperAdmin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication)securityContext.getAuthentication();
+        MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
         return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_ADMIN) && authentication.getJwtUser().getIsSuperAdmin();
     }
 }
