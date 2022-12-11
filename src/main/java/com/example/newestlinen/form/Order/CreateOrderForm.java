@@ -1,5 +1,7 @@
 package com.example.newestlinen.form.Order;
 
+import com.example.newestlinen.dto.cart.CartItemDTO;
+import com.example.newestlinen.form.cart.AddToCartForm;
 import com.example.newestlinen.storage.model.OrderModel.OrderDetail;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -11,8 +13,10 @@ import java.util.List;
 @Schema
 public class CreateOrderForm {
     @Schema(name = "cartItemIdsList")
-    @Size(min = 1,message = "username should between {min} and {max} character")
     private List<Long> cartItemIdsList;
+
+    @Schema(name = "cartItemsList")
+    private List<AddToCartForm> cartItemsList;
 
     @Schema(name = "address")
     @NotNull(message = "address should not be null")

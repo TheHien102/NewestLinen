@@ -12,6 +12,7 @@ import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,5 +45,5 @@ public class Variant extends Auditable<String> {
             joinColumns = @JoinColumn(name = "Variant_ID"),
             inverseJoinColumns = @JoinColumn(name = "Item_ID"))
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Item> variantItem;
+    private List<Item> variantItem = new ArrayList<>();
 }
