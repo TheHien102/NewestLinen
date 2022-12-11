@@ -30,8 +30,8 @@ public class ProvinceCriteria {
                 predicates.add(criteriaBuilder.equal(root.get("level"), getLevel()));
             }
             if (getParentId() != -1) {
-                Join<Province, Province> joinCategory = root.join("parent", JoinType.INNER);
-                predicates.add(criteriaBuilder.equal(joinCategory.get("id"),getParentId()));
+                Join<Province, Province> joinProvince = root.join("parent", JoinType.INNER);
+                predicates.add(criteriaBuilder.equal(joinProvince.get("id"),getParentId()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

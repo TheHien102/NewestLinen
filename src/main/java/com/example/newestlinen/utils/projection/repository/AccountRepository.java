@@ -28,6 +28,8 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
 
     public Account findByUsernameOrEmailOrPhoneLike(String username, String email, String phone);
 
+    Account findFirstById(Long id);
+
     void deleteByUsername(String username);
 
     @Query(value = "SELECT *" +

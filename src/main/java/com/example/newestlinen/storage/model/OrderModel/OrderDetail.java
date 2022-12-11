@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Table(name = TablePrefix.PREFIX_TABLE + "OrderDetail")
 @Getter
 @Setter
-@ToString
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

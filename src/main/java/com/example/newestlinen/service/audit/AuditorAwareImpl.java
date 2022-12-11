@@ -1,4 +1,4 @@
-package com.example.newestlinen.storage.audit;
+package com.example.newestlinen.service.audit;
 
 import com.example.newestlinen.jwt.JWTUtils;
 import org.springframework.data.domain.AuditorAware;

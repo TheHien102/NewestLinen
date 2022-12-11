@@ -55,11 +55,11 @@ public class CartController extends ABasicController {
         if (getCurrentUserId() == -1L) {
             throw new UnauthorizationException("not a user");
         }
-
         ApiMessageDto<ResponseListObj<CartItemDTO>> apiMessageDto = new ApiMessageDto<>();
-
         ResponseListObj<CartItemDTO> responseListObj = new ResponseListObj<>();
-
+        if (isCustomer()) {
+            cartItemCriteria.setAccountId(getCurrentUserId());
+        }
         Page<CartItem> cartItemPage = cartItemRepository.findAll(cartItemCriteria.getSpecification(), pageable);
 
         responseListObj.setData(cartItemMapper.fromCartItemDataListToDtoList(cartItemPage.getContent()));
@@ -68,7 +68,7 @@ public class CartController extends ABasicController {
         responseListObj.setTotalElements(cartItemPage.getTotalElements());
 
         apiMessageDto.setData(responseListObj);
-        apiMessageDto.setMessage("List cart Items success");
+        apiMessageDto.setMessage("List user's cart Items success");
         return apiMessageDto;
     }
 

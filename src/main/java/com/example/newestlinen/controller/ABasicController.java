@@ -11,10 +11,14 @@ import java.util.Objects;
 
 public class ABasicController {
 
-    public long getCurrentUserId() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-        return authentication.getJwtUser().getAccountId();
+    public Long getCurrentUserId() {
+        try {
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
+            return authentication.getJwtUser().getAccountId();
+        } catch (Exception e) {
+            return -1L;
+        }
     }
 
     public Account getCurrentAdmin() {
@@ -56,7 +60,7 @@ public class ABasicController {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
             return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_CUSTOMER);
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

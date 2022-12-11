@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = TablePrefix.PREFIX_TABLE + "Order")
 @Getter
 @Setter
-@ToString
 public class Order extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +30,11 @@ public class Order extends Auditable<String> {
 
     private String address;
 
+    private String phoneNumber;
+
     private String note;
 
-    private int paymentType;
+    private Integer paymentType;
 
     @JsonIgnore
     @OneToOne

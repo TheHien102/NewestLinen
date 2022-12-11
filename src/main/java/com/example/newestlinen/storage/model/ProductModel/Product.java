@@ -37,7 +37,6 @@ public class Product extends Auditable<String> {
     @JoinColumn(name = "Category_ID")
     private Category productCategory;
 
-    @Embedded
     @OneToMany(mappedBy = "variantProduct", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Variant> variants;
 
