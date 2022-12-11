@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = TablePrefix.PREFIX_TABLE + "Variant")
@@ -32,6 +33,15 @@ public class Variant extends Auditable<String> {
     private String property;
 
     private int addPrice;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Variant) {
+            Variant a = (Variant) obj;
+            return Objects.equals(a.getId(), this.id);
+        }
+        return false;
+    }
 
     @JsonIgnore
     @ManyToOne

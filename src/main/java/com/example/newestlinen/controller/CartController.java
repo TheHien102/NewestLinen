@@ -91,7 +91,7 @@ public class CartController extends ABasicController {
 
         int price = p.getPrice() * (100 - p.getDiscount()) / 100;
 
-        List<Variant> variants = variantMapper.fromVariantDTOListToDataList(addToCartForm.getVariants());
+        List<Variant> variants = p.getVariants().stream().filter(v -> addToCartForm.getVariants().contains(v)).collect(Collectors.toList());
 
         Item i = new Item();
 
