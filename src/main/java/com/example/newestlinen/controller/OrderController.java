@@ -89,6 +89,7 @@ public class OrderController extends ABasicController {
             Account account = accountRepository.findFirstById(getCurrentUserId());
             order.setAccount(account);
             order.setPhoneNumber(account.getPhone());
+            cartItemRepository.deleteAllById(createOrderForm.getCartItemIdsList());
         } else {
             order.setPhoneNumber(createOrderForm.getPhoneNumber());
         }
