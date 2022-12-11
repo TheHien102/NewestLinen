@@ -244,17 +244,16 @@ public class AccountController extends ABasicController {
 
     @PutMapping("/update_profile_user")
     public ApiMessageDto<String> updateAccountUser(@Valid @RequestBody UpdateProfileUserForm updateProfileUserForm) throws IOException {
-        Account account1 = accountRepository.findByUsernameOrEmailOrPhoneLike(updateProfileUserForm.getUsername(),
-                updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());
-
-        if (account1 != null && account1.getId() != getCurrentUserId()) {
-            return new ApiMessageDto<>("email or username or phone taken", HttpStatus.BAD_REQUEST, false);
-        }
-
-        Account account = accountRepository.findById(getCurrentUserId()).get();
-
+        Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
         if (account == null) {
             return new ApiMessageDto<>("account Not Found", HttpStatus.NOT_FOUND, false);
+        }
+
+        Account accountCheck = accountRepository.findFirstByUsernameOrEmailOrPhone(updateProfileUserForm.getUsername(),
+                updateProfileUserForm.getEmail(), updateProfileUserForm.getPhone());
+
+        if (accountCheck != null && !Objects.equals(accountCheck.getId(), getCurrentUserId())) {
+            return new ApiMessageDto<>("email or username or phone taken", HttpStatus.BAD_REQUEST, false);
         }
 
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
@@ -428,7 +427,7 @@ public class AccountController extends ABasicController {
 
     @PostMapping("/register")
     public ApiMessageDto<String> Register(@RequestBody @Valid CreateAccountUserForm createAccountUserForm) throws IOException {
-        Account account = accountRepository.findByUsernameOrEmailOrPhoneLike(createAccountUserForm.getUsername(),
+        Account account = accountRepository.findFirstByUsernameOrEmailOrPhone(createAccountUserForm.getUsername(),
                 createAccountUserForm.getEmail(), createAccountUserForm.getPhone());
 
         if (account != null) {
