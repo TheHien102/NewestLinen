@@ -10,7 +10,7 @@ public class ItemDTO {
 
     private String name;
 
-    private String proImg;
+    private String mainImg;
 
     private List<VariantDTO> variants;
 }

@@ -16,7 +16,7 @@ public interface CartItemMapper {
 
     CartItemDTO fromCartItemDataToObject(CartItem content);
 
-    @Mapping(source = "itemProduct.mainImg",target = "proImg")
+    @Mapping(source = "itemProduct.mainImg",target = "mainImg")
     ItemDTO fromItemDataToObject(Item content);
 
     @IterableMapping(elementTargetType = CartItemDTO.class)
