@@ -55,48 +55,44 @@ public class ProductController extends ABasicController {
 
     private final CategoryRepository categoryRepository;
 
-    @GetMapping("/list_product_for_admin")
-    public ApiMessageDto<ResponseListObj<ProductAdminDTO>> getProductByPageAdmin(ProductCriteria productCriteria, Pageable pageable) {
-        if (!isAdmin()) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to list");
+    @GetMapping("/list")
+    public Object getProductByPageAdmin(ProductCriteria productCriteria, Pageable pageable) {
+        if (isAdmin()) {
+            // list for admin
+            Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
+
+            ApiMessageDto<ResponseListObj<ProductAdminDTO>> apiMessageDto = new ApiMessageDto<>();
+
+            ResponseListObj<ProductAdminDTO> responseListObj = new ResponseListObj<>();
+
+            responseListObj.setData(productMapper.fromProductAdminDataListToDtoList(productPage.getContent()));
+            responseListObj.setPage(pageable.getPageNumber());
+            responseListObj.setTotalPage(productPage.getTotalPages());
+            responseListObj.setTotalElements(productPage.getTotalElements());
+
+            apiMessageDto.setData(responseListObj);
+            apiMessageDto.setMessage("List product success");
+            return apiMessageDto;
+        } else {
+            // list for users and guests
+            Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
+
+            ApiMessageDto<ResponseListObj<ProductUserDTO>> apiMessageDto = new ApiMessageDto<>();
+
+            productPage.getContent().forEach(product -> product.setVariants(product.getVariants().stream().filter(variant -> variant.getName().equalsIgnoreCase("color")).collect(Collectors.toList())));
+
+            ResponseListObj<ProductUserDTO> responseListObj = new ResponseListObj<>();
+
+            responseListObj.setData(productMapper.fromProductUserDataListToDtoList(productPage.getContent()));
+            responseListObj.setPage(pageable.getPageNumber());
+            responseListObj.setTotalPage(productPage.getTotalPages());
+            responseListObj.setTotalElements(productPage.getTotalElements());
+
+            apiMessageDto.setData(responseListObj);
+            apiMessageDto.setMessage("List product success");
+
+            return apiMessageDto;
         }
-
-        Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
-
-        ApiMessageDto<ResponseListObj<ProductAdminDTO>> apiMessageDto = new ApiMessageDto<>();
-
-        ResponseListObj<ProductAdminDTO> responseListObj = new ResponseListObj<>();
-
-        responseListObj.setData(productMapper.fromProductAdminDataListToDtoList(productPage.getContent()));
-        responseListObj.setPage(pageable.getPageNumber());
-        responseListObj.setTotalPage(productPage.getTotalPages());
-        responseListObj.setTotalElements(productPage.getTotalElements());
-
-        apiMessageDto.setData(responseListObj);
-        apiMessageDto.setMessage("List product success");
-        return apiMessageDto;
-    }
-
-    @GetMapping("/list_product_for_user")
-    public ApiMessageDto<ResponseListObj<ProductUserDTO>> getProductByPageUser(ProductCriteria productCriteria, Pageable pageable) {
-
-        Page<Product> productPage = productRepository.findAll(productCriteria.getSpecification(), pageable);
-
-        ApiMessageDto<ResponseListObj<ProductUserDTO>> apiMessageDto = new ApiMessageDto<>();
-
-        productPage.getContent().forEach(product -> product.setVariants(product.getVariants().stream().filter(variant -> variant.getName().equalsIgnoreCase("color")).collect(Collectors.toList())));
-
-        ResponseListObj<ProductUserDTO> responseListObj = new ResponseListObj<>();
-
-        responseListObj.setData(productMapper.fromProductUserDataListToDtoList(productPage.getContent()));
-        responseListObj.setPage(pageable.getPageNumber());
-        responseListObj.setTotalPage(productPage.getTotalPages());
-        responseListObj.setTotalElements(productPage.getTotalElements());
-
-        apiMessageDto.setData(responseListObj);
-        apiMessageDto.setMessage("List product success");
-
-        return apiMessageDto;
     }
 
     @GetMapping("/get/{Id}")
@@ -146,11 +142,11 @@ public class ProductController extends ABasicController {
                 ).collect(Collectors.toList());
 
         // Map together
-        variantList.forEach(v->v.setVariantProduct(p));
+        variantList.forEach(v -> v.setVariantProduct(p));
 
         p.setVariants(variantList);
 
-        assetList.forEach(a->a.setAssetProduct(p));
+        assetList.forEach(a -> a.setAssetProduct(p));
 
         p.setAssets(assetList);
 
