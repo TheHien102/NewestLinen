@@ -24,11 +24,11 @@ public class CartItem extends Auditable<String> {
     @OneToOne(cascade = CascadeType.ALL)
     private Item item;
 
-    private int quantity;
+    private Integer quantity;
 
-    private int discount;
+    private Integer discount;
 
-    private int price;
+    private Integer price;
 
     @JsonIgnore
     @ManyToOne

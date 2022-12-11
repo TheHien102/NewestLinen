@@ -14,6 +14,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CartItemMapper {
 
+    @Mapping(source = "item.itemProduct.id",target = "productId")
+    @Mapping(source = "item.variants",target = "variants")
+    @Mapping(source = "quantity",target = "quantity")
+    @Mapping(source = "price",target = "price")
+    @Mapping(source = "discount",target = "discount")
+    @Mapping(source = "item.name",target = "name")
+    @Mapping(source = "item.itemProduct.mainImg",target = "mainImg")
     CartItemDTO fromCartItemDataToObject(CartItem content);
 
     @Mapping(source = "itemProduct.mainImg",target = "mainImg")
