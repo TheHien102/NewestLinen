@@ -16,21 +16,25 @@ import java.util.List;
 
 @Data
 public class OrderDetailCriteria {
-    private Long accountId = null;
-    private String phoneNumber = null;
     private int status = -999;
 
     public Specification<OrderDetail> getSpecification() {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (getAccountId() != null) {
+            if (getStatus() != -999) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), getStatus()));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+    public Specification<OrderDetail> getSpecification(Long accountId) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (accountId != null) {
                 Join<OrderDetail, Order> joinOrder = root.join("order", JoinType.INNER);
                 Join<Order, Account> joinAccount = joinOrder.join("account", JoinType.INNER);
-                predicates.add(criteriaBuilder.equal(joinAccount.get("id"), getAccountId()));
-            }
-            if (getPhoneNumber() != null) {
-                Join<OrderDetail, Order> joinOrder = root.join("order", JoinType.INNER);
-                predicates.add(criteriaBuilder.equal(joinOrder.get("phoneNumber"), getPhoneNumber()));
+                predicates.add(criteriaBuilder.equal(joinAccount.get("id"), accountId));
             }
             if (getStatus() != -999) {
                 predicates.add(criteriaBuilder.equal(root.get("status"), getStatus()));

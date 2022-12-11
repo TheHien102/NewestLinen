@@ -18,6 +18,15 @@ public interface OrderMapper {
     @IterableMapping(elementTargetType = OrderDetail.class)
     List<OrderDetail> fromCartItemListToOrderDetailList(List<CartItem> content);
 
+    @Mapping(source = "item.itemProduct.id",target = "productId")
+    @Mapping(source = "item.variants",target = "variants")
+    @Mapping(source = "quantity",target = "quantity")
+    @Mapping(source = "price",target = "price")
+    @Mapping(source = "discount",target = "discount")
+    @Mapping(source = "item.name",target = "name")
+    @Mapping(source = "item.itemProduct.mainImg",target = "mainImg")
+    @Mapping(source = "order.createdDate",target = "createdDate")
+    @Mapping(source = "order.modifiedDate",target = "modifiedDate")
     OrderDetailDTO fromOrderDetailDataToObject(OrderDetail content);
 
     @IterableMapping(elementTargetType = OrderDetailDTO.class)

@@ -1,21 +1,28 @@
 package com.example.newestlinen.dto.order;
 
-import com.example.newestlinen.dto.product.ItemDTO;
-import com.example.newestlinen.storage.model.CartModel.Item;
+import com.example.newestlinen.dto.product.VariantDTO;
 import lombok.Data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToOne;
+import java.util.Date;
+import java.util.List;
 
 @Data
 public class OrderDetailDTO {
-    private Long id;
+    private Long productId;
 
-    private ItemDTO item;
+    private List<VariantDTO> variants;
 
-    private int quantity;
+    private Integer quantity;
 
-    private int discount;
+    private Integer price;
 
-    private int price;
+    private Integer discount;
+
+    private String name;
+
+    private String mainImg;
+
+    private Date createdDate;
+
+    private Date modifiedDate;
 }

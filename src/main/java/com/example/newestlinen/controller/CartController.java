@@ -65,7 +65,7 @@ public class CartController extends ABasicController {
             cartItemPage = cartItemRepository.findAll(cartItemCriteria.getSpecification(), pageable);
         }
 
-        responseListObj.setData(cartItemMapper.fromCartItemDataListToDtoList(cartItemPage.getContent()));
+        responseListObj.setData(cartItemMapper.fromCartItemDataListToObjectList(cartItemPage.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
         responseListObj.setTotalPage(cartItemPage.getTotalPages());
         responseListObj.setTotalElements(cartItemPage.getTotalElements());

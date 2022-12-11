@@ -27,5 +27,5 @@ public interface CartItemMapper {
     ItemDTO fromItemDataToObject(Item content);
 
     @IterableMapping(elementTargetType = CartItemDTO.class)
-    List<CartItemDTO> fromCartItemDataListToDtoList(List<CartItem> content);
+    List<CartItemDTO> fromCartItemDataListToObjectList(List<CartItem> content);
 }

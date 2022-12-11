@@ -55,11 +55,12 @@ public class OrderController extends ABasicController {
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<OrderDetailDTO>> listOrder(OrderDetailCriteria orderDetailCriteria, Pageable pageable) {
+        Page<OrderDetail> orderDetailPage;
         if (isCustomer()) {
-            orderDetailCriteria.setAccountId(getCurrentUserId());
+            orderDetailPage = orderDetailRepository.findAll(orderDetailCriteria.getSpecification(getCurrentUserId()), pageable);
+        } else {
+            orderDetailPage = orderDetailRepository.findAll(orderDetailCriteria.getSpecification(), pageable);
         }
-
-        Page<OrderDetail> orderDetailPage = orderDetailRepository.findAll(orderDetailCriteria.getSpecification(), pageable);
 
         ApiMessageDto<ResponseListObj<OrderDetailDTO>> apiMessageDto = new ApiMessageDto<>();
 
