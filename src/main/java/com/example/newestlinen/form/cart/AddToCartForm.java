@@ -17,7 +17,7 @@ public class AddToCartForm {
 
     @Schema(name = "variants")
     @Size(min = 1,message = "size should not be null")
-    private List<VariantDTO> variants;
+    private List<Long> variantIds;
 
     @Schema(name = "quantity")
     @Min(value = 1,message = "quantity shout not be null")

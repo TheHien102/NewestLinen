@@ -92,13 +92,13 @@ public class CartController extends ABasicController {
 
         int price = p.getPrice() * (100 - p.getDiscount()) / 100;
 
-        List<Variant> variants = p.getVariants().stream().filter(v -> addToCartForm.getVariants().contains(v)).collect(Collectors.toList());
+        List<Variant> variants = p.getVariants().stream().filter(v -> addToCartForm.getVariantIds().contains(v.getId())).collect(Collectors.toList());
 
         Item i = new Item();
 
         CartItem cartItem = new CartItem();
 
-        String itemName = p.getName() + addToCartForm.getVariants().stream().map(v -> " " + v.getName() + " " + v.getProperty()).collect(Collectors.joining());
+        String itemName = p.getName() + variants.stream().map(v -> " " + v.getName() + " " + v.getProperty()).collect(Collectors.joining());
 
         // set properties for item
         i.setName(itemName);
