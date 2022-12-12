@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,7 @@ public class Item extends Auditable<String> {
     @JoinColumn(name = "Product_ID", referencedColumnName = "Product_ID")
     private Product itemProduct;
 
-    @ManyToMany(mappedBy = "variantItem",cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "variantItem", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Variant> Variants;
+    private List<Variant> Variants = new ArrayList<>();
 }
