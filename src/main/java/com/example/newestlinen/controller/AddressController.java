@@ -8,6 +8,7 @@ import com.example.newestlinen.form.order.CreateAddressForm;
 import com.example.newestlinen.mapper.order.AddressMapper;
 import com.example.newestlinen.storage.model.Address.Address;
 import com.example.newestlinen.utils.projection.repository.AccountRepository;
+import com.example.newestlinen.utils.projection.repository.Cart.ProvinceRepository;
 import com.example.newestlinen.utils.projection.repository.Order.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ import java.util.List;
 public class AddressController extends ABasicController {
 
     private final AddressRepository addressRepository;
+
+    private final ProvinceRepository provinceRepository;
 
     private final AddressMapper addressMapper;
 
@@ -53,9 +56,9 @@ public class AddressController extends ABasicController {
 
         Address address = new Address();
 
-        address.setCity(createAddressForm.getCity());
-        address.setDistrict(createAddressForm.getDistrict());
-        address.setWard(createAddressForm.getWard());
+        address.setCity(provinceRepository.findById(createAddressForm.getProvince_cityId()).orElse(null));
+        address.setDistrict(provinceRepository.findById(createAddressForm.getProvince_districtId()).orElse(null));
+        address.setWard(provinceRepository.findById(createAddressForm.getProvince_wardId()).orElse(null));
         address.setPhone(createAddressForm.getPhone());
 
         address.setAccount(accountRepository.findById(getCurrentUserId()).orElse(null));

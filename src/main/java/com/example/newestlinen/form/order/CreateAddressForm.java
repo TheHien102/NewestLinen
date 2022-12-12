@@ -1,5 +1,6 @@
 package com.example.newestlinen.form.order;
 
+import com.example.newestlinen.dto.cart.ProvinceDTO;
 import com.example.newestlinen.storage.model.Address.Province;
 import lombok.Data;
 
@@ -11,15 +12,13 @@ import javax.validation.constraints.NotNull;
 public class CreateAddressForm {
 
     @NotNull
-    private Province city;
+    private Long province_cityId;
 
     @NotNull
-    private Province district;
+    private Long province_districtId;
 
     @NotNull
-    @NotBlank
-    @NotEmpty
-    private Province ward;
+    private Long province_wardId;
 
     @NotNull
     @NotBlank

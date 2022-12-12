@@ -1,5 +1,6 @@
 package com.example.newestlinen.dto.order;
 
+import com.example.newestlinen.dto.cart.ProvinceDTO;
 import com.example.newestlinen.storage.model.Address.Province;
 import lombok.Data;
 
@@ -7,11 +8,11 @@ import lombok.Data;
 public class AddressDTO {
     private Long id;
 
-    private Province city;
+    private ProvinceDTO city;
 
-    private Province district;
+    private ProvinceDTO district;
 
-    private Province ward;
+    private ProvinceDTO ward;
 
     private String phone;
 }
