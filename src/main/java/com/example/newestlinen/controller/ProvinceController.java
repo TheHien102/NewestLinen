@@ -2,7 +2,7 @@ package com.example.newestlinen.controller;
 
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
-import com.example.newestlinen.dto.cart.ProvinceManagementDTO;
+import com.example.newestlinen.dto.cart.ProvinceDTO;
 import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.province.AddAllProvinceForm;
@@ -35,17 +35,17 @@ public class ProvinceController extends ABasicController {
     private final ProvinceMapper provinceMapper;
 
     @GetMapping("/list")
-    public ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> listProvince(ProvinceCriteria provinceCriteria, Pageable pageable) {
+    public ApiMessageDto<ResponseListObj<ProvinceDTO>> listProvince(ProvinceCriteria provinceCriteria, Pageable pageable) {
         Page<Province> provinces = provinceRepository.findAll(provinceCriteria.getSpecification(), pageable);
 
-        ResponseListObj<ProvinceManagementDTO> responseListObj = new ResponseListObj<>();
+        ResponseListObj<ProvinceDTO> responseListObj = new ResponseListObj<>();
 
         responseListObj.setData(provinceMapper.fromProvinceManagementDataListToDtoList(provinces.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
         responseListObj.setTotalPage(provinces.getTotalPages());
         responseListObj.setTotalElements(provinces.getTotalElements());
 
-        ApiMessageDto<ResponseListObj<ProvinceManagementDTO>> apiMessageDto = new ApiMessageDto<>();
+        ApiMessageDto<ResponseListObj<ProvinceDTO>> apiMessageDto = new ApiMessageDto<>();
 
         apiMessageDto.setMessage("get list Province success");
         apiMessageDto.setStatus(HttpStatus.OK);

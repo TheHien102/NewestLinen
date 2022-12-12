@@ -1,8 +1,6 @@
-package com.example.newestlinen.form.Order;
+package com.example.newestlinen.form.order;
 
-import com.example.newestlinen.dto.cart.CartItemDTO;
 import com.example.newestlinen.form.cart.AddToCartForm;
-import com.example.newestlinen.storage.model.OrderModel.OrderDetail;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

@@ -7,9 +7,11 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.example.newestlinen.storage.model.Address.Address;
 
 @Entity
 @Table(name = TablePrefix.PREFIX_TABLE + "account")
@@ -61,9 +63,11 @@ public class Account extends Auditable<String> {
     private Date verifyTime;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(mappedBy = "account")
     @JoinColumn(name = "Cart_ID")
     private Cart cart;
 
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressUser = new ArrayList<>();
 }
