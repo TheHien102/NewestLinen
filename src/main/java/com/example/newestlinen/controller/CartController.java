@@ -80,9 +80,7 @@ public class CartController extends ABasicController {
         if (!isCustomer()) {
             throw new UnauthorizationException("not a user");
         }
-
         Cart cart = cartRepository.findByAccountId(getCurrentUserId());
-
         if (cart == null) {
             Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
             cart = new Cart();
