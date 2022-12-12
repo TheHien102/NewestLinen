@@ -3,6 +3,7 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.order.OrderDetailDTO;
+import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.order.CreateOrderForm;
 import com.example.newestlinen.mapper.order.OrderMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
@@ -54,6 +55,9 @@ public class OrderController extends ABasicController {
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<OrderDetailDTO>> listOrder(OrderDetailCriteria orderDetailCriteria, Pageable pageable) {
+        if (!isCustomer() || !isAdmin() || isSuperAdmin()) {
+            throw new UnauthorizationException("not a user");
+        }
         Page<OrderDetail> orderDetailPage;
         if (isCustomer()) {
             orderDetailPage = orderDetailRepository.findAll(orderDetailCriteria.getSpecification(getCurrentUserId()), pageable);

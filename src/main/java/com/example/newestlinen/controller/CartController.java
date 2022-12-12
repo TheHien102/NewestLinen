@@ -139,6 +139,9 @@ public class CartController extends ABasicController {
 
     @PutMapping("/update")
     public ApiMessageDto<String> updateCart(@Valid @RequestBody UpdateCartForm updateCartForm) {
+        if(!isCustomer()){
+            throw new UnauthorizationException("not a user");
+        }
         CartItem cartItem=cartItemRepository.findById(updateCartForm.getCartItemId()).orElse(null);
         if(cartItem==null){
             throw new NotFoundException("cartItem not found");

@@ -114,7 +114,7 @@ public class ProductController extends ABasicController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> uploadProduct(@Valid @RequestBody UploadProductForm uploadProductForm) throws IOException {
         if (!isAdmin()) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to upload");
+            throw new UnauthorizationException("not allow to add");
         }
         // declare new Product
         Product p = new Product();
@@ -159,7 +159,7 @@ public class ProductController extends ABasicController {
     @PutMapping("/changeState")
     public ApiMessageDto<String> disableProduct(@RequestBody UpdateStateForm updateStateForm) {
         if (!isAdmin()) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to change state");
+            throw new UnauthorizationException("not allow to change State");
         }
         Product p = productRepository.findProductById(updateStateForm.getId());
         if (p == null) {
@@ -173,7 +173,7 @@ public class ProductController extends ABasicController {
     @PutMapping("/update")
     public ApiMessageDto<String> updateProduct(@Valid @RequestBody UpdateProductForm updateProductForm) throws IOException {
         if (!isAdmin()) {
-            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow to update");
+            throw new UnauthorizationException("not allow to update");
         }
 
         Product p = productRepository.findProductById(updateProductForm.getId());

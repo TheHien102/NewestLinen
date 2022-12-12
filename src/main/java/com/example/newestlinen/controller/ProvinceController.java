@@ -5,6 +5,7 @@ import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.cart.ProvinceDTO;
 import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.RequestException;
+import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.province.AddAllProvinceForm;
 import com.example.newestlinen.form.province.AddProvinceForm;
 import com.example.newestlinen.form.province.UpdateProvinceForm;
@@ -36,6 +37,7 @@ public class ProvinceController extends ABasicController {
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<ProvinceDTO>> listProvince(ProvinceCriteria provinceCriteria, Pageable pageable) {
+
         Page<Province> provinces = provinceRepository.findAll(provinceCriteria.getSpecification(), pageable);
 
         ResponseListObj<ProvinceDTO> responseListObj = new ResponseListObj<>();
@@ -58,7 +60,7 @@ public class ProvinceController extends ABasicController {
     @PostMapping("/add")
     public ApiMessageDto<String> addProvince(@Valid @RequestBody AddProvinceForm addProvinceForm) {
         if (!isAdmin()) {
-            throw new RequestException("not allow to add");
+            throw new UnauthorizationException("not allow to add");
         }
         Province province = new Province();
         province.setName(addProvinceForm.getName());
