@@ -180,7 +180,7 @@ public class ProductController extends ABasicController {
             return new ApiMessageDto<>("Product not Found", HttpStatus.NOT_FOUND);
         }
         p.setName(updateProductForm.getName());
-        if (!updateProductForm.getMainImg().equalsIgnoreCase(p.getMainImg())) {
+        if (updateProductForm.getMainImg().contains("base64")) {
             uploadService.deleteImg(p.getMainImg());
             p.setMainImg(uploadService.uploadImg(updateProductForm.getMainImg()));
         }
@@ -216,9 +216,11 @@ public class ProductController extends ABasicController {
         });
 
         updateAssets.forEach(a -> a.setAssetProduct(p));
+        p.getAssets().clear();
         p.getAssets().addAll(updateAssets);
 
         updateVariants.forEach(v -> v.setVariantProduct(p));
+        p.getVariants().clear();
         p.getVariants().addAll(updateVariants);
 
         productRepository.save(p);
