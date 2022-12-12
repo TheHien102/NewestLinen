@@ -143,6 +143,7 @@ public class CartController extends ABasicController {
         if(cartItem==null){
             throw new NotFoundException("cartItem not found");
         }
+        cartItem.setQuantity(updateCartForm.getQuantity());
         cartItemRepository.save(cartItem);
         return new ApiMessageDto<>("Update cart success", HttpStatus.OK);
     }
