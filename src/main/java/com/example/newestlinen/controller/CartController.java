@@ -99,10 +99,10 @@ public class CartController extends ABasicController {
         List<Variant> variants = p.getVariants().stream().filter(CartVariants::contains).collect(Collectors.toList());
 
         variants.forEach(v -> {
-            price.set(price.get() + v.getAddPrice() * addToCartForm.getQuantity());
+            price.set(price.get() + v.getAddPrice());
         });
 
-        price.set(price.get() * (100 - p.getDiscount()) / 100);
+        price.set(price.get() * (100 - p.getDiscount()) / 100 * addToCartForm.getQuantity());
 
         Item i = new Item();
 
