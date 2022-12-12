@@ -100,7 +100,7 @@ public class CartController extends ABasicController {
             price.set(price.get() + v.getAddPrice());
         });
 
-        price.set(price.get() * (100 - p.getDiscount()) / 100 * addToCartForm.getQuantity());
+        price.set(price.get() * (100 - p.getDiscount()) / 100);
 
         Item i = new Item();
 
