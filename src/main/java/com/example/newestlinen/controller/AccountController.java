@@ -213,7 +213,6 @@ public class AccountController extends ABasicController {
         apiMessageDto.setData(accountMapper.fromEntityToAccountDto(account));
         apiMessageDto.setMessage("Get Account success");
         return apiMessageDto;
-
     }
 
     @PutMapping(value = "/update_profile_admin", produces = MediaType.APPLICATION_JSON_VALUE)
