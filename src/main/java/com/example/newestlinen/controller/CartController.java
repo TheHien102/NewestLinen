@@ -3,8 +3,10 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.cart.CartItemDTO;
+import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.cart.AddToCartForm;
+import com.example.newestlinen.form.cart.UpdateCartForm;
 import com.example.newestlinen.mapper.cart.CartItemMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.storage.criteria.CartItemCriteria;
@@ -23,11 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -106,10 +110,8 @@ public class CartController extends ABasicController {
 
         CartItem cartItem = new CartItem();
 
-        String itemName = p.getName() + addToCartForm.getVariants().stream().map(v -> " " + v.getName() + " " + v.getProperty()).collect(Collectors.joining());
-
         // set properties for item
-        i.setName(itemName);
+        i.setName(p.getName());
         i.setItemProduct(p);
 
         variants.forEach(v -> {
@@ -133,5 +135,25 @@ public class CartController extends ABasicController {
         cartRepository.save(cart);
 
         return new ApiMessageDto<>("Add to cart success", HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ApiMessageDto<String> updateCart(@Valid @RequestBody UpdateCartForm updateCartForm) {
+        CartItem cartItem=cartItemRepository.findById(updateCartForm.getCartItemId()).orElse(null);
+        if(cartItem==null){
+            throw new NotFoundException("cartItem not found");
+        }
+        cartItemRepository.save(cartItem);
+        return new ApiMessageDto<>("Update cart success", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    @Transactional
+    public ApiMessageDto<String> deleteCartItem(Long id) {
+        if(!isCustomer()){
+            throw new UnauthorizationException("not a user");
+        }
+        cartItemRepository.deleteById(id);
+        return new ApiMessageDto<>("deleted cartItem id: " + id, HttpStatus.OK);
     }
 }

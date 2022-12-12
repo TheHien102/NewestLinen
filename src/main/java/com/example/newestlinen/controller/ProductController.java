@@ -7,6 +7,7 @@ import com.example.newestlinen.dto.product.ProductAdminDTO;
 import com.example.newestlinen.dto.product.ProductDetailDTO;
 import com.example.newestlinen.dto.product.ProductUserDTO;
 import com.example.newestlinen.exception.RequestException;
+import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.UpdateStateForm;
 import com.example.newestlinen.form.product.UpdateAssetForm;
 import com.example.newestlinen.form.product.UpdateProductForm;
@@ -230,8 +231,11 @@ public class ProductController extends ABasicController {
 
     @DeleteMapping("/delete")
     @Transactional
-    public ApiMessageDto<String> deleteProduct(@RequestBody Map<String, String> req) {
-        productRepository.deleteById(Long.parseLong(req.get("id")));
-        return new ApiMessageDto<>("deleted product id: " + req.get("id"), HttpStatus.OK);
+    public ApiMessageDto<String> deleteProduct(Long id) {
+        if(!isSuperAdmin()){
+            throw new UnauthorizationException("not an admin");
+        }
+        productRepository.deleteById(id);
+        return new ApiMessageDto<>("deleted product id: " + id, HttpStatus.OK);
     }
 }
