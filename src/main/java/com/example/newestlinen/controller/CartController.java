@@ -124,6 +124,7 @@ public class CartController extends ABasicController {
         cartItem.setItem(i);
         cartItem.setQuantity(addToCartForm.getQuantity());
         cartItem.setPrice(price.get());
+        cartItem.setDiscount(p.getDiscount());
 
         // set properties for cart and map with cartItems
         cartItem.setCart(cart);
