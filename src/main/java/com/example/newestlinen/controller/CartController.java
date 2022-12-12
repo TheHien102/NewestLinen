@@ -92,7 +92,7 @@ public class CartController extends ABasicController {
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());
 
-        AtomicInteger price = new AtomicInteger(p.getPrice() * (100 - p.getDiscount()) / 100);
+        AtomicInteger price = new AtomicInteger(p.getPrice());
 
         List<Variant> CartVariants = variantMapper.fromVariantDTOListToDataList(addToCartForm.getVariants());
 
@@ -101,6 +101,8 @@ public class CartController extends ABasicController {
         variants.forEach(v -> {
             price.set(price.get() + v.getAddPrice() * addToCartForm.getQuantity());
         });
+
+        price.set(price.get() * (100 - p.getDiscount()) / 100);
 
         Item i = new Item();
 
