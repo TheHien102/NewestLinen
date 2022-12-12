@@ -20,7 +20,6 @@ import com.example.newestlinen.utils.projection.repository.Cart.CartRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -92,11 +92,15 @@ public class CartController extends ABasicController {
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());
 
-        int price = p.getPrice() * (100 - p.getDiscount()) / 100;
+        AtomicInteger price = new AtomicInteger(p.getPrice() * (100 - p.getDiscount()) / 100);
 
         List<Variant> CartVariants = variantMapper.fromVariantDTOListToDataList(addToCartForm.getVariants());
 
         List<Variant> variants = p.getVariants().stream().filter(CartVariants::contains).collect(Collectors.toList());
+
+        variants.forEach(v -> {
+            price.set(v.getAddPrice() * addToCartForm.getQuantity());
+        });
 
         Item i = new Item();
 
@@ -119,7 +123,7 @@ public class CartController extends ABasicController {
         // set properties for cart item
         cartItem.setItem(i);
         cartItem.setQuantity(addToCartForm.getQuantity());
-        cartItem.setPrice(price);
+        cartItem.setPrice(price.get());
 
         // set properties for cart and map with cartItems
         cartItem.setCart(cart);
