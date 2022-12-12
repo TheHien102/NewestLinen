@@ -22,6 +22,8 @@ public class Province extends Auditable<String> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Province_ID")
     private Long id;
+
+    @Column(unique = true)
     private String name;
 
     private int level;
