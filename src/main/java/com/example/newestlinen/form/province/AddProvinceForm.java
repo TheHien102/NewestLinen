@@ -20,5 +20,6 @@ public class AddProvinceForm {
     private int level;
 
     @Schema(name = "parentId")
+    @Min(value = 1,message = "parent should not be null")
     private Long parentId;
 }
