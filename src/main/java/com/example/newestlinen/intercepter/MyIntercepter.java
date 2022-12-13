@@ -72,7 +72,6 @@ public class MyIntercepter implements HandlerInterceptor {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(new MyAuthentication(qrJwt));
 
-        log.info("jwt user ne: {}", qrJwt);
         //check permission here
         String requestUri = request.getRequestURI();
 //
