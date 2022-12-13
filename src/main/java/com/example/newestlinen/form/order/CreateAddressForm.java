@@ -30,6 +30,10 @@ public class CreateAddressForm {
     private String details;
 
     @NotNull
+    @Schema(name = "receiverName")
+    private String receiverName;
+
+    @NotNull
     @NotBlank
     @NotEmpty
     @Schema(name = "phone")

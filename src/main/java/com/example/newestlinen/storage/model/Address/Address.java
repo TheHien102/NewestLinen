@@ -38,6 +38,9 @@ public class Address extends Auditable<String> {
     @Column(nullable = false)
     private String details;
 
+    @Column(nullable = false)
+    private String receiverName;
+
     private String phone;
 
     @JsonIgnore
