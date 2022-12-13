@@ -42,8 +42,6 @@ public class MyIntercepter implements HandlerInterceptor {
         String[] uriByPassAuth = ConfigurationService.getInstance().getStringArray("uri.bypassAuths");
         boolean contains = Arrays.stream(uriByPassAuth).anyMatch(requestUri::contains);
         if (contains) {
-            System.out.println(Arrays.toString(uriByPassAuth));
-            System.out.println(requestUri);
             return true;
         }
         boolean validSign = checkHeader(httpServletRequest);
