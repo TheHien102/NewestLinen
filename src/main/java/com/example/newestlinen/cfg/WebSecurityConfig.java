@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false);
         config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000",
                 "http://localhost:3000/", "https://linen-a.vercel.app/", "https://linen-a.vercel.app"));
         config.setAllowedHeaders(Arrays.asList(
