@@ -35,6 +35,9 @@ public class Address extends Auditable<String> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Province ward;
 
+    @Column(nullable = false)
+    private String details;
+
     private String phone;
 
     @JsonIgnore

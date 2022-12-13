@@ -66,6 +66,7 @@ public class AddressController extends ABasicController {
         address.setCity(provinceRepository.findById(createAddressForm.getProvince_cityId()).orElse(null));
         address.setDistrict(provinceRepository.findById(createAddressForm.getProvince_districtId()).orElse(null));
         address.setWard(provinceRepository.findById(createAddressForm.getProvince_wardId()).orElse(null));
+        address.setDetails(createAddressForm.getDetails());
         address.setPhone(createAddressForm.getPhone());
 
         address.setAccount(account);

@@ -21,6 +21,9 @@ public class CreateAddressForm {
     private Long province_wardId;
 
     @NotNull
+    private String details;
+
+    @NotNull
     @NotBlank
     @NotEmpty
     private String phone;
