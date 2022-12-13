@@ -3,9 +3,11 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.order.AddressDTO;
+import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.order.CreateAddressForm;
 import com.example.newestlinen.mapper.order.AddressMapper;
+import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.Address.Address;
 import com.example.newestlinen.utils.projection.repository.AccountRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.ProvinceRepository;
@@ -54,6 +56,11 @@ public class AddressController extends ABasicController {
             throw new UnauthorizationException("not a user");
         }
 
+        Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
+        if (account == null) {
+            throw new NotFoundException("account not found");
+        }
+
         Address address = new Address();
 
         address.setCity(provinceRepository.findById(createAddressForm.getProvince_cityId()).orElse(null));
@@ -61,7 +68,7 @@ public class AddressController extends ABasicController {
         address.setWard(provinceRepository.findById(createAddressForm.getProvince_wardId()).orElse(null));
         address.setPhone(createAddressForm.getPhone());
 
-        address.setAccount(accountRepository.findById(getCurrentUserId()).orElse(null));
+        address.setAccount(account);
 
         addressRepository.save(address);
 
