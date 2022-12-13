@@ -105,7 +105,7 @@ public class AccountController extends ABasicController {
         String appendStringRole = getAppendStringRole(account);
 
         qrJwt.setUsername(account.getUsername());
-        qrJwt.setPemission(landingIsApiService.convertGroupToUri(account.getGroup().getPermissions()) + appendStringRole);
+        qrJwt.setPermission(landingIsApiService.convertGroupToUri(account.getGroup().getPermissions()) + appendStringRole);
         qrJwt.setUserKind(account.getKind());
         qrJwt.setIsSuperAdmin(account.getIsSuperAdmin());
 

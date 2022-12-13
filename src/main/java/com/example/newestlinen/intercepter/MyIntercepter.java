@@ -42,6 +42,8 @@ public class MyIntercepter implements HandlerInterceptor {
         String[] uriByPassAuth = ConfigurationService.getInstance().getStringArray("uri.bypassAuths");
         boolean contains = Arrays.stream(uriByPassAuth).anyMatch(requestUri::contains);
         if (contains) {
+            System.out.println(Arrays.toString(uriByPassAuth));
+            System.out.println(requestUri);
             return true;
         }
         boolean validSign = checkHeader(httpServletRequest);
@@ -79,7 +81,7 @@ public class MyIntercepter implements HandlerInterceptor {
             return true;
         }
 
-        String[] uriByPassAuth = qrJwt.getPemission().split(",");
+        String[] uriByPassAuth = qrJwt.getPermission().split(",");
 
         return Arrays.stream(uriByPassAuth).anyMatch(requestUri::contains);
     }

@@ -16,14 +16,14 @@ public class UserJwt implements Serializable {
     private Long accountId = -1L;
     private Long orgId = -1L;
     private String username = EMPTY_STRING;
-    private String pemission = EMPTY_STRING;
+    private String permission = EMPTY_STRING;
     private String deviceId = EMPTY_STRING;
     private Integer userKind = -1; //loại user là admin hay là gì
     private String kind = EMPTY_STRING;//token kind
     private Boolean isSuperAdmin = false;
 
     public String toClaim(){
-        return ZipUtils.zipString(accountId+DELIM+ orgId +DELIM+kind+DELIM+pemission+DELIM+deviceId+DELIM+userKind+DELIM+username+DELIM+isSuperAdmin) ;
+        return ZipUtils.zipString(accountId+DELIM+ orgId +DELIM+kind+DELIM+permission+DELIM+deviceId+DELIM+userKind+DELIM+username+DELIM+isSuperAdmin) ;
     }
 
     public static UserJwt decode(String input){
@@ -35,7 +35,7 @@ public class UserJwt implements Serializable {
                 result.setAccountId(parserLong(items[0]));
                 result.setOrgId(parserLong(items[1]));
                 result.setKind(checkString(items[2]));
-                result.setPemission(checkString(items[3]));
+                result.setPermission(checkString(items[3]));
                 result.setDeviceId(checkString(items[4]));
                 result.setUserKind(parserInt(items[5]));
                 result.setUsername(checkString(items[6]));
@@ -93,7 +93,7 @@ public class UserJwt implements Serializable {
                 "accountId=" + accountId +
                 ", orgId=" + orgId +
                 ", username='" + username + '\'' +
-                ", pemission='" + pemission + '\'' +
+                ", pemission='" + permission + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", userKind=" + userKind +
                 ", kind='" + kind + '\'' +
