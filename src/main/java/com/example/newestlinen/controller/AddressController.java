@@ -46,7 +46,7 @@ public class AddressController extends ABasicController {
         ApiMessageDto<List<AddressDTO>> apiMessageDto = new ApiMessageDto<>();
 
         apiMessageDto.setData(addressMapper.fromAddressListToDataList(addressList));
-        apiMessageDto.setMessage("List product success");
+        apiMessageDto.setMessage("List address success");
         return apiMessageDto;
     }
 

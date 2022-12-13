@@ -14,5 +14,7 @@ public class AddressDTO {
 
     private ProvinceDTO ward;
 
+    private String details;
+
     private String phone;
 }
