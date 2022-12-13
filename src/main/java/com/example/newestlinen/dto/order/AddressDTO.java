@@ -16,5 +16,7 @@ public class AddressDTO {
 
     private String details;
 
+    private String receiverName;
+
     private String phone;
 }
