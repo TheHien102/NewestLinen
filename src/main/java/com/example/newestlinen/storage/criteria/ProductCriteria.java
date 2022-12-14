@@ -2,6 +2,7 @@ package com.example.newestlinen.storage.criteria;
 
 import com.example.newestlinen.storage.model.Category;
 import com.example.newestlinen.storage.model.ProductModel.Product;
+import com.example.newestlinen.storage.model.ProductModel.Variant;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -23,6 +24,8 @@ public class ProductCriteria {
 
     private String productCategoryName;
 
+    private String variant;
+
     public Specification<Product> getSpecification() {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -42,6 +45,10 @@ public class ProductCriteria {
             if (getProductCategoryName() != null) {
                 Join<Product, Category> joinCategory = root.join("productCategory", JoinType.INNER);
                 predicates.add(criteriaBuilder.like(joinCategory.get("name"), "%" + getProductCategoryName().toLowerCase() + "%"));
+            }
+            if(getVariant()!=null){
+                Join<Product, Variant> joinVariant = root.join("variants", JoinType.INNER);
+                predicates.add(criteriaBuilder.like(joinVariant.get("property"), "%" + getVariant().toLowerCase() + "%"));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
