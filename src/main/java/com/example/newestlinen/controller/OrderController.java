@@ -109,6 +109,7 @@ public class OrderController extends ABasicController {
                         newItem.setName(itemName);
                         newItem.setItemProduct(p);
                         List<Variant> OrderVariants = variantMapper.fromVariantDTOListToDataList(item.getVariants());
+                        // map from product
                         List<Variant> variants = p.getVariants().stream().filter(OrderVariants::contains).collect(Collectors.toList());
                         variants.forEach(v -> {
                             v.getVariantItem().add(newItem);
