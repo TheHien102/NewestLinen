@@ -165,7 +165,7 @@ public class AccountController extends ABasicController {
         account.setGroup(group);
         account.setPassword(passwordEncoder.encode(createAccountAdminForm.getPassword()));
         account.setKind(group.getKind());
-        if (createAccountAdminForm.getAvatarPath() != null)
+        if (StringUtils.isNoneBlank(createAccountAdminForm.getAvatarPath()))
             account.setAvatarPath(uploadService.uploadImg(createAccountAdminForm.getAvatarPath()));
 
         accountRepository.save(account);
