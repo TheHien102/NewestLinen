@@ -19,6 +19,7 @@ import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.AccountRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.CartItemRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.CartRepository;
+import com.example.newestlinen.utils.projection.repository.Cart.ItemRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,8 @@ public class CartController extends ABasicController {
     private final VariantMapper variantMapper;
 
     private final AccountRepository accountRepository;
+
+    private final ItemRepository itemRepository;
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<CartItemDTO>> listCartItem(CartItemCriteria cartItemCriteria, Pageable pageable) {
@@ -140,11 +143,11 @@ public class CartController extends ABasicController {
 
     @PutMapping("/update")
     public ApiMessageDto<String> updateCart(@Valid @RequestBody UpdateCartForm updateCartForm) {
-        if(!isCustomer()){
+        if (!isCustomer()) {
             throw new UnauthorizationException("not a user");
         }
-        CartItem cartItem=cartItemRepository.findById(updateCartForm.getCartItemId()).orElse(null);
-        if(cartItem==null){
+        CartItem cartItem = cartItemRepository.findById(updateCartForm.getCartItemId()).orElse(null);
+        if (cartItem == null) {
             throw new NotFoundException("cartItem not found");
         }
         cartItem.setQuantity(updateCartForm.getQuantity());
@@ -155,10 +158,20 @@ public class CartController extends ABasicController {
     @DeleteMapping("/delete")
     @Transactional
     public ApiMessageDto<String> deleteCartItem(Long id) {
-        if(!isCustomer()){
+        if (!isCustomer() && !isAdmin()) {
             throw new UnauthorizationException("not a user");
         }
-        cartItemRepository.deleteById(id);
+        CartItem cartItem = cartItemRepository.findById(id).orElse(null);
+        if (cartItem == null) {
+            throw new NotFoundException("cartItem not found");
+        }
+
+        Item item = cartItem.getItem();
+        cartItem.getItem().setCartItem(null);
+//        cartItem.setItem(null);
+
+        itemRepository.deleteById(item.getId());
+
         return new ApiMessageDto<>("deleted cartItem id: " + id, HttpStatus.OK);
     }
 }

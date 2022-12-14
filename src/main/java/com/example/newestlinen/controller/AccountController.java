@@ -137,7 +137,7 @@ public class AccountController extends ABasicController {
 //        } else {
 //            throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED);
 //        }
-        return "/account/profile,/account/update_profile,/account/logout";
+        return "/account/profile,/account/update_profile,/account/logout,/cart/delete";
     }
 
     @PostMapping(value = "/create_admin", produces = MediaType.APPLICATION_JSON_VALUE)
