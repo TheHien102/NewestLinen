@@ -3,12 +3,15 @@ package com.example.newestlinen.controller;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.order.OrderDetailDTO;
+import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.order.CreateOrderForm;
 import com.example.newestlinen.mapper.order.OrderMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.storage.criteria.OrderDetailCriteria;
 import com.example.newestlinen.storage.model.Account;
+import com.example.newestlinen.storage.model.CartModel.Cart;
+import com.example.newestlinen.storage.model.CartModel.CartItem;
 import com.example.newestlinen.storage.model.CartModel.Item;
 import com.example.newestlinen.storage.model.OrderModel.Order;
 import com.example.newestlinen.storage.model.OrderModel.OrderDetail;
@@ -16,6 +19,7 @@ import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.AccountRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.CartItemRepository;
+import com.example.newestlinen.utils.projection.repository.Cart.CartRepository;
 import com.example.newestlinen.utils.projection.repository.Order.OrderDetailRepository;
 import com.example.newestlinen.utils.projection.repository.Order.OrderRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
@@ -40,6 +44,8 @@ import java.util.stream.Collectors;
 public class OrderController extends ABasicController {
 
     private final CartItemRepository cartItemRepository;
+
+    private final CartRepository cartRepository;
 
     private final OrderMapper orderMapper;
 
@@ -91,22 +97,31 @@ public class OrderController extends ABasicController {
         if (getCurrentUserId() != -1L) {
             Account account = accountRepository.findFirstById(getCurrentUserId());
             order.setAccount(account);
-            List<OrderDetail> orderDetailList = orderMapper.fromCartItemListToOrderDetailList(cartItemRepository.findAllById(createOrderForm.getCartItemIdsList()));
+
+            Cart cart = cartRepository.findByAccountId(getCurrentUserId());
+            // get cart item from repo and filter with form
+            List<CartItem> cartItemListToOrder = cart.getCartItems().stream().filter(cartItem -> createOrderForm.getCartItemIdsList().contains(cartItem.getId())).collect(Collectors.toList());
+            if (cartItemListToOrder.size() == 0) {
+                throw new RequestException("cart item id invalid");
+            }
+            List<OrderDetail> orderDetailList = orderMapper.fromCartItemListToOrderDetailList(cartItemListToOrder);
             orderDetailList.forEach(orderDetail -> {
                 orderDetail.setOrder(order);
+                orderDetail.getItem().setOrderDetail(orderDetail);
                 totalPrice.updateAndGet(v -> v + (long) orderDetail.getPrice() * orderDetail.getQuantity());
             });
             order.setOrderDetails(orderDetailList);
             order.setPhoneNumber(account.getPhone());
-            cartItemRepository.deleteAllById(createOrderForm.getCartItemIdsList());
+
+            //delete cart items
+            cartItemListToOrder.forEach(cartItem -> cartItem.getItem().setCartItem(null));
         } else {
             List<OrderDetail> orderDetailList =
                     createOrderForm.getCartItemsList().stream().map(item -> {
                         OrderDetail orderDetail = new OrderDetail();
                         Product p = productRepository.findProductById(item.getProductId());
                         Item newItem = new Item();
-                        String itemName = p.getName() + item.getVariants().stream().map(v -> " " + v.getName() + " " + v.getProperty()).collect(Collectors.joining());
-                        newItem.setName(itemName);
+                        newItem.setName(p.getName());
                         newItem.setItemProduct(p);
                         List<Variant> OrderVariants = variantMapper.fromVariantDTOListToDataList(item.getVariants());
                         // map from product

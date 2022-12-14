@@ -113,6 +113,7 @@ public class CartController extends ABasicController {
         // set properties for item
         i.setName(p.getName());
         i.setItemProduct(p);
+        i.setCartItem(cartItem);
 
         variants.forEach(v -> {
             v.getVariantItem().add(i);
