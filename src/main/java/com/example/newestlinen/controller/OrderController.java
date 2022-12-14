@@ -61,7 +61,7 @@ public class OrderController extends ABasicController {
 
     @GetMapping("/list")
     public ApiMessageDto<ResponseListObj<OrderDetailDTO>> listOrder(OrderDetailCriteria orderDetailCriteria, Pageable pageable) {
-        if (!isCustomer() || !isAdmin() || isSuperAdmin()) {
+        if (!isCustomer() && !isAdmin() && isSuperAdmin()) {
             throw new UnauthorizationException("not a user");
         }
         Page<OrderDetail> orderDetailPage;
