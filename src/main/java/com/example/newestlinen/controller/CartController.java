@@ -169,7 +169,6 @@ public class CartController extends ABasicController {
         Item item = cartItem.getItem();
         cartItem.getItem().setCartItem(null);
 //        cartItem.setItem(null);
-
         itemRepository.deleteById(item.getId());
 
         return new ApiMessageDto<>("deleted cartItem id: " + id, HttpStatus.OK);
