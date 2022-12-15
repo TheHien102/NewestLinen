@@ -1,6 +1,6 @@
 package com.example.newestlinen.validation.impl;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.validation.Gender;
 
 import javax.validation.ConstraintValidator;
@@ -20,9 +20,9 @@ public class GenderValidation implements ConstraintValidator<Gender, Integer> {
         if(gender == null && allowNull){
             return true;
         }
-        if(!Objects.equals(gender, LandingISConstant.GENDER_FEMALE)
-                && !Objects.equals(gender, LandingISConstant.GENDER_MALE)
-                && !Objects.equals(gender, LandingISConstant.GENDER_OTHER)){
+        if(!Objects.equals(gender, LinenAConstant.GENDER_FEMALE)
+                && !Objects.equals(gender, LinenAConstant.GENDER_MALE)
+                && !Objects.equals(gender, LinenAConstant.GENDER_OTHER)){
             return false;
         }
         return true;

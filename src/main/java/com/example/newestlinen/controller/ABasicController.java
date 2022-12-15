@@ -1,6 +1,6 @@
 package com.example.newestlinen.controller;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.intercepter.MyAuthentication;
 import com.example.newestlinen.jwt.UserJwt;
 import com.example.newestlinen.storage.model.Account;
@@ -37,7 +37,7 @@ public class ABasicController {
         try {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-            return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_ADMIN);
+            return Objects.equals(authentication.getJwtUser().getUserKind(), LinenAConstant.USER_KIND_ADMIN);
         } catch (Exception e) {
             return false;
         }
@@ -46,20 +46,20 @@ public class ABasicController {
     public boolean isEmployee() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-        return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_EMPLOYEE);
+        return Objects.equals(authentication.getJwtUser().getUserKind(), LinenAConstant.USER_KIND_EMPLOYEE);
     }
 
     public boolean isCollaborator() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-        return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_COLLABORATOR);
+        return Objects.equals(authentication.getJwtUser().getUserKind(), LinenAConstant.USER_KIND_COLLABORATOR);
     }
 
     public boolean isCustomer() {
         try {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-            return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_CUSTOMER);
+            return Objects.equals(authentication.getJwtUser().getUserKind(), LinenAConstant.USER_KIND_CUSTOMER);
         } catch (Exception e) {
             return false;
         }
@@ -68,7 +68,7 @@ public class ABasicController {
     public boolean isSuperAdmin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         MyAuthentication authentication = (MyAuthentication) securityContext.getAuthentication();
-        return Objects.equals(authentication.getJwtUser().getUserKind(), LandingISConstant.USER_KIND_ADMIN) && authentication.getJwtUser().getIsSuperAdmin();
+        return Objects.equals(authentication.getJwtUser().getUserKind(), LinenAConstant.USER_KIND_ADMIN) && authentication.getJwtUser().getIsSuperAdmin();
     }
 }
 

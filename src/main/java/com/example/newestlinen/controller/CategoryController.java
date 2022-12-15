@@ -1,6 +1,6 @@
 package com.example.newestlinen.controller;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
@@ -79,7 +79,7 @@ public class CategoryController extends ABasicController {
     @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ResponseListObj<CategoryDto>> autoComplete(CategoryCriteria categoryCriteria) {
         ApiMessageDto<ResponseListObj<CategoryDto>> responseListObjApiMessageDto = new ApiMessageDto<>();
-        categoryCriteria.setStatus(LandingISConstant.STATUS_ACTIVE);
+        categoryCriteria.setStatus(LinenAConstant.STATUS_ACTIVE);
         Page<Category> listCategory = categoryRepository.findAll(categoryCriteria.getSpecification(), Pageable.unpaged());
         ResponseListObj<CategoryDto> responseListObj = new ResponseListObj<>();
         responseListObj.setData(categoryMapper.fromEntityListToCategoryDtoAutoComplete(listCategory.getContent()));

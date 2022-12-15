@@ -1,6 +1,6 @@
 package com.example.newestlinen.controller;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
@@ -67,9 +67,9 @@ public class NewsController extends ABasicController{
     public ApiMessageDto<NewsDto> get(@PathVariable("id") Long id){
         Account currentUser = accountRepository.findById(getCurrentUserId()) .orElse(null);
         if(currentUser == null
-                || !currentUser.getKind().equals(LandingISConstant.USER_KIND_ADMIN)
-                && !currentUser.getKind().equals(LandingISConstant.USER_KIND_EMPLOYEE)
-                && !currentUser.getKind().equals(LandingISConstant.USER_KIND_COLLABORATOR)) {
+                || !currentUser.getKind().equals(LinenAConstant.USER_KIND_ADMIN)
+                && !currentUser.getKind().equals(LinenAConstant.USER_KIND_EMPLOYEE)
+                && !currentUser.getKind().equals(LinenAConstant.USER_KIND_COLLABORATOR)) {
             throw new RequestException(ErrorCode.NEWS_ERROR_UNAUTHORIZED);
         }
 
@@ -78,8 +78,8 @@ public class NewsController extends ABasicController{
         if(news == null){
             throw new RequestException(ErrorCode.NEWS_ERROR_NOT_FOUND);
         }
-        if(!currentUser.getKind().equals(LandingISConstant.USER_KIND_ADMIN)
-                && !news.getStatus().equals(LandingISConstant.STATUS_ACTIVE)) {
+        if(!currentUser.getKind().equals(LinenAConstant.USER_KIND_ADMIN)
+                && !news.getStatus().equals(LinenAConstant.STATUS_ACTIVE)) {
             throw new RequestException(ErrorCode.NEWS_ERROR_NOT_FOUND);
         }
 

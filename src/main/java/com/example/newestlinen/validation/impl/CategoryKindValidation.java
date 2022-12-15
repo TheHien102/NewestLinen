@@ -1,6 +1,6 @@
 package com.example.newestlinen.validation.impl;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.validation.CategoryKind;
 
 import javax.validation.ConstraintValidator;
@@ -18,7 +18,7 @@ public class CategoryKindValidation implements ConstraintValidator<CategoryKind,
         if(categoryKind == null && allowNull) {
             return true;
         }
-        if(!Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND)) {
+        if(!Objects.equals(categoryKind, LinenAConstant.CATEGORY_KIND)) {
             return false;
         }
         return true;

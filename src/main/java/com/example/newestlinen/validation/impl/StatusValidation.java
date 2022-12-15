@@ -1,6 +1,6 @@
 package com.example.newestlinen.validation.impl;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.validation.Status;
 
 import javax.validation.ConstraintValidator;
@@ -19,10 +19,10 @@ public class StatusValidation  implements ConstraintValidator<Status, Integer> {
         if(status == null && allowNull){
             return true;
         }
-        if(!Objects.equals(status, LandingISConstant.STATUS_ACTIVE)
-                && !Objects.equals(status, LandingISConstant.STATUS_LOCK)
-                && !Objects.equals(status, LandingISConstant.STATUS_DELETE)
-                && !Objects.equals(status, LandingISConstant.STATUS_PENDING)){
+        if(!Objects.equals(status, LinenAConstant.STATUS_ACTIVE)
+                && !Objects.equals(status, LinenAConstant.STATUS_LOCK)
+                && !Objects.equals(status, LinenAConstant.STATUS_DELETE)
+                && !Objects.equals(status, LinenAConstant.STATUS_PENDING)){
             return false;
         }
         return true;

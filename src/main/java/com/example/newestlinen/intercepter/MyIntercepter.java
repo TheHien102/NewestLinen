@@ -6,7 +6,7 @@
 package com.example.newestlinen.intercepter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.jwt.JWTUtils;
 import com.example.newestlinen.jwt.UserJwt;
@@ -75,7 +75,7 @@ public class MyIntercepter implements HandlerInterceptor {
         //check permission here
         String requestUri = request.getRequestURI();
 //
-        if (Objects.equals(qrJwt.getKind(), String.valueOf(LandingISConstant.USER_KIND_ADMIN))) {
+        if (Objects.equals(qrJwt.getKind(), String.valueOf(LinenAConstant.USER_KIND_ADMIN))) {
             return true;
         }
 

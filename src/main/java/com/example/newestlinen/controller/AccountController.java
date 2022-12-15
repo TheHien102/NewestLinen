@@ -1,6 +1,6 @@
 package com.example.newestlinen.controller;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ErrorCode;
 import com.example.newestlinen.dto.ResponseListObj;
@@ -37,12 +37,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -91,7 +89,7 @@ public class AccountController extends ABasicController {
     public ApiMessageDto<LoginDto> login(@Valid @RequestBody LoginForm loginForm, BindingResult bindingResult) {
         ApiMessageDto<LoginDto> apiMessageDto = new ApiMessageDto<>();
         Account account = accountRepository.findAccountByUsername(loginForm.getUsername());
-        if (account == null || !passwordEncoder.matches(loginForm.getPassword(), account.getPassword()) || !Objects.equals(account.getStatus(), LandingISConstant.STATUS_ACTIVE)) {
+        if (account == null || !passwordEncoder.matches(loginForm.getPassword(), account.getPassword()) || !Objects.equals(account.getStatus(), LinenAConstant.STATUS_ACTIVE)) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_LOGIN_FAILED, "Login fail, check your username or password");
         }
 
@@ -374,12 +372,12 @@ public class AccountController extends ABasicController {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "account not found.");
         }
 
-        if (account.getAttemptCode() >= LandingISConstant.MAX_ATTEMPT_FORGET_PWD) {
+        if (account.getAttemptCode() >= LinenAConstant.MAX_ATTEMPT_FORGET_PWD) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_LOCKED, "Account locked");
         }
 
         if (!account.getResetPwdCode().equals(forgetForm.getOtp()) ||
-                (new Date().getTime() - account.getResetPwdTime().getTime() >= LandingISConstant.MAX_TIME_FORGET_PWD)) {
+                (new Date().getTime() - account.getResetPwdTime().getTime() >= LinenAConstant.MAX_TIME_FORGET_PWD)) {
             //tang so lan
             account.setAttemptCode(account.getAttemptCode() + 1);
             accountRepository.save(account);
@@ -408,14 +406,14 @@ public class AccountController extends ABasicController {
         }
 
         if (!account.getVerifyCode().equals(verifyForm.getOtp()) ||
-                (new Date().getTime() - account.getVerifyTime().getTime() >= LandingISConstant.MAX_TIME_VERIFY_ACCOUNT)) {
+                (new Date().getTime() - account.getVerifyTime().getTime() >= LinenAConstant.MAX_TIME_VERIFY_ACCOUNT)) {
 
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_MATCH, "Otp not match");
         }
 
         account.setVerifyTime(null);
         account.setVerifyCode(null);
-        account.setStatus(LandingISConstant.STATUS_ACTIVE);
+        account.setStatus(LinenAConstant.STATUS_ACTIVE);
         accountRepository.save(account);
 
         apiMessageDto.setResult(true);
@@ -445,11 +443,11 @@ public class AccountController extends ABasicController {
             account.setAvatarPath(avatar);
         }
 
-        Group group = groupRepository.findFirstByKind(LandingISConstant.GROUP_KIND_CUSTOMER);
+        Group group = groupRepository.findFirstByKind(LinenAConstant.GROUP_KIND_CUSTOMER);
 
         account.setGroup(group);
 
-        account.setKind(LandingISConstant.USER_KIND_CUSTOMER);
+        account.setKind(LinenAConstant.USER_KIND_CUSTOMER);
 
         try {
             accountRepository.save(account);

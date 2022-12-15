@@ -1,6 +1,6 @@
 package com.example.newestlinen.service;
 
-import com.example.newestlinen.constant.LandingISConstant;
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.UploadFileDto;
 import com.example.newestlinen.form.UploadFileForm;
@@ -66,7 +66,7 @@ public class LandingIsApiService {
             String finalFile = uploadFileForm.getType() + "_" + RandomStringUtils.randomAlphanumeric(10) + "." + ext;
             String typeFolder = File.separator + uploadFileForm.getType();
 
-            Path fileStorageLocation = Paths.get(LandingISConstant.ROOT_DIRECTORY + typeFolder).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(LinenAConstant.ROOT_DIRECTORY + typeFolder).toAbsolutePath().normalize();
             Files.createDirectories(fileStorageLocation);
             Path targetLocation = fileStorageLocation.resolve(finalFile);
             Files.copy(uploadFileForm.getFile().getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -85,7 +85,7 @@ public class LandingIsApiService {
     }
 
     public void deleteFile(String filePath) {
-        File file = new File(LandingISConstant.ROOT_DIRECTORY + filePath);
+        File file = new File(LinenAConstant.ROOT_DIRECTORY + filePath);
 //        file.deleteOnExit();
         if(file.exists()) file.delete();
     }
@@ -93,7 +93,7 @@ public class LandingIsApiService {
     public Resource loadFileAsResource(String folder, String fileName) {
 
         try {
-            Path fileStorageLocation = Paths.get(LandingISConstant.ROOT_DIRECTORY + File.separator + folder).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(LinenAConstant.ROOT_DIRECTORY + File.separator + folder).toAbsolutePath().normalize();
             Path fP = fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(fP.toUri());
             if (resource.exists()) {
@@ -109,7 +109,7 @@ public class LandingIsApiService {
     public InputStreamResource loadFileAsResourceExt(String folder, String fileName) {
 
         try {
-            File file = new File(LandingISConstant.ROOT_DIRECTORY + File.separator + folder + File.separator + fileName);
+            File file = new File(LinenAConstant.ROOT_DIRECTORY + File.separator + folder + File.separator + fileName);
             InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
             if (inputStreamResource.exists()) {
                 return inputStreamResource;

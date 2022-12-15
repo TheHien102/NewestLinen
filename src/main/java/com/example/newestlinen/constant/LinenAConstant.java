@@ -3,7 +3,7 @@ package com.example.newestlinen.constant;
 
 import com.example.newestlinen.utils.ConfigurationService;
 
-public class LandingISConstant {
+public class LinenAConstant {
     public static final String ROOT_DIRECTORY =  ConfigurationService.getInstance().getString("file.upload-dir","/tmp/upload");
 
     public static final Integer USER_KIND_ADMIN = 1;
@@ -36,7 +36,7 @@ public class LandingISConstant {
     public static final Integer GENDER_FEMALE = 2;
     public static final Integer GENDER_OTHER = 3;
 
-    private LandingISConstant(){
+    private LinenAConstant(){
         throw new IllegalStateException("Utility class");
     }
 
