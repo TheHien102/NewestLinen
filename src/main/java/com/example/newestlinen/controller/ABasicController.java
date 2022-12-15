@@ -1,7 +1,7 @@
 package com.example.newestlinen.controller;
 
 import com.example.newestlinen.constant.LinenAConstant;
-import com.example.newestlinen.intercepter.MyAuthentication;
+import com.example.newestlinen.interceptor.MyAuthentication;
 import com.example.newestlinen.jwt.UserJwt;
 import com.example.newestlinen.storage.model.Account;
 import org.springframework.security.core.context.SecurityContext;

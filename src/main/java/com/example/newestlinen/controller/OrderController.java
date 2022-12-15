@@ -1,11 +1,14 @@
 package com.example.newestlinen.controller;
 
+import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
 import com.example.newestlinen.dto.order.OrderDetailDTO;
+import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.exception.UnauthorizationException;
 import com.example.newestlinen.form.order.CreateOrderForm;
+import com.example.newestlinen.form.order.UpdateOrderForm;
 import com.example.newestlinen.mapper.order.OrderMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.storage.criteria.OrderDetailCriteria;
@@ -25,6 +28,7 @@ import com.example.newestlinen.utils.projection.repository.Order.OrderRepository
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -150,5 +154,21 @@ public class OrderController extends ABasicController {
         orderRepository.save(order);
 
         return new ApiMessageDto<>("created order successfully", HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ApiMessageDto<String> createOrder(@Valid @RequestBody UpdateOrderForm updateOrderForm) {
+        if (!isAdmin()) {
+            throw new UnauthorizationException("not an admin");
+        }
+
+        Order order = orderRepository.findById(updateOrderForm.getId()).orElse(null);
+        if (order == null) {
+            throw new NotFoundException("order not found");
+        }
+
+        order.setStatus(updateOrderForm.getStatus());
+        orderRepository.save(order);
+        return new ApiMessageDto<>("update order success", HttpStatus.OK);
     }
 }

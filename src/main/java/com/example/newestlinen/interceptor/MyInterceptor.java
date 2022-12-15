@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.newestlinen.intercepter;
+package com.example.newestlinen.interceptor;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.newestlinen.constant.LinenAConstant;
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-public class MyIntercepter implements HandlerInterceptor {
+public class MyInterceptor implements HandlerInterceptor {
     ObjectMapper mapper = new ObjectMapper();
 
     @Override

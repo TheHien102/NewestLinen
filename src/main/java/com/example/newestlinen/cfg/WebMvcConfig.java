@@ -1,6 +1,6 @@
 package com.example.newestlinen.cfg;
 
-import com.example.newestlinen.intercepter.MyIntercepter;
+import com.example.newestlinen.interceptor.MyInterceptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
-    MyIntercepter myIntercepter;
+    MyInterceptor myIntercepter;
 
     private static final String DATE_FORMAT = "dd/MM/yyyy";
     private static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";

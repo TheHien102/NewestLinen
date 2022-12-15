@@ -40,4 +40,6 @@ public class CreateOrderForm {
     @Schema(name = "paymentType")
     @NotNull(message = "paymentType should not be null")
     private Integer paymentType;
+
+    private Integer status = 0;
 }

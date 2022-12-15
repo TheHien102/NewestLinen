@@ -1,4 +1,4 @@
-package com.example.newestlinen.intercepter;
+package com.example.newestlinen.interceptor;
 
 import com.example.newestlinen.jwt.UserJwt;
 import org.springframework.security.core.Authentication;

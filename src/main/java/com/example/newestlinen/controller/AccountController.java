@@ -10,7 +10,7 @@ import com.example.newestlinen.dto.account.ForgetPasswordDto;
 import com.example.newestlinen.dto.account.LoginDto;
 import com.example.newestlinen.exception.RequestException;
 import com.example.newestlinen.form.account.*;
-import com.example.newestlinen.intercepter.MyAuthentication;
+import com.example.newestlinen.interceptor.MyAuthentication;
 import com.example.newestlinen.jwt.JWTUtils;
 import com.example.newestlinen.jwt.UserJwt;
 import com.example.newestlinen.mapper.AccountMapper;
