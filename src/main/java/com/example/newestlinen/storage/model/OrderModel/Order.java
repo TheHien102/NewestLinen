@@ -30,6 +30,8 @@ public class Order extends Auditable<String> {
 
     private String address;
 
+    private String receiverName;
+
     private String phoneNumber;
 
     private String note;

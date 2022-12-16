@@ -10,6 +10,7 @@ public class OrderDTO {
     private Long totalPrice;
     private Long shippingFee;
     private String address;
+    private String receiverName;
     private String phoneNumber;
     private String note;
     private Integer paymentType;
