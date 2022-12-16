@@ -345,7 +345,7 @@ public class AccountController extends ABasicController {
         accountRepository.save(account);
 
         //send email
-        landingIsApiService.sendEmail(account.getEmail(), "OTP: " + otp, "Reset password", false);
+        landingIsApiService.sendEmail(account, otp, "Reset password");
 
         ForgetPasswordDto forgetPasswordDto = new ForgetPasswordDto();
         String hash = AESUtils.encrypt(account.getId() + ";" + otp, true);

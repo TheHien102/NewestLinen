@@ -1,5 +1,6 @@
 package com.example.newestlinen.service;
 
+import com.example.newestlinen.storage.model.Account;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,10 +27,10 @@ public class CommonAsyncService {
     private TaskExecutor taskExecutor;
 
     @Async
-    public void sendEmail(String email, String msg, String subject, boolean html){
+    public void sendEmail(Account account, String code, String subject){
         Runnable task3 = () -> {
             try {
-                emailService.sendEmail(email,msg,subject,html);
+                emailService.sendEmail(account,code,subject);
             } catch (Exception e) {
                 log.error(e.getMessage(),e);
             }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Linen A reset password</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<style>
+    .container {
+        font-family: Helvetica, Arial, sans-serif;
+        min-width: 1000px;
+        overflow: auto;
+        line-height: 2;
+    }
+
+    .wrapper {
+        margin: 50px auto;
+        width: 70%;
+        padding: 20px 0;
+    }
+
+    .brand_Link_wrapper {
+        border-bottom: 1px solid rgb(207, 207, 207);
+    }
+
+    .brand_Link {
+        font-size: 1.4em;
+        color: #00466a;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .code_wrapper {
+        background: #00466a;
+        margin: 0 auto;
+        width: max-content;
+        padding: 0 10px;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .regards {
+        font-size: 0.9em;
+    }
+
+    .footer_line {
+        border: none;
+        border-top: 1px solid rgb(207, 207, 207);
+    }
+
+    .footer {
+        float: right;
+        padding: 8px 0;
+        color: #aaa;
+        font-size: 0.8em;
+        line-height: 1;
+        font-weight: 300;
+    }
+</style>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="brand_Link_wrapper">
+            <a href="" class="brand_Link">Linen À</a>
+        </div>
+        <p style="font-size: 1.1em">Hi, <span th:text="${account_name}"></span></p>
+        <p>
+            Thank you for choosing Your Brand. Use the following OTP to complete
+            your Reset Password procedures.
+        </p>
+        <h2 class="code_wrapper">
+            <span th:text="${code}"></span>
+        </h2>
+        <p class="regards">Regards,<br />Linen A</p>
+        <hr class="footer_line" />
+        <div class="footer">
+            <p>Linen A Inc</p>
+            <p>2-8 Thao Dien Ward, Thao Dien, District 2, Ho Chi Minh City</p>
+            <p>VietNam</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

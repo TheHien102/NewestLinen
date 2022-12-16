@@ -4,6 +4,7 @@ import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.UploadFileDto;
 import com.example.newestlinen.form.UploadFileForm;
+import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -139,8 +140,8 @@ public class LandingIsApiService {
         commonAsyncService.pushToFirebase(url,data);
     }
 
-    public void sendEmail(String email, String msg, String subject, boolean html){
-        commonAsyncService.sendEmail(email,msg,subject,html);
+    public void sendEmail(Account account, String code, String subject){
+        commonAsyncService.sendEmail(account,code,subject);
     }
 
     public String convertGroupToUri(List<Permission> permissions){
