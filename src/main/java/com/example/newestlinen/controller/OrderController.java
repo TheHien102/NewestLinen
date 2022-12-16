@@ -1,8 +1,8 @@
 package com.example.newestlinen.controller;
 
-import com.example.newestlinen.constant.LinenAConstant;
 import com.example.newestlinen.dto.ApiMessageDto;
 import com.example.newestlinen.dto.ResponseListObj;
+import com.example.newestlinen.dto.order.OrderDTO;
 import com.example.newestlinen.dto.order.OrderDetailDTO;
 import com.example.newestlinen.exception.NotFoundException;
 import com.example.newestlinen.exception.RequestException;
@@ -11,6 +11,7 @@ import com.example.newestlinen.form.order.CreateOrderForm;
 import com.example.newestlinen.form.order.UpdateOrderForm;
 import com.example.newestlinen.mapper.order.OrderMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
+import com.example.newestlinen.storage.criteria.OrderCriteria;
 import com.example.newestlinen.storage.criteria.OrderDetailCriteria;
 import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.CartModel.Cart;
@@ -28,7 +29,6 @@ import com.example.newestlinen.utils.projection.repository.Order.OrderRepository
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.Update;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -64,28 +64,48 @@ public class OrderController extends ABasicController {
     private final VariantMapper variantMapper;
 
     @GetMapping("/list")
-    public ApiMessageDto<ResponseListObj<OrderDetailDTO>> listOrder(OrderDetailCriteria orderDetailCriteria, Pageable pageable) {
+    public ApiMessageDto<ResponseListObj<OrderDTO>> listOrder(OrderCriteria orderCriteria, Pageable pageable) {
         if (!isCustomer() && !isAdmin() && isSuperAdmin()) {
             throw new UnauthorizationException("not a user");
         }
-        Page<OrderDetail> orderDetailPage;
+        Page<Order> orderPage;
         if (isCustomer()) {
-            orderDetailPage = orderDetailRepository.findAll(orderDetailCriteria.getSpecification(getCurrentUserId()), pageable);
+            orderPage = orderRepository.findAll(orderCriteria.getSpecification(getCurrentUserId()), pageable);
         } else {
-            orderDetailPage = orderDetailRepository.findAll(orderDetailCriteria.getSpecification(), pageable);
+            orderPage = orderRepository.findAll(orderCriteria.getSpecification(), pageable);
         }
 
-        ApiMessageDto<ResponseListObj<OrderDetailDTO>> apiMessageDto = new ApiMessageDto<>();
+        ApiMessageDto<ResponseListObj<OrderDTO>> apiMessageDto = new ApiMessageDto<>();
 
-        ResponseListObj<OrderDetailDTO> responseListObj = new ResponseListObj<>();
+        ResponseListObj<OrderDTO> responseListObj = new ResponseListObj<>();
 
-        responseListObj.setData(orderMapper.fromOrderDetailDataListToObjectList(orderDetailPage.getContent()));
+        responseListObj.setData(orderMapper.fromOrderDataListToObjectList(orderPage.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
-        responseListObj.setTotalPage(orderDetailPage.getTotalPages());
-        responseListObj.setTotalElements(orderDetailPage.getTotalElements());
+        responseListObj.setTotalPage(orderPage.getTotalPages());
+        responseListObj.setTotalElements(orderPage.getTotalElements());
 
         apiMessageDto.setData(responseListObj);
-        apiMessageDto.setMessage("List product success");
+        apiMessageDto.setMessage("List order success");
+        return apiMessageDto;
+    }
+
+    @GetMapping
+    public ApiMessageDto<ResponseListObj<OrderDetailDTO>> listOrderDetail(Long orderId) {
+        if (!isAdmin()) {
+            throw new UnauthorizationException("not an admin");
+        }
+        ApiMessageDto<ResponseListObj<OrderDetailDTO>> apiMessageDto = new ApiMessageDto<>();
+        ResponseListObj<OrderDetailDTO> responseListObj = new ResponseListObj<>();
+
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderId(orderId);
+
+        responseListObj.setData(orderMapper.fromOrderDetailDataListToObjectList(orderDetailList));
+        responseListObj.setPage(0);
+        responseListObj.setTotalPage(0);
+        responseListObj.setTotalElements((long) orderDetailList.size());
+
+        apiMessageDto.setData(responseListObj);
+        apiMessageDto.setMessage("get order detail success");
         return apiMessageDto;
     }
 
