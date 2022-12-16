@@ -40,11 +40,6 @@ public class NewestLinenApplication {
     @Autowired
     PermissionRepository permissionRepository;
 
-    @Bean
-    JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(NewestLinenApplication.class, args);
     }
