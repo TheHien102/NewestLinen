@@ -42,7 +42,7 @@ public class UserJwt implements Serializable {
                 result.setIsSuperAdmin(checkBoolean(items[7]));
             }
         }catch (Exception e){
-            log.error(e.getMessage(),e);
+//            log.error(e.getMessage(),e);
         }
         return  result;
     }
@@ -54,7 +54,7 @@ public class UserJwt implements Serializable {
                 return  out;
             }
         }catch (Exception e){
-            log.error(e.getMessage(),e);
+//            log.error(e.getMessage(),e);
         }
         return null;
     }
@@ -66,7 +66,7 @@ public class UserJwt implements Serializable {
                 return  out;
             }
         }catch (Exception e){
-            log.error(e.getMessage(),e);
+//            log.error(e.getMessage(),e);
         }
         return null;
     }
@@ -82,7 +82,7 @@ public class UserJwt implements Serializable {
         try{
             return Boolean.parseBoolean(input);
         }catch (Exception e){
-            log.error(e.getMessage(),e);
+//            log.error(e.getMessage(),e);
             return false;
         }
     }
