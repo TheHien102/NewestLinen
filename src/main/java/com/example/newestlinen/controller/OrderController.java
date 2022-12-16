@@ -168,7 +168,7 @@ public class OrderController extends ABasicController {
         }
         order.setReceiverName(createOrderForm.getUsername());
         order.setTotalPrice(totalPrice.get());
-        order.setShippingFee(shippingFee);
+        order.setShippingFee(createOrderForm.getShippingFee());
         order.setAddress(createOrderForm.getAddress());
         order.setNote(createOrderForm.getNote());
         order.setPaymentType(createOrderForm.getPaymentType());

@@ -41,5 +41,9 @@ public class CreateOrderForm {
     @NotNull(message = "paymentType should not be null")
     private Integer paymentType;
 
+    @Schema(name = "shippingFee")
+    @NotNull(message = "shippingFee should not be null")
+    private Long shippingFee;
+
     private Integer status = 0;
 }
