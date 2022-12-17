@@ -19,15 +19,15 @@ import java.util.zip.InflaterInputStream;
 
 @Slf4j
 public class AESUtils {
-    private static final String SECRECT_KEY = "dungtestnuanhieubuglam1";
+    private static final String SECRET_KEY = "nhieuBugLamroima";
 
     public static  String encrypt(String input, boolean zipEnable) {
-        return encrypt(SECRECT_KEY, input, zipEnable);
+        return encrypt(SECRET_KEY, input, zipEnable);
     }
 
 
     public static String decrypt(String input, boolean zipEnable) {
-        return decrypt(SECRECT_KEY,input,zipEnable);
+        return decrypt(SECRET_KEY,input,zipEnable);
     }
 
     private static String encrypt(String encodekey, String inputStr, boolean zipEnable) {
