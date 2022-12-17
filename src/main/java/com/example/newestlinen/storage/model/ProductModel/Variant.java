@@ -54,6 +54,5 @@ public class Variant extends Auditable<String> {
     @JoinTable(name = "Item_Variant",
             joinColumns = @JoinColumn(name = "Variant_ID"),
             inverseJoinColumns = @JoinColumn(name = "Item_ID"))
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Item> variantItem = new ArrayList<>();
 }
