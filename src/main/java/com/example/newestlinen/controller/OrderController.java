@@ -114,8 +114,6 @@ public class OrderController extends ABasicController {
 
         AtomicReference<Long> totalPrice = new AtomicReference<>(0L);
 
-        Long shippingFee = 0L;
-
         Order order = new Order();
 
         if (getCurrentUserId() != -1L) {

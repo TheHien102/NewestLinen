@@ -42,7 +42,7 @@ public class Item extends Auditable<String> {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CartItem cartItem;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private OrderDetail orderDetail;
 }
