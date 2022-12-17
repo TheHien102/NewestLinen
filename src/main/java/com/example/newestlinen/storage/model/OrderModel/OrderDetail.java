@@ -22,6 +22,7 @@ public class OrderDetail {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Item item;
 
     private int quantity;

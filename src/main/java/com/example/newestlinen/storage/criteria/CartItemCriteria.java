@@ -1,10 +1,7 @@
 package com.example.newestlinen.storage.criteria;
 
 import com.example.newestlinen.storage.model.Account;
-import com.example.newestlinen.storage.model.Address.Province;
-import com.example.newestlinen.storage.model.CartModel.Cart;
 import com.example.newestlinen.storage.model.CartModel.CartItem;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,8 +32,7 @@ public class CartItemCriteria {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (accountId != null) {
-                Join<CartItem, Cart> joinCart = root.join("cart", JoinType.INNER);
-                Join<Cart, Account> joinAccount = joinCart.join("account", JoinType.INNER);
+                Join<CartItem, Account> joinAccount = root.join("account", JoinType.INNER);
                 predicates.add(criteriaBuilder.equal(joinAccount.get("id"), accountId));
             }
             if (getStatus() != -999) {

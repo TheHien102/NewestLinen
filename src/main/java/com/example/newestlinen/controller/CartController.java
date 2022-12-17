@@ -11,14 +11,12 @@ import com.example.newestlinen.mapper.cart.CartItemMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.storage.criteria.CartItemCriteria;
 import com.example.newestlinen.storage.model.Account;
-import com.example.newestlinen.storage.model.CartModel.Cart;
 import com.example.newestlinen.storage.model.CartModel.CartItem;
 import com.example.newestlinen.storage.model.CartModel.Item;
 import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.AccountRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.CartItemRepository;
-import com.example.newestlinen.utils.projection.repository.Cart.CartRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.ItemRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -44,8 +41,6 @@ import java.util.stream.Collectors;
 public class CartController extends ABasicController {
 
     private final ProductRepository productRepository;
-
-    private final CartRepository cartRepository;
 
     private final CartItemRepository cartItemRepository;
 
@@ -87,15 +82,10 @@ public class CartController extends ABasicController {
         if (!isCustomer()) {
             throw new UnauthorizationException("not a user");
         }
-        Cart cart = cartRepository.findByAccountId(getCurrentUserId());
-        if (cart == null) {
-            Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
-            if (account != null) {
-                cart = new Cart();
-                cart.setCartItems(new ArrayList<>());
-                cart.setAccount(account);
-                account.setCart(cart);
-            }
+        Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
+
+        if (account == null) {
+            throw new NotFoundException("account not found");
         }
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());
@@ -136,10 +126,10 @@ public class CartController extends ABasicController {
         cartItem.setDiscount(p.getDiscount());
 
         // set properties for cart and map with cartItems
-        cartItem.setCart(cart);
-        cart.getCartItems().add(cartItem);
+        cartItem.setAccount(account);
+        account.getCartItems().add(cartItem);
 
-        cartRepository.save(cart);
+        accountRepository.save(account);
 
         return new ApiMessageDto<>("Add to cart success", HttpStatus.OK);
     }

@@ -1,6 +1,6 @@
 package com.example.newestlinen.storage.model;
 
-import com.example.newestlinen.storage.model.CartModel.Cart;
+import com.example.newestlinen.storage.model.CartModel.CartItem;
 import com.example.newestlinen.storage.model.OrderModel.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -64,9 +64,8 @@ public class Account extends Auditable<String> {
     private Date verifyTime;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Cart_ID")
-    private Cart cart;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

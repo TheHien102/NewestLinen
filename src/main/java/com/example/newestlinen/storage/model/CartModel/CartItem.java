@@ -2,6 +2,7 @@ package com.example.newestlinen.storage.model.CartModel;
 
 import javax.persistence.*;
 
+import com.example.newestlinen.storage.model.Account;
 import com.example.newestlinen.storage.model.Auditable;
 import com.example.newestlinen.storage.model.TablePrefix;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,6 +35,5 @@ public class CartItem extends Auditable<String> {
     @JsonIgnore
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "Cart_ID")
-    private Cart cart;
+    private Account account;
 }

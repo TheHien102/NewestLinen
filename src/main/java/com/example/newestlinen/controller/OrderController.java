@@ -12,9 +12,7 @@ import com.example.newestlinen.form.order.UpdateOrderForm;
 import com.example.newestlinen.mapper.order.OrderMapper;
 import com.example.newestlinen.mapper.product.VariantMapper;
 import com.example.newestlinen.storage.criteria.OrderCriteria;
-import com.example.newestlinen.storage.criteria.OrderDetailCriteria;
 import com.example.newestlinen.storage.model.Account;
-import com.example.newestlinen.storage.model.CartModel.Cart;
 import com.example.newestlinen.storage.model.CartModel.CartItem;
 import com.example.newestlinen.storage.model.CartModel.Item;
 import com.example.newestlinen.storage.model.OrderModel.Order;
@@ -23,7 +21,6 @@ import com.example.newestlinen.storage.model.ProductModel.Product;
 import com.example.newestlinen.storage.model.ProductModel.Variant;
 import com.example.newestlinen.utils.projection.repository.AccountRepository;
 import com.example.newestlinen.utils.projection.repository.Cart.CartItemRepository;
-import com.example.newestlinen.utils.projection.repository.Cart.CartRepository;
 import com.example.newestlinen.utils.projection.repository.Order.OrderDetailRepository;
 import com.example.newestlinen.utils.projection.repository.Order.OrderRepository;
 import com.example.newestlinen.utils.projection.repository.Product.ProductRepository;
@@ -48,8 +45,6 @@ import java.util.stream.Collectors;
 public class OrderController extends ABasicController {
 
     private final CartItemRepository cartItemRepository;
-
-    private final CartRepository cartRepository;
 
     private final OrderMapper orderMapper;
 
@@ -121,9 +116,8 @@ public class OrderController extends ABasicController {
             order.setAccount(account);
             account.getOrderUser().add(order);
 
-            Cart cart = cartRepository.findByAccountId(getCurrentUserId());
             // get cart item from repo and filter with form
-            List<CartItem> cartItemListToOrder = cart.getCartItems().stream().filter(cartItem -> createOrderForm.getCartItemIdsList().contains(cartItem.getId())).collect(Collectors.toList());
+            List<CartItem> cartItemListToOrder = account.getCartItems().stream().filter(cartItem -> createOrderForm.getCartItemIdsList().contains(cartItem.getId())).collect(Collectors.toList());
             if (cartItemListToOrder.size() == 0) {
                 throw new RequestException("cart item id invalid");
             }

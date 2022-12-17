@@ -1,8 +1,6 @@
 package com.example.newestlinen.storage.criteria;
 
 import com.example.newestlinen.storage.model.Account;
-import com.example.newestlinen.storage.model.CartModel.Cart;
-import com.example.newestlinen.storage.model.CartModel.CartItem;
 import com.example.newestlinen.storage.model.OrderModel.Order;
 import com.example.newestlinen.storage.model.OrderModel.OrderDetail;
 import lombok.Data;
