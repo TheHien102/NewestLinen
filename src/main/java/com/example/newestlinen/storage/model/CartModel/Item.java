@@ -42,6 +42,7 @@ public class Item extends Auditable<String> {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CartItem cartItem;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private OrderDetail orderDetail;
 }
