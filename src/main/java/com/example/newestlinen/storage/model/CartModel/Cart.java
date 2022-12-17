@@ -28,7 +28,7 @@ public class Cart {
     private List<CartItem> cartItems;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Account account;
 }
