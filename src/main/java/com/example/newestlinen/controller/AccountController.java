@@ -315,7 +315,7 @@ public class AccountController extends ABasicController {
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> delete(@PathVariable("id") Long id) {
+    public ApiMessageDto<String> delete(@PathVariable("id") Long id) throws IOException {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_UNAUTHORIZED, "Not allow delete");
         }
@@ -324,7 +324,9 @@ public class AccountController extends ABasicController {
         if (account == null) {
             throw new RequestException(ErrorCode.GENERAL_ERROR_NOT_FOUND, "Account not found");
         }
-        landingIsApiService.deleteFile(account.getAvatarPath());
+        if (account.getAvatarPath() != null) {
+            uploadService.deleteImg(account.getAvatarPath());
+        }
         accountRepository.deleteById(id);
         apiMessageDto.setMessage("Delete Account success");
         return apiMessageDto;

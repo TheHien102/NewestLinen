@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -27,5 +29,6 @@ public class Cart {
 
     @JsonIgnore
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Account account;
 }

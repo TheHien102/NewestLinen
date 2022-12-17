@@ -89,7 +89,7 @@ public class OrderController extends ABasicController {
         return apiMessageDto;
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public ApiMessageDto<ResponseListObj<OrderDetailDTO>> listOrderDetail(Long orderId) {
         if (!isAdmin()) {
             throw new UnauthorizationException("not an admin");
@@ -121,6 +121,7 @@ public class OrderController extends ABasicController {
         if (getCurrentUserId() != -1L) {
             Account account = accountRepository.findFirstById(getCurrentUserId());
             order.setAccount(account);
+            account.getOrderUser().add(order);
 
             Cart cart = cartRepository.findByAccountId(getCurrentUserId());
             // get cart item from repo and filter with form
