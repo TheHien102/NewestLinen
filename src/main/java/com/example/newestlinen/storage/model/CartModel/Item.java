@@ -35,11 +35,11 @@ public class Item extends Auditable<String> {
     @JoinColumn(name = "Product_ID", referencedColumnName = "Product_ID")
     private Product itemProduct;
 
-    @ManyToMany(mappedBy = "variantItem", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "variantItem")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Variant> Variants = new ArrayList<>();
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private CartItem cartItem;
 
     @OneToOne
