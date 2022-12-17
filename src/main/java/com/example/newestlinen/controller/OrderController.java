@@ -137,7 +137,10 @@ public class OrderController extends ABasicController {
             order.setPhoneNumber(account.getPhone());
 
             //delete cart items
-            cartItemListToOrder.forEach(cartItem -> cartItem.getItem().setCartItem(null));
+            cartItemListToOrder.forEach(cartItem -> {
+                cartItem.getItem().setCartItem(null);
+                cartItem.setItem(null);
+            });
         } else {
             List<OrderDetail> orderDetailList =
                     createOrderForm.getCartItemsList().stream().map(item -> {
