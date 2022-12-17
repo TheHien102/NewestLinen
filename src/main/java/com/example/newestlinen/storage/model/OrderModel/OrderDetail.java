@@ -21,7 +21,7 @@ public class OrderDetail {
     @Column(name = "OrderDetail_ID")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Item item;
 
     private int quantity;
