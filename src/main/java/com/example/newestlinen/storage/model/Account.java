@@ -64,7 +64,7 @@ public class Account extends Auditable<String> {
     private Date verifyTime;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Cart_ID")
     private Cart cart;
 
