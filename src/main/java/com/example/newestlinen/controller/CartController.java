@@ -90,9 +90,12 @@ public class CartController extends ABasicController {
         Cart cart = cartRepository.findByAccountId(getCurrentUserId());
         if (cart == null) {
             Account account = accountRepository.findById(getCurrentUserId()).orElse(null);
-            cart = new Cart();
-            cart.setCartItems(new ArrayList<>());
-            cart.setAccount(account);
+            if(account!=null){
+                cart = new Cart();
+                cart.setCartItems(new ArrayList<>());
+                cart.setAccount(account);
+                account.setCart(cart);
+            }
         }
 
         Product p = productRepository.findProductById(addToCartForm.getProductId());

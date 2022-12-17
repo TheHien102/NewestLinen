@@ -64,15 +64,15 @@ public class Account extends Auditable<String> {
     private Date verifyTime;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "Cart_ID")
     private Cart cart;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Address> addressUser = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Order> orderUser = new ArrayList<>();
 }

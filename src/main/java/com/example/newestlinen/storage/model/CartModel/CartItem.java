@@ -22,6 +22,7 @@ public class CartItem extends Auditable<String> {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Item item;
 
     private Integer quantity;
