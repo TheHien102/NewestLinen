@@ -60,7 +60,5 @@ public class UpdateProductForm {
     private List<UpdateVariantForm> variants;
 
     @Schema(name = "assets")
-    @NotNull(message = "assets should not null")
-    @Size(min = 1,message = "assets should not be Empty")
     private List<UpdateAssetForm> assets;
 }
