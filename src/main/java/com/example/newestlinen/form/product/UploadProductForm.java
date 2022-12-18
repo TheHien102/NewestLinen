@@ -11,15 +11,15 @@ import java.util.List;
 public class UploadProductForm {
 
     @Schema(name = "name")
-    @NotBlank(message = "name name should not be empty")
-    @NotNull(message = "name name should not be empty")
-    @NotEmpty(message = "name name should not be empty")
+    @NotBlank(message = "name should not be empty")
+    @NotNull(message = "name should not be empty")
+    @NotEmpty(message = "name should not be empty")
     private String name;
 
     @Schema(name = "mainImg")
-    @NotBlank(message = "mainImg name should not be empty")
-    @NotNull(message = "mainImg name should not be empty")
-    @NotEmpty(message = "mainImg name should not be empty")
+    @NotBlank(message = "mainImg should not be empty")
+    @NotNull(message = "mainImg should not be empty")
+    @NotEmpty(message = "mainImg should not be empty")
     private String mainImg;
 
     @Schema(name = "discount")
@@ -27,9 +27,9 @@ public class UploadProductForm {
     private int discount;
 
     @Schema(name = "description")
-    @NotBlank(message = "description name should not be empty")
-    @NotNull(message = "description name should not be empty")
-    @NotEmpty(message = "description name should not be empty")
+    @NotBlank(message = "description should not be empty")
+    @NotNull(message = "description should not be empty")
+    @NotEmpty(message = "description should not be empty")
     private String description;
 
     @Schema(name = "price")
