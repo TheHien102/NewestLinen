@@ -111,6 +111,8 @@ public class OrderController extends ABasicController {
 
         Order order = new Order();
 
+        Long test = getCurrentUserId();
+
         if (getCurrentUserId() != -1L) {
             Account account = accountRepository.findFirstById(getCurrentUserId());
             order.setAccount(account);

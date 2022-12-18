@@ -102,25 +102,23 @@ public class CartController extends ABasicController {
 
         price.set(price.get() * (100 - p.getDiscount()) / 100);
 
-        Item i = new Item();
+        Item item = new Item();
 
         CartItem cartItem = new CartItem();
 
         // set properties for item
-        i.setName(p.getName());
-        i.setItemProduct(p);
-        i.setCartItem(cartItem);
+        item.setName(p.getName());
+        item.setItemProduct(p);
+        item.setCartItem(cartItem);
 
         variants.forEach(v -> {
-            v.getVariantItem().add(i);
-            v.setVariantProduct(p);
+            v.getVariantItem().add(item);
         });
 
-        i.setVariants(new ArrayList<>());
-        i.getVariants().addAll(variants);
+        item.getVariants().addAll(variants);
 
         // set properties for cart item
-        cartItem.setItem(i);
+        cartItem.setItem(item);
         cartItem.setQuantity(addToCartForm.getQuantity());
         cartItem.setPrice(price.get());
         cartItem.setDiscount(p.getDiscount());
@@ -129,7 +127,7 @@ public class CartController extends ABasicController {
         cartItem.setAccount(account);
         account.getCartItems().add(cartItem);
 
-        accountRepository.save(account);
+        cartItemRepository.save(cartItem);
 
         return new ApiMessageDto<>("Add to cart success", HttpStatus.OK);
     }
@@ -160,8 +158,10 @@ public class CartController extends ABasicController {
         }
 
         Item item = cartItem.getItem();
-        cartItem.getItem().setCartItem(null);
-//        cartItem.setItem(null);
+
+        item.setCartItem(null);
+        cartItem.setItem(null);
+
         itemRepository.deleteById(item.getId());
 
         return new ApiMessageDto<>("deleted cartItem id: " + id, HttpStatus.OK);

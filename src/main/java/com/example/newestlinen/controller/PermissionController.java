@@ -75,11 +75,7 @@ public class PermissionController extends ABasicController {
         permission.setShowMenu(createPermissionForm.getShowMenu());
         permission.setNameGroup(createPermissionForm.getNameGroup());
 
-        List<Permission> permissionCurrent = group.getPermissions();
-
-        permissionCurrent.add(permission);
-
-        group.setPermissions(permissionCurrent);
+        group.getPermissions().add(permission);
 
         permissionRepository.save(permission);
 
