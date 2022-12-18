@@ -50,9 +50,7 @@ public class UpdateProductForm {
     private Integer price;
 
     @Schema(name = "productCategoryId")
-    @NotBlank(message = "productCategoryId should not be empty")
     @NotNull(message = "productCategoryId should not be empty")
-    @NotEmpty(message = "productCategoryId should not be empty")
     private Long productCategoryId;
 
     @Schema(name = "variants")
