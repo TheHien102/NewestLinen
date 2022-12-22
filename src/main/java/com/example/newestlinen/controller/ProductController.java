@@ -236,7 +236,16 @@ public class ProductController extends ABasicController {
             throw new UnauthorizationException("not an admin");
         }
         Product p = productRepository.findProductById(id);
-        uploadService.deleteImg(p.getMainImg());
+        String mainImgLink = p.getMainImg();
+        uploadService.deleteImg(mainImgLink);
+        List<Asset> assetList = p.getAssets();
+        assetList.forEach(a -> {
+            try {
+                uploadService.deleteImg(a.getLink());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         productRepository.deleteById(id);
         return new ApiMessageDto<>("deleted product id: " + id, HttpStatus.OK);
     }

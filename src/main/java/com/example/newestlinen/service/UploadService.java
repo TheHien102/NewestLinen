@@ -3,6 +3,8 @@ package com.example.newestlinen.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +16,10 @@ public class UploadService {
     @Autowired
     Cloudinary cloudinary;
 
+    @Autowired
+    @Qualifier("threadPoolExecutor")
+    private TaskExecutor taskExecutor;
+
     public String uploadImg(String img) throws IOException {
         return (String) cloudinary.uploader().upload(img, ObjectUtils.asMap(
                 "use_filename", true,
@@ -23,10 +29,17 @@ public class UploadService {
     }
 
     public void deleteImg(String url) throws IOException {
-        List<String> words = List.of(url.split("/"));
-        String publicId = words.get(words.size() - 1).split("\\.")[0];
+        Runnable runnableTask = () -> {
+            try {
+                List<String> words = List.of(url.split("/"));
+                String publicId = words.get(words.size() - 1).split("\\.")[0];
 
-        cloudinary.uploader().destroy(publicId,ObjectUtils.asMap("invalidate",true));
+                cloudinary.uploader().destroy(publicId,ObjectUtils.asMap("invalidate",true));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+        taskExecutor.execute(runnableTask);
     }
 
     public String uploadVid(String img) throws IOException {
