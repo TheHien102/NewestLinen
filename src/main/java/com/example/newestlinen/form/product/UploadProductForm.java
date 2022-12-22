@@ -33,11 +33,12 @@ public class UploadProductForm {
     private String description;
 
     @Schema(name = "price")
-    @Min(value = 0,message = "price not zro")
-    private int price;
+    @Min(value = 1,message = "price not zro")
+    @NotNull(message = "price should not be empty")
+    private Integer price;
 
     @Schema(name = "productCategoryId")
-    @Min(value = 0,message = "productCategoryId not zro")
+    @Min(value = 1,message = "productCategoryId not zero")
     private Long productCategoryId;
 
     @Schema(name = "variants")
