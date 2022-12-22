@@ -3,10 +3,7 @@ package com.example.newestlinen.form.product;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Data
@@ -32,10 +29,9 @@ public class UpdateProductForm {
     private String mainImg;
 
     @Schema(name = "discount")
-    @NotBlank(message = "discount should not be empty")
     @NotNull(message = "discount should not be empty")
-    @NotEmpty(message = "discount should not be empty")
-    private int discount;
+    @Min(value = 1,message = "discount should not be zero")
+    private Integer discount;
 
     @Schema(name = "description")
     @NotBlank(message = "description should not be empty")
@@ -44,9 +40,8 @@ public class UpdateProductForm {
     private String description;
 
     @Schema(name = "price")
-    @NotBlank(message = "price should not be empty")
     @NotNull(message = "price should not be empty")
-    @NotEmpty(message = "price should not be empty")
+    @Min(value = 1,message = "price should not be zero")
     private Integer price;
 
     @Schema(name = "productCategoryId")
