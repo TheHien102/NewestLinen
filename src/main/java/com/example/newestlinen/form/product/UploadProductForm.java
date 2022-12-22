@@ -23,8 +23,9 @@ public class UploadProductForm {
     private String mainImg;
 
     @Schema(name = "discount")
-    @Min(value = 0,message = "price not zro")
-    private int discount;
+    @Min(value = 1,message = "discount not zero")
+    @NotNull(message = "discount should not be empty")
+    private Integer discount;
 
     @Schema(name = "description")
     @NotBlank(message = "description should not be empty")
@@ -33,7 +34,7 @@ public class UploadProductForm {
     private String description;
 
     @Schema(name = "price")
-    @Min(value = 1,message = "price not zro")
+    @Min(value = 1,message = "price not zero")
     @NotNull(message = "price should not be empty")
     private Integer price;
 
