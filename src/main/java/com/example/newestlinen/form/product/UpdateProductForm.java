@@ -11,9 +11,7 @@ import java.util.List;
 public class UpdateProductForm {
 
     @Schema(name = "id")
-    @NotBlank(message = "id should not be empty")
     @NotNull(message = "id should not be empty")
-    @NotEmpty(message = "id should not be empty")
     private Long id;
 
     @Schema(name = "name")
