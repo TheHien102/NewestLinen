@@ -231,10 +231,12 @@ public class ProductController extends ABasicController {
 
     @DeleteMapping("/delete")
     @Transactional
-    public ApiMessageDto<String> deleteProduct(Long id) {
-        if(!isSuperAdmin()){
+    public ApiMessageDto<String> deleteProduct(Long id) throws IOException {
+        if (!isSuperAdmin()) {
             throw new UnauthorizationException("not an admin");
         }
+        Product p = productRepository.findProductById(id);
+        uploadService.deleteImg(p.getMainImg());
         productRepository.deleteById(id);
         return new ApiMessageDto<>("deleted product id: " + id, HttpStatus.OK);
     }
